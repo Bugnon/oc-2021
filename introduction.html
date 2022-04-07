@@ -2,10 +2,12 @@
 <html class="no-js" lang="fr">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Recherche" href="search.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Recherche" href="search.html" /><link rel="next" title="2. Le jeu de la vie" href="projet1.html" /><link rel="prev" title="Projet final" href="index.html" />
 
-    <link rel="shortcut icon" href="_static/modulo-icon.ico"/><meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/><title>Index - projet final</title>
-<link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="shortcut icon" href="_static/modulo-icon.ico"/><meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
+        <title>1. Introduction - projet final</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="_static/codeplay.css" />
     <link rel="stylesheet" type="text/css" href="_static/questions.css" />
@@ -190,7 +192,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -214,8 +216,8 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">1. Introduction</a></li>
+  <ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">1. Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="projet1.html">2. Le jeu de la vie</a></li>
 <li class="toctree-l1"><a class="reference internal" href="projet2.html">3. Le jeu de Go</a></li>
 <li class="toctree-l1"><a class="reference internal" href="projet3.html">4. Jeu 2048</a></li>
@@ -239,16 +241,55 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          
-<section class="genindex-section">
-  <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"></div>
+          <section class="tex2jax_ignore mathjax_ignore" id="introduction">
+<h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Ce site est créé avec sphinx présenter les projets de fin d’année de la classe OC informatique.
+Le format et la structure de la page est identique au site <strong>modulo</strong></p>
+<p>Sur Github nous avons la structure</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>src
+    assets          # copié de modulo
+    exts            # copié de modulo
+    projet          # projets des élèves
+        media       # dossier pour images
+        code        # dossier pour code
+        index.md    # page de départ
+        projet.md   # page projet d'élève
+    static          # copié de moduloe
+requirements.text   # les modules Python à installer
+</pre></div>
+</div>
+<p>Voici une image dans le dossier <code class="docutils literal notranslate"><span class="pre">media</span></code>.</p>
+<p><img alt="go" src="_images/go-atari.png"/></p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Voici les étapes à faire chez vous</p>
+<ul class="simple">
+<li><p>installer <a class="reference external" href="https://desktop.github.com">GitHub Desktop</a></p></li>
+<li><p>installer <a class="reference external" href="https://code.visualstudio.com/download">VS Code</a></p></li>
+</ul>
+<section id="vs-code">
+<h3>VS Code<a class="headerlink" href="#vs-code" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Installer les extensions</p>
+<ul class="simple">
+<li><p>Python extension for Visual Studio Code (de Microsoft)</p></li>
+<li><p>Live Server (de Ritwick Dey)</p></li>
+<li><p>dans la console VS Code</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip3 install -r requirements.txt
+</pre></div>
+</div>
+<p>Pour créer les pages web dans le dossier `build``</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sphinx-build src/projet build -E
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
         </article>
@@ -256,8 +297,26 @@
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="projet1.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><span class="section-number">2. </span>Le jeu de la vie</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
         </div>
 
         <div class="related-information">
@@ -265,13 +324,39 @@
             Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
               and
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
+            <a class="muted-link" href="_sources/introduction.md.txt"
+               rel="nofollow">
+              Montrer le code source
+            </a>
         </div>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contenu
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">1. Introduction</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#vs-code">VS Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
