@@ -43,6 +43,25 @@ Installer les extensions
 pip3 install -r requirements.txt
 ```
 
+Mettre à jour pip (package installer for Python).
+
+```text
+pip3 install --upgrade pip
+```
+
+Voici les chemins (path) cherchés lors de l'exécution d'une commande
+
+```text
+echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+```
+
+Ajouter les extensions Python au chemin (path).
+
+```text
+export PATH=~/Library/Python/3.10/bin:$PATH
+```
+
 Pour créer les pages web dans le dossier `build``
 
 

@@ -1,6 +1,6 @@
-# Le jeu de la vie
+# Projet
 
-Votre projet
+Arthur
 
 ## Codeplay
 

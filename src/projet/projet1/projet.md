@@ -1,6 +1,6 @@
-# Le jeu de Go
+# Le jeu 2048
 
-Votre projet
+Alice et Gregory
 
 ## Codeplay
 
