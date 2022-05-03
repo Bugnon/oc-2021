@@ -2,7 +2,7 @@
 from turtle import *
 from random import choice
 from time import sleep
-import winsound
+from pygame import mixer
 case_num = {(-290, 290): 0, (-140, 290) : 0, (10, 290) : 0, (160, 290) : 0, (-290, 140) : 0, (-140, 140) : 0,
             (10, 140) : 0, (160, 140) : 0, (-290, -10) : 0, (-140, -10) : 0, (10, -10) : 0, (160, -10) : 0,
             (-290, -160) : 0, (10, -160) : 0, (160, -160) : 0, (-140, -160) : 0, (310, 290): 'stop', (310, 140): 'stop',
@@ -146,10 +146,13 @@ def reboutons(rage, hist = 1, back = 0):
     Button_quit = Button((350, -200), 'Quit', (80, 30))
 
 def song(win):
+    mixer.music.stop()
     if win:
-        winsound.PlaySound('win.wav', winsound.SND_ALIAS)
+        mixer.music.load('win.wav')
+        mixer.music.play()
     else:
-        winsound.PlaySound('cri.wav', winsound.SND_ALIAS)
+        mixer.music.load('cri.wav')
+        mixer.music.play()
     
 
 def end_hist():
@@ -378,6 +381,13 @@ def droite():
     if pause == 1:
         pause = 0
         mouvement('d')
+        
+
+def son_fond():
+    mixer.init()
+    mixer.music.load('Isolated Drowning.mp3')
+    mixer.music.play(-1)
+
 
 
 def main():
@@ -387,6 +397,7 @@ def main():
     cases()
     new(1)
     résultat()
+    son_fond()
     
     
 def rezero():
@@ -414,6 +425,7 @@ def newgame():
     cases()
     new(1)
     résultat()
+    son_fond()
     
     
 def f(x, y):
