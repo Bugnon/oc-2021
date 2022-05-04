@@ -1,4 +1,4 @@
-# Introduction
+# Annexe
 
 Ce site est créé avec sphinx présenter les projets de fin d'année de la classe OC informatique. 
 Le format et la structure de la page est identique au site **modulo**

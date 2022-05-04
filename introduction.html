@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Recherche" href="search.html" /><link rel="next" title="2. Le jeu de la vie" href="projet1.html" /><link rel="prev" title="Projet final" href="index.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Recherche" href="search.html" />
 
     <link rel="shortcut icon" href="_static/modulo-icon.ico"/><meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
-        <title>1. Introduction - projet final</title>
+        <title>Introduction - projet final</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="_static/codeplay.css" />
@@ -216,11 +216,16 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">1. Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="projet1.html">2. Le jeu de la vie</a></li>
-<li class="toctree-l1"><a class="reference internal" href="projet2.html">3. Le jeu de Go</a></li>
-<li class="toctree-l1"><a class="reference internal" href="projet3.html">4. Jeu 2048</a></li>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="projet1/projet.html">1. Jeu 2048</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet2/projet.html">2. Survie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet3/projet.html">3. Parking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet4/projet.html">4. TRON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet5/projet.html">5. Projet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet6/projet.html">6. Dévermineur</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet7/projet.html">7. Puissance 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet8/projet.html">8. Projet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annex.html">9. Annexe</a></li>
 </ul>
 
 </div>
@@ -248,7 +253,7 @@
         </div>
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="introduction">
-<h1><span class="section-number">1. </span>Introduction<a class="headerlink" href="#introduction" title="Lien permanent vers ce titre">¶</a></h1>
+<h1>Introduction<a class="headerlink" href="#introduction" title="Lien permanent vers ce titre">¶</a></h1>
 <p>Ce site est créé avec sphinx présenter les projets de fin d’année de la classe OC informatique.
 Le format et la structure de la page est identique au site <strong>modulo</strong></p>
 <p>Sur Github nous avons la structure</p>
@@ -284,8 +289,26 @@ requirements.text   # les modules Python à installer
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip3 install -r requirements.txt
 </pre></div>
 </div>
+<p>### Créer pages web</p>
 <p>Pour créer les pages web dans le dossier `build``</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>sphinx-build src/projet build -E
+</pre></div>
+</div>
+<p>Pour publier les pages HTML nous utilisons <strong>GitHub Pages</strong> et le package Python <strong>ghp-import</strong> qu’il faut installer avec <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip3 install ghp-import
+</pre></div>
+</div>
+<p>Pour puplier les pages HTML il suffit de lancer</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>user@pc oc-2021 % ghp-import -n -p -f build     
+Enumerating objects: 103, done.
+Counting objects: 100% (103/103), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (84/84), done.
+Writing objects: 100% (85/85), 568.56 KiB | 10.73 MiB/s, done.
+Total 85 (delta 16), reused 1 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (16/16), completed with 6 local objects.
+To https://github.com/Bugnon/oc-2021.git
+   16ef47a..ed19f48  gh-pages -&gt; gh-pages
 </pre></div>
 </div>
 </section>
@@ -297,26 +320,8 @@ requirements.text   # les modules Python à installer
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="projet1.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title"><span class="section-number">2. </span>Le jeu de la vie</div>
-              </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Home</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
 
         <div class="related-information">
@@ -345,7 +350,7 @@ requirements.text   # les modules Python à installer
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">1. Introduction</a><ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a><ul>
 <li><a class="reference internal" href="#vs-code">VS Code</a></li>
 </ul>

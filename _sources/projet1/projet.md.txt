@@ -1,4 +1,4 @@
-# Le jeu 2048
+# Jeu 2048
 
 Alice et Gregory
 
