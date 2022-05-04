@@ -1,4 +1,4 @@
-# Annexe
+# Introduction
 
 Ce site est créé avec sphinx présenter les projets de fin d'année de la classe OC informatique. 
 Le format et la structure de la page est identique au site **modulo**
@@ -43,28 +43,32 @@ Installer les extensions
 pip3 install -r requirements.txt
 ```
 
-Mettre à jour pip (package installer for Python).
-
-```text
-pip3 install --upgrade pip
-```
-
-Voici les chemins (path) cherchés lors de l'exécution d'une commande
-
-```text
-echo $PATH
-/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
-```
-
-Ajouter les extensions Python au chemin (path).
-
-```text
-export PATH=~/Library/Python/3.10/bin:$PATH
-```
+### Créer pages web
 
 Pour créer les pages web dans le dossier `build``
-
 
 ```text
 sphinx-build src/projet build -E
 ```
+
+Pour publier les pages HTML nous utilisons **GitHub Pages** et le package Python **ghp-import** qu'il faut installer avec `pip`.
+
+```text
+pip3 install ghp-import
+```
+
+Pour puplier les pages HTML il suffit de lancer
+
+```text
+user@pc oc-2021 % ghp-import -n -p -f build     
+Enumerating objects: 103, done.
+Counting objects: 100% (103/103), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (84/84), done.
+Writing objects: 100% (85/85), 568.56 KiB | 10.73 MiB/s, done.
+Total 85 (delta 16), reused 1 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (16/16), completed with 6 local objects.
+To https://github.com/Bugnon/oc-2021.git
+   16ef47a..ed19f48  gh-pages -> gh-pages
+```
+

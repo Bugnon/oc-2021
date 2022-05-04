@@ -1,6 +1,6 @@
-# Parking
+# Projet
 
-Alex et Walid
+Louna et Garance
 
 ## Codeplay
 
