@@ -3,6 +3,7 @@ from turtle import *
 from random import choice
 from time import sleep
 from pygame import mixer
+setup(920, 850)
 case_num = {(-290, 290): 0, (-140, 290) : 0, (10, 290) : 0, (160, 290) : 0, (-290, 140) : 0, (-140, 140) : 0,
             (10, 140) : 0, (160, 140) : 0, (-290, -10) : 0, (-140, -10) : 0, (10, -10) : 0, (160, -10) : 0,
             (-290, -160) : 0, (10, -160) : 0, (160, -160) : 0, (-140, -160) : 0, (310, 290): 'stop', (310, 140): 'stop',
@@ -46,7 +47,7 @@ def cases():
 
 
 class Case:
-    def __init__(self, pos, text, size=(80, 30)):
+    def __init__(self, pos, text, size=(80, 60)):
         self.pos = pos
         self.size = size
         self.text = text
@@ -65,7 +66,7 @@ class Case:
             right(90)
         end_fill()
         if self.text != 0:
-            goto(x + 70, y - 80)
+            goto(x + 70, y - 90)
             w, h = self.size
             color('black')
             write(self.text, font=('Arial', h//2), align='center')
@@ -91,7 +92,7 @@ class Button:
         end_fill()
         x, y = self.pos
         w, h = self.size
-        goto(x+w/2, y+h/4 - 5)
+        goto(x+w/2, y+h/4 - 1)
         color('black')
         write(self.text, font=('Arial', h//2), align='center')
 
