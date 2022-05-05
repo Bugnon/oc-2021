@@ -7,5 +7,8 @@ Louna et Garance
 ```{codeplay}
 from turtle import *
 
+# Notre projet se portera sur le jeu très connu: Snake 
+
+
 ```
 
