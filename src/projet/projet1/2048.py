@@ -121,7 +121,7 @@ def résultat():
     up()
     width(5)
     color('black')
-    goto(0, -370)
+    goto(0, -363)
     nbrmax1 = []
     for nbr in case_num:
         if case_num[nbr] != 'stop':
