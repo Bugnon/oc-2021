@@ -14,6 +14,12 @@ Le serpent (Snake) sera de forme assez simple et une couleurs vive pour faire re
 Plusieurs niveaux avec des vitesses différentes pour augmenter la difficulté du jeu. 
 
 
+## Les images 
+
+
+## Le son 
+
+
 
 ## Sources: Youtube 
 
