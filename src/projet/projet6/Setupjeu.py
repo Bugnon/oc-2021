@@ -1,21 +1,25 @@
-from turtle import * 
-
-# def joueraujeu():
-    
-# def regledujeu():
-    
-def grille(g,l,z,p):
-    for i in range(g):
-        x0 = xcor()
-        y0 = ycor()
-        up()
-        setx(x0-p)
-        sety(y0-20)
-        down()
-        for i in range(l):
-            up()
-            fd(20)
-            down()
-            for i in range(4):
-                fd(z)
-                rt(90)
+import tkinter as tk
+ 
+cell_size = 20
+board_size = 10 # ou 8 pour un échiquier
+canvas_size = cell_size * board_size
+ 
+colors = ["white", "black"]
+ 
+root = tk.Tk()
+ 
+canvas = tk.Canvas(root, width=canvas_size, height=canvas_size)
+canvas.pack()
+ 
+for x in range(board_size):
+    for y in range(board_size):
+        color = colors[(x + y) % 2]
+        canvas.create_rectangle(
+            y * cell_size,
+            x * cell_size,
+            y * cell_size + cell_size,
+            x * cell_size + cell_size,
+            fill=color, outline=color
+        )
+ 
+root.mainloop()
