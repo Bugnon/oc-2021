@@ -2,11 +2,10 @@
 
 Louna et Garance
 
-** Notre projet se portera sur le jeu très connu: Snake
+* Notre projet se portera sur le jeu très connu: Snake
 
  Voici une image pour un aperçu: 
  
-
 
 
 
