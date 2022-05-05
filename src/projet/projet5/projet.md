@@ -1,4 +1,4 @@
-# Projet
+# Projet - Snake 
 
 Louna et Garance
 
