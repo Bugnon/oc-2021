@@ -2,7 +2,6 @@
 # Projet Demineur
 
 from random import *
-from tkinter import *
 from turtle import *
 from time import *
 
