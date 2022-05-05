@@ -2,12 +2,6 @@
 
 Louna et Garance
 
-## Codeplay
-
-```{codeplay}
-from turtle import *
-
-
 ** Notre projet se portera sur le jeu très connu: Snake
 
  Voici une image pour un aperçu: 
@@ -23,7 +17,10 @@ Snake Game In Python - Python Begginer Tutorial
 Code a Snake Game with Python and Pygame - Tutorial 
 
 
+## Codeplay
 
+```{codeplay}
+from turtle import *
 
 ```
 
