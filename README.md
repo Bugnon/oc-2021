@@ -33,12 +33,8 @@ Les documents pour ce site se trouvent dans le dossier `doc`. Pour créer les pa
 
 Pour visualiser les pages:
 
-    open _build/html/index.html
-
+    open build/index.html
 
 Pour pousser les pages vers GitHub Pages
 
-    ghp-import -n -p -f _build/html
-
-
-
+    ghp-import -n -p -f build
