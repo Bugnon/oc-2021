@@ -1,9 +1,11 @@
 # Malik et Enrico
 # Projet Demineur
 
+from logging import root
 from random import *
 from turtle import *
 from time import *
+from tkinter import *
 
 s = getscreen()
 setup(500,500)
@@ -11,7 +13,7 @@ hideturtle()
 up()
 speed(0)
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps', '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
-partiecontinue = True
+bgcolor='black'
 
 class bouton:
     def __init__(self, pos, text, size=(80, 30), color='lightgray'):
@@ -52,6 +54,7 @@ def UI():
     write('The Demineur', font=('Arial', 60//2), align='center')
     bouton_start = bouton((-70, 30), 'Select Difficulty', (150,40), 'lightblue')
     bouton_highscore = bouton((-70, -20), 'Highscores', (150,40), 'lightblue')
+    bouton_settings = bouton((-70, -70), 'Settings', (150,40), 'lightblue')
     def f(x,y):
         if bouton_start.inside((x,y)):
             clear()
@@ -59,9 +62,13 @@ def UI():
         if bouton_highscore.inside((x,y)):
             clear()
             highscore()
+        if bouton_settings.inside((x,y)):
+            clear()
+            settings()
     s.onclick(f)
 
-
+def settings():
+    ...
 
 def diff():
     goto(10,100)
@@ -113,21 +120,35 @@ def highscore():
     
 def initialisation(o):
     if o == 1:
-        goto(155,200)
-        grille(10,10,20,400)
+        clear()
+        grille(20,30)
     if o == 2:
-        setup(600,600)
-        goto(0,0)
-        grille(20,20,20,400)
+        clear()
+        grille(20,40)
+        setup(550,550)
     if o == 3:
-        setup(600,700)
-        goto(290,300)
-        grille(30,30,20,600)
+        clear()
+        setup(600,600)
+        grille(20,50)
 #     if o == 4:
         
-            
+def grille(x,y):
+    cell_size = x
+    board_size = y
+    canvas_size = cell_size * board_size
+    colors = ["lightgreen", "green"]
+    canvas = Canvas(width=canvas_size, height=canvas_size)
+    canvas.pack()
+    for x in range(board_size):
+        for y in range(board_size):
+            color = colors[(x + y) % 2]
+            canvas.create_rectangle(
+                y * cell_size,
+                x * cell_size,
+                y * cell_size + cell_size,
+                x * cell_size + cell_size,
+                fill=color, outline=color)
 
-            
 UI()
 s.listen()
 done()
