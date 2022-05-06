@@ -168,12 +168,14 @@ def end_hist():
             wprint = []
             for fleche in w:
                 wprint.append(fleche)
+            wprint_str = ',  '.join(wprint)
             goto(0, ycor() - 20)
-            write(wprint, font=('Arial', 12), align='center')
+            write(wprint_str, font=('Arial', 12), align='center')
         rest = hist[len(hist) // nbr_ligne * nbr_ligne:]
         if len(rest) != 0:
+            rest_str = ',  '.join(rest)
             goto(0, ycor() - 20)
-            write(rest, font=('Arial', 12), align='center')
+            write(rest_str, font=('Arial', 12), align='center')
     color('black')
 
 
