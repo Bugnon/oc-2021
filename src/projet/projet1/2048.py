@@ -177,20 +177,20 @@ def end_hist():
     color('white')
     write('historique:', font=('Arial', 12), align='center')
     if len(hist) != 0:
-        nbr_ligne = 20
-        writehist = list(zip(*[iter(hist)]*nbr_ligne))
-        for w in writehist:
-            wprint = []
-            for fleche in w:
-                wprint.append(fleche)
-            wprint_str = ',  '.join(wprint)
-            goto(0, ycor() - 20)
-            write(wprint_str, font=('Arial', 12), align='center')
-        rest = hist[len(hist) // nbr_ligne * nbr_ligne:]
-        if len(rest) != 0:
-            rest_str = ',  '.join(rest)
-            goto(0, ycor() - 20)
-            write(rest_str, font=('Arial', 12), align='center')
+        partie = []
+        writehist = []
+        for i in range(len(hist)):
+            partie.append(hist[i])
+            if i != 0:
+                if i % 25 == 0:
+                    writehist.append(partie)
+                    partie = []
+        if len(partie) != 0:
+            writehist.append(partie)
+        for part in writehist:
+            part_str = ' | '.join(part)
+            goto(0, ycor() - 25)
+            write(part_str, font=('Arial', 12), align='center')
     color('black')
 
 
