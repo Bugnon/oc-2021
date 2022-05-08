@@ -21,9 +21,10 @@ addshape('bois.gif')
 shape('bois.gif')
 hideturtle()
 up()
-# Bouton hist
 #show nbrmax
 
+
+# cette fonction permet de dessiner le cadre du jeu 
 def tour():
     color('grey')
     goto(-300, -310)
@@ -32,7 +33,8 @@ def tour():
         goto(pos)
     end_fill()
    
-   
+
+# cette fonction permet de créer les 16 cases vides du début du jeu   
 def cases():
     color('darkgrey')
     for y in 290, 140, -10, -160:
@@ -46,6 +48,7 @@ def cases():
             forward(150)
 
 
+# Ce modèle sert à créer les cases qui se calqueront sur les cases, de la fonction cases(), avec leur chiffre et couleur
 class Case:
     def __init__(self, pos, text, size=(80, 60)):
         self.pos = pos
@@ -53,6 +56,7 @@ class Case:
         self.text = text
         self.draw()
        
+    # cette fonction permet de déssiner la case avec sa couleur et son chiffre   
     def draw(self):
         up()
         x, y = self.pos
@@ -74,6 +78,8 @@ class Case:
     def __str__(self):
         return f'Case({self.pos}, {self.text})'
 
+
+# Ce modèle crée des boutons
 class Button:
     def __init__(self, pos, text, size, color= 'Lightgrey'):
         self.pos = pos
@@ -81,7 +87,8 @@ class Button:
         self.text = text
         self.color = color
         self.draw()
-
+    
+    # cette fonction permet de dessiner le bouton
     def draw(self):
         goto(self.pos)
         fillcolor(self.color)
@@ -99,17 +106,21 @@ class Button:
     def __str__(self):
         return f'Button({self.pos}, {self.text})'
 
+    # cette fonction permet de calculer si la position donnée est à l'intérieur du bouton
     def inside(self, p):
         x, y = self.pos
         w, h = self.size
         return 0 < p[0]-x < w and 0 < p[1]-y < h
 
+
+# cette fonction sert à écrire un citation lors d'un échec
 def citation():
     goto(0, -100)
     write('''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement''',
           font=('Zapfino', 10), align='center')
         
 
+# cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
 def résultat():
     global score
     global case_num
@@ -133,6 +144,7 @@ def résultat():
         end('2048 c\'est la win! :)', 1)
 
 
+# cette fonction permet de tout effacer en remettant l'arrière plan et de poser les boutons choisit en fonction des paramètres de la fonction
 def reboutons(rage, hist = 1, back = 0):
     goto(0, 0)
     stamp()
@@ -146,6 +158,8 @@ def reboutons(rage, hist = 1, back = 0):
         Button_back = Button((350, 0), 'Back', (80, 30))
     Button_quit = Button((350, -200), 'Quit', (80, 30))
 
+
+# cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
 def song(win):
     mixer.music.stop()
     if win:
@@ -156,6 +170,7 @@ def song(win):
         mixer.music.play()
     
 
+# cette fonction sert à écrire l'historique sous formes de flèches
 def end_hist():
     global hist
     goto(0, 300)
@@ -179,6 +194,7 @@ def end_hist():
     color('black')
 
 
+# cette fonction permet de créer la page de fin
 def end(text, win):
     global endjeu
     endjeu = 1
@@ -197,6 +213,8 @@ def end(text, win):
     color('black')
     song(win)
 
+
+# cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
 def retour():
     global retour_hist
     retour_hist.pop()
@@ -217,6 +235,7 @@ def retour():
     résultat()
     
 
+# cette fonction permet de mémoriser la position de chaque cases
 def retour_calcul():
     global retour_hist
     global case_num
@@ -227,6 +246,7 @@ def retour_calcul():
     retour_hist.append(rappel)
 
 
+# cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
 def historique(direction):
     global hist
     if direction == 'h':
@@ -238,7 +258,8 @@ def historique(direction):
     elif direction == 'g':
         hist.append('←')
  
- 
+
+#  cette fonction permet de créer une nouvelle case après un coup
 def new(newretour = 0):
     sleep(0.2)
     global nbr
@@ -262,7 +283,8 @@ def new(newretour = 0):
     else:
         new()
         
-        
+
+# cette fonction fait le changement de case     
 def changement(pos, suiv):
     global case_num
     if pos != suiv:
@@ -279,7 +301,8 @@ def changement(pos, suiv):
         global modifi
         modifi = 1
     
-    
+
+# cette fonction calcule les coordonnées de la case suivante en fonction de la direction 
 def opération(x, y, direction):
     if direction == 'h':
         return x, y + 150
@@ -290,7 +313,9 @@ def opération(x, y, direction):
     elif direction == 'g':
         return x - 150, y
     
-    
+
+# cette fonction permet de calculer les coordonnées de la case présedente
+# elle est utilisé si la case suivante est une bordure ou une case d'un autre chiffre
 def opération_inverse(x, y, direction):
     if direction == 'h':
         return x, y - 150
@@ -302,6 +327,7 @@ def opération_inverse(x, y, direction):
         return x + 150, y
 
 
+# cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
 def notsame(pos, direction, suiv):
     global case_num
     fusible = 0
@@ -312,7 +338,7 @@ def notsame(pos, direction, suiv):
             fusible += 1
             if fusible > 5:
                 break
-# bloquage du curseur sans raisons -> à résoudre
+#! bloquage du curseur sans raisons -> à résoudre
         elif case_num[suiv] == 'stop':
             x, y = suiv
             suiv = opération_inverse(x, y, direction)
@@ -326,7 +352,8 @@ def notsame(pos, direction, suiv):
             suiv = opération_inverse(x, y, direction)
             changement(pos, suiv)
     
-    
+
+# cette fonction calcule si le chiffre dans la case est le même que le suivant    
 def calcul(pos, direction):
     global case_num
     x, y = pos
@@ -337,7 +364,9 @@ def calcul(pos, direction):
         else:
             notsame(pos, direction, suiv)
                 
-                
+
+# cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
+# Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer 
 def mouvement(direction):
     global endjeu
     if endjeu:
@@ -357,14 +386,16 @@ def mouvement(direction):
         historique(direction)
         retour_calcul()
    
-   
+
+# cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée   
 def haut():
     global pause
     if pause == 1:
         pause = 0
         mouvement('h')
         
-        
+
+# cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée    
 def bas():
     global pause
     if pause == 1:
@@ -372,6 +403,7 @@ def bas():
         mouvement('b')
 
 
+# cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
 def gauche():
     global pause
     if pause == 1:
@@ -379,6 +411,7 @@ def gauche():
         mouvement('g')
 
 
+# cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
 def droite():
     global pause
     if pause == 1:
@@ -386,13 +419,14 @@ def droite():
         mouvement('d')
         
 
+# cette fonction lance le son de fond
 def son_fond():
     mixer.init()
     mixer.music.load('Isolated Drowning.mp3')
     mixer.music.play(-1)
 
 
-
+# cette fonction déssine le cadre du jeu et lance le son de fond
 def main():
     goto(0, 0)
     stamp()
@@ -402,7 +436,8 @@ def main():
     résultat()
     son_fond()
     
-    
+
+# cette fonction rement des variables comment ils étaient au début
 def rezero():
     global pause
     global modifi
@@ -411,7 +446,8 @@ def rezero():
     global endjeu
     pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
     
-    
+
+# cette fonction remet les variables comment ils étaient au début et redessine le jeu   
 def newgame():
     global hist
     global case_num
@@ -430,7 +466,8 @@ def newgame():
     résultat()
     son_fond()
     
-    
+
+# cette fonction permet de savoir si le joueur à cliquer dans un boutons et, si oui, lance la fonction de ce dernier    
 def f(x, y):
     if pause == 1:
         if Button_end.inside((x, y)):
@@ -461,4 +498,5 @@ s.onkey(gauche, 'Left')
 s.onkey(droite, 'Right')
 s.onclick(f)
 s.listen()
-#perdre
+# perdre
+# new 1x sur 2 un 4
