@@ -205,7 +205,7 @@ def end(text, win):
     color('white')
     goto(0, 0)
     write(text, font=('Arial', 40), align='center')
-    if text == 'Tant Pis :(':
+    if text == 'Tant Pis :(': 
         citation()
     if win:
         goto(0, 200)
@@ -498,5 +498,6 @@ s.onkey(gauche, 'Left')
 s.onkey(droite, 'Right')
 s.onclick(f)
 s.listen()
+done()
 # perdre
 # new 1x sur 2 un 4
