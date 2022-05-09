@@ -56,7 +56,7 @@ class Case:
         self.text = text
         self.draw()
        
-    # cette fonction permet de dessiner la case avec sa couleur et son chiffre   
+    # cette fonction permet de déssiner la case avec sa couleur et son chiffre   
     def draw(self):
         up()
         x, y = self.pos
@@ -113,14 +113,14 @@ class Button:
         return 0 < p[0]-x < w and 0 < p[1]-y < h
 
 
-# cette fonction sert à écrire une citation lors d'un échec
+# cette fonction sert à écrire un citation lors d'un échec
 def citation():
     goto(0, -100)
     write('''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement''',
-          font=('Didot', 12), align='center')
+          font=('Zapfino', 10), align='center')
         
 
-# cette fonction calcule le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
+# cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
 def résultat():
     global score
     global case_num
@@ -144,7 +144,7 @@ def résultat():
         end('2048 c\'est la win! :)', 1)
 
 
-# cette fonction permet de tout effacer en remettant l'arrière-plan et de poser les boutons choisis en fonction des paramètres de la fonction
+# cette fonction permet de tout effacer en remettant l'arrière plan et de poser les boutons choisit en fonction des paramètres de la fonction
 def reboutons(rage, hist = 1, back = 0):
     goto(0, 0)
     stamp()
@@ -163,15 +163,12 @@ def reboutons(rage, hist = 1, back = 0):
 def song(win):
     mixer.music.stop()
     if win:
-        mixer.music.load('win.mp3')
+        mixer.music.load('win.wav')
         mixer.music.play()
-        sleep(6)
     else:
         mixer.music.load('cri.wav')
         mixer.music.play()
-        sleep(1)
-    mixer.music.load('Sojiada-Lanmou.mp3')
-    mixer.music.play(-1)
+    
 
 # cette fonction sert à écrire l'historique sous formes de flèches
 def end_hist():
@@ -217,7 +214,7 @@ def end(text, win):
     song(win)
 
 
-# cette fonction remet le jeu comme il était le tour d'avant et supprime la sauvegarde du dernier coup
+# cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
 def retour():
     global retour_hist
     retour_hist.pop()
@@ -238,7 +235,7 @@ def retour():
     résultat()
     
 
-# cette fonction permet de mémoriser la position de chaque case
+# cette fonction permet de mémoriser la position de chaque cases
 def retour_calcul():
     global retour_hist
     global case_num
@@ -317,8 +314,8 @@ def opération(x, y, direction):
         return x - 150, y
     
 
-# cette fonction permet de calculer les coordonnées de la case précédente
-# elle est utilisée si la case suivante est une bordure ou une case d'un autre chiffre
+# cette fonction permet de calculer les coordonnées de la case présedente
+# elle est utilisé si la case suivante est une bordure ou une case d'un autre chiffre
 def opération_inverse(x, y, direction):
     if direction == 'h':
         return x, y - 150
@@ -368,8 +365,8 @@ def calcul(pos, direction):
             notsame(pos, direction, suiv)
                 
 
-# cette fonction, si le jeu n'est pas fini, lance les calculs des changements possibles de cases
-# Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intérêt et le joueur peut rejouer 
+# cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
+# Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer 
 def mouvement(direction):
     global endjeu
     if endjeu:
@@ -425,22 +422,22 @@ def droite():
 # cette fonction lance le son de fond
 def son_fond():
     mixer.init()
-    mixer.music.load('Meydn-SynthwaveVibe.mp3')
+    mixer.music.load('Isolated Drowning.mp3')
     mixer.music.play(-1)
 
 
-# cette fonction dessine le cadre du jeu et lance le son de fond
+# cette fonction déssine le cadre du jeu et lance le son de fond
 def main():
     goto(0, 0)
     stamp()
     tour()
     cases()
     new(1)
-    son_fond()
     résultat()
+    son_fond()
     
 
-# cette fonction remet des variables comme elles étaient au début
+# cette fonction rement des variables comment ils étaient au début
 def rezero():
     global pause
     global modifi
@@ -450,7 +447,7 @@ def rezero():
     pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
     
 
-# cette fonction remet les variables comme elles étaient au début et redessine le jeu   
+# cette fonction remet les variables comment ils étaient au début et redessine le jeu   
 def newgame():
     global hist
     global case_num
@@ -470,7 +467,7 @@ def newgame():
     son_fond()
     
 
-# cette fonction permet de savoir si le joueur a cliqué dans un boutons et, si oui, lance la fonction de ce dernier    
+# cette fonction permet de savoir si le joueur à cliquer dans un boutons et, si oui, lance la fonction de ce dernier    
 def f(x, y):
     if pause == 1:
         if Button_end.inside((x, y)):
@@ -504,5 +501,3 @@ s.listen()
 done()
 # perdre
 # new 1x sur 2 un 4
-# win trop de reboutons
-# continuer après win
