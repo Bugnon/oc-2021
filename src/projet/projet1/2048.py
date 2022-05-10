@@ -117,7 +117,7 @@ class Button:
 def citation():
     goto(0, -100)
     write('''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement''',
-          font=('Zapfino', 10), align='center')
+          font=('Didot', 12), align='center')
         
 
 # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
@@ -163,12 +163,15 @@ def reboutons(rage, hist = 1, back = 0):
 def song(win):
     mixer.music.stop()
     if win:
-        mixer.music.load('win.wav')
+        mixer.music.load('win.mp3')
         mixer.music.play()
+        sleep(6)
     else:
         mixer.music.load('cri.wav')
         mixer.music.play()
-    
+        sleep(1)
+    mixer.music.load('Sojiada-Lanmou.mp3')
+    mixer.music.play(-1)
 
 # cette fonction sert à écrire l'historique sous formes de flèches
 def end_hist():
@@ -422,7 +425,7 @@ def droite():
 # cette fonction lance le son de fond
 def son_fond():
     mixer.init()
-    mixer.music.load('Isolated Drowning.mp3')
+    mixer.music.load('Meydn-SynthwaveVibe.mp3')
     mixer.music.play(-1)
 
 
@@ -433,8 +436,8 @@ def main():
     tour()
     cases()
     new(1)
-    résultat()
     son_fond()
+    résultat()
     
 
 # cette fonction rement des variables comment ils étaient au début
@@ -501,3 +504,4 @@ s.listen()
 done()
 # perdre
 # new 1x sur 2 un 4
+# win trop de reboutons
