@@ -118,30 +118,6 @@ def citation():
     goto(0, -100)
     write('''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement''',
           font=('Didot', 12), align='center')
-        
-
-# cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
-def résultat():
-    global score
-    global case_num
-    goto(-300, -350)
-    width(40)
-    down()
-    color('white')
-    goto(310, -350)
-    up()
-    width(5)
-    color('black')
-    goto(0, -363)
-    nbrmax1 = []
-    for nbr in case_num:
-        if case_num[nbr] != 'stop':
-            nbrmax1.append(case_num[nbr])
-    nbrmax = max(nbrmax1)
-    write('score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax), font=('Arial', 25), align='center')
-    if nbrmax == 2048:
-        sleep(1)
-        end('2048 c\'est la win! :)', 1)
 
 
 # cette fonction permet de tout effacer en remettant l'arrière plan et de poser les boutons choisit en fonction des paramètres de la fonction
@@ -201,20 +177,41 @@ def end_hist():
 def end(text, win):
     global endjeu
     endjeu = 1
-    if win:
-        reboutons(0)
-    else:
-        reboutons(0)
+    reboutons(0)
     color('white')
     goto(0, 0)
     write(text, font=('Arial', 40), align='center')
-    if text == 'Tant Pis :(': 
+    if not win: 
         citation()
-    if win:
+    else:
         goto(0, 200)
         write('👍     ╰*°▽°*╯     👍', font=('Arial', 50), align='center')
     color('black')
     song(win)
+        
+
+# cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
+def résultat():
+    global score
+    global case_num
+    goto(-300, -350)
+    width(40)
+    down()
+    color('white')
+    goto(310, -350)
+    up()
+    width(5)
+    color('black')
+    goto(0, -363)
+    nbrmax1 = []
+    for nbr in case_num:
+        if case_num[nbr] != 'stop':
+            nbrmax1.append(case_num[nbr])
+    nbrmax = max(nbrmax1)
+    write('score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax), font=('Arial', 25), align='center')
+    if nbrmax == 2048:
+        sleep(1)
+        end('2048 c\'est la win! :)', 1)
 
 
 # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
