@@ -14,6 +14,8 @@ up()
 speed(0)
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps', '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
 bgcolor='black'
+partieencour = False
+
 
 class bouton:
     def __init__(self, pos, text, size=(80, 30), color='lightgray'):
@@ -46,7 +48,8 @@ class bouton:
         x, y = self.pos
         w, h = self.size
         
-        return 0 < p[0]-x < w and 0 < p[1]-y < h    
+        return 0 < p[0]-x < w and 0 < p[1]-y < h  
+    
 def UI():
     goto(0,115)
     write('Welcome to the best game ever', font=('Arial',60//2), align='center')
@@ -119,35 +122,46 @@ def highscore():
     s.onclick(f)
     
 def initialisation(o):
-    if o == 1:
+    global b
+    b = o 
+    if b == 1:
         clear()
-        grille(20,30)
-    if o == 2:
+        partieencour = True
+        grille(1)
+    if b == 2:
         clear()
-        grille(20,40)
-        setup(550,550)
-    if o == 3:
+        partieencour = True
+        grille(2)
+    if b == 3:
         clear()
-        setup(600,600)
-        grille(20,50)
-#     if o == 4:
-        
-def grille(x,y):
-    cell_size = x
-    board_size = y
-    canvas_size = cell_size * board_size
-    colors = ["lightgreen", "green"]
-    canvas = Canvas(width=canvas_size, height=canvas_size)
-    canvas.pack()
-    for x in range(board_size):
-        for y in range(board_size):
-            color = colors[(x + y) % 2]
-            canvas.create_rectangle(
-                y * cell_size,
-                x * cell_size,
-                y * cell_size + cell_size,
-                x * cell_size + cell_size,
-                fill=color, outline=color)
+        partieencour = True
+        grille(3)
+
+def grille(p):
+    if p == 1:
+        x  = 240, 180, 120, 60, 0, -60, -120, -180, -240
+        z = 8
+        u = 240
+    if p == 2:
+        setup(700,700)
+        x = 290, 230, 170, 110, 50, -10, -70, -130, -190, -250
+        z = 10
+        u = 310
+    if p == 3:
+        setup(800,800)
+        x = 360, 300, 240, 180, 120, 60, 0, -60, -120, -180, -240, -300
+        z = 13
+        u = 390
+    color('green')
+    for y in x:
+        goto(-u,y)
+        for i in range(z):
+            begin_fill()
+            for i in range(4):
+                fd(50)
+                rt(90)
+            end_fill()
+            fd(60)            
 
 UI()
 s.listen()
