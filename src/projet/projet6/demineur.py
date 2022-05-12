@@ -202,11 +202,12 @@ class Game:
         tracer(0)
         up()
 
-        self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
+        self.title = Text((0,170), 'Welcome to the best game ever: The Demineur', 20, 'center')
         self.grid = Grid()
-        self.selection = Selection()
+        #self.selection = Selection()
         s = getscreen()
         s.listen()
+        done()
 
 class Selection:
 
