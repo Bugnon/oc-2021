@@ -208,7 +208,7 @@ class Game:
         self.bt_new = Button((200, 50), 'New')
         self.bt_difficulty = Button((200, 0), 'Diffuculty')
 
-        self.title = Text((0,170), 'Welcome to the best game ever: The Demineur', 20, 'center')
+        self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
         self.grid = Grid()
         s = getscreen()
         s.listen()
