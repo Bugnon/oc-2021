@@ -200,7 +200,7 @@ class Game:
         if self.bt_new.inside(p):
             self.draw()
         
-    def draw(self):
+    def draw(self): -> dessiner les objets du jeux 
         """Draws all the game objects."""
         self.grid.draw()
         self.title.draw()
