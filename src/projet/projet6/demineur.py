@@ -201,10 +201,14 @@ class Game:
         hideturtle()
         tracer(0)
         up()
-
-        self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
+        
+        self.history = []
+        self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, 'center')
         self.grid = Grid()
         self.selection = Selection()
+        self.bt_clear = Button((200, 100), 'Clear')
+        self.bt_new = Button((200, 50), 'New')
+        self.bt_difficulty = Button((200, 0), 'Diffucluty')
         s = getscreen()
         s.listen()
 
