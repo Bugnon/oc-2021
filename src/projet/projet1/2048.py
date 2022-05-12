@@ -4,6 +4,9 @@ from random import choice
 from time import sleep
 from pygame import mixer
 setup(600, 400)
+hideturtle()
+tracer(0)
+up()
 case_num = {(-252.0, 272.0): 'stop', (-165.6, 272.0): 'stop', (-79.2, 272.0): 'stop', (7.2, 272.0): 'stop', (93.6, 272.0): 'stop',
             (180.0, 272.0): 'stop', (-252.0, 185.6): 'stop', (-165.6, 185.6): 0, (-79.2, 185.6): 0, (7.2, 185.6): 0, (93.6, 185.6): 0,
             (180.0, 185.6): 'stop', (-252.0, 99.2): 'stop', (-165.6, 99.2): 0, (-79.2, 99.2): 0, (7.2, 99.2): 0, (93.6, 99.2): 0,
@@ -14,30 +17,17 @@ case_num = {(-252.0, 272.0): 'stop', (-165.6, 272.0): 'stop', (-79.2, 272.0): 's
 hist = []
 retour_hist = []
 pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
-color_num = {0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
+color_num = {-1 : 'grey', 0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
              64 : 'magenta3', 128 : 'DeepPink', 256 : 'MediumVioletRed', 512 : 'VioletRed1', 1024 : 'LightSeaGreen',
              2048 : 'turquoise1'}
-tracer(0)
+
 addshape('bois.gif')
 shape('bois.gif')
-hideturtle()
-up()
-#show nbrmax
-
-
-# cette fonction permet de dessiner le cadre du jeu 
-def tour():
-    color('grey')
-    goto(-180, -160)
-    begin_fill()
-    for pos in (180, -160), (180, 200), (-180, 200):
-        goto(pos)
-    end_fill()
 
 
 # Ce modèle sert à créer les cases qui se calqueront sur les cases, de la fonction cases(), avec leur chiffre et couleur
 class Case:
-    def __init__(self, pos, text, size=(72, 72)):
+    def __init__(self, pos, text, size = 77.5):
         self.pos = pos
         self.size = size
         self.text = text
@@ -53,12 +43,11 @@ class Case:
         color(couleur)
         begin_fill()
         for i in range(4):
-            forward(72)
+            forward(self.size)
             right(90)
         end_fill()
-        if self.text != 0:
-            goto(x + 36, y - 46)
-            w, h = self.size
+        if self.text != 0 and self.text != -1:
+            goto(x + self.size /2, y - self.size /2 - 10)
             color('black')
             write(self.text, font=('Arial', 20), align='center')
             
@@ -69,6 +58,7 @@ class Case:
 # Ce modèle crée des boutons
 class Button:
     def __init__(self, pos, text, size, color= 'Lightgrey'):
+        # hello
         self.pos = pos
         self.size = size
         self.text = text
@@ -100,11 +90,11 @@ class Button:
         return 0 < p[0]-x < w and 0 < p[1]-y < h
    
 
-# cette fonction permet de créer les 16 cases vides du début du jeu   
+# cette fonction permet de créer le tour et les 16 cases vides du début du jeu 
 def cases():
-    color('darkgrey')
-    for y in 185.6, 99.2, 12.8, -73.6:
-        for x in -165.6, -79.2, 7.2, 93.6:
+    tour = Case((-180, 200), -1, 360)
+    for y in 190, 102.5, 15, -72.5:
+        for x in -170, -82.5, 5, 92.5:
             case_begin = Case((x, y), 0)
 
 
@@ -424,7 +414,6 @@ def son_fond():
 def main():
     goto(0, 0)
     stamp()
-    tour()
     cases()
     new(1)
     son_fond()
@@ -455,7 +444,6 @@ def newgame():
     rezero()
     hist = []
     reboutons(1, 1, 1)
-    tour()
     cases()
     new(1)
     resultat()
@@ -498,3 +486,4 @@ done()
 # perdre
 # new 1x sur 2 un 4
 # win trop de reboutons
+#show nbrmax
