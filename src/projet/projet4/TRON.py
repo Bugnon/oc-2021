@@ -101,8 +101,9 @@ def fond(image):
 
 pygame.display.set_caption("TRON", 'assets/moto.png')
 screen = pygame.display.set_mode((500, 500))
-pygame.mixer.music.load('assets/music/music_game.mp3')
-pygame.mixer.music.play()
+
+son = pygame.mixer.Sound('assets/music/music_game.mp3')
+son.play(loops=-1, maxtime=0, fade_ms=0)
 
 bg = pygame.image.load('assets/bg.png')
 def moto1_controller(event, moto):
