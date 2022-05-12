@@ -16,71 +16,39 @@ highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': 
 bgcolor='black'
 partieencour = False
 
-class Rectangle: 
-    def __init__(self, pos, size, color='green'):
+
+class bouton:
+    def __init__(self, pos, text, size=(80, 30), color='lightgray'):
         self.pos = pos
         self.size = size
+        self.text = text
         self.color = color
         self.draw()
-    def outline(self):
+        
+    def draw(self):
         goto(self.pos)
+        fillcolor(self.color)
+        begin_fill()
         down()
-        for x in self.size * 2:
+        for x in self.size * 2:     # parcourir 2 fois longeur et hauteur
             forward(x)
             left(90)
         up()
-    def draw(self):
-        if self.color:
-            fillcolor(self.color)
-            begin_fill()
-            self.outline()
-            end_fill()
-        else:
-            self.outline()
-    def inside(self, p):
+        end_fill()
         x, y = self.pos
         w, h = self.size
-
-        return 0 < p[0]-x < w and 0 < p[1]-y < h
-
-class Text:
-    """Draw a text at a given position."""
-    
-    def __init__(self, pos, text, size=16, align='left'):
-        """Initilizes the text"""
-        self.pos = pos
-        self.text = text
-        self.size = size
-        self.align = align
-        self.draw()
-        
-    def draw(self):
-        """Draw the text."""
-        goto(self.pos)
-        write(self.text, font=('Arial', self.size), align=self.align)
-
-
-class Button:
-    def __init__(self, pos, text, size=(80, 30), color='lightgray'):
-        self.rect = Rectangle(pos, size, color)
-        x, y = pos
-        w, h = size
-        self.label = Text((x + w//2, y + h//4), text, h//2, 'center')
-
-        
-    def draw(self):
-        self.rect.draw()
-        self.label.draw()
-    
-    def inside(self, p):
-        return self.rect.inside(p)
+        goto(x+w/2, y+h/4)
+        color('black')
+        write(self.text, font=('Arial', h//2), align='center')
 
     def __str__(self):
         return f'bouton({self.pos}, {self.text})'
 
     def inside(self, p):
-        return self.rect.inside(p)
-         
+        x, y = self.pos
+        w, h = self.size
+        
+        return 0 < p[0]-x < w and 0 < p[1]-y < h  
     
 def UI():
     goto(0,115)
