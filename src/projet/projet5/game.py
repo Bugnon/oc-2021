@@ -163,7 +163,7 @@ class Game:
         Setup the callback functions.
         """
         
-        setup(600, 400)
+        setup(600, 400) -> taille écran(maximum) 
         hideturtle()
         tracer(0)
         up()
