@@ -7,13 +7,12 @@ setup(600, 400)
 hideturtle()
 tracer(0)
 up()
-case_num = {(-252.0, 272.0): 'stop', (-165.6, 272.0): 'stop', (-79.2, 272.0): 'stop', (7.2, 272.0): 'stop', (93.6, 272.0): 'stop',
-            (180.0, 272.0): 'stop', (-252.0, 185.6): 'stop', (-165.6, 185.6): 0, (-79.2, 185.6): 0, (7.2, 185.6): 0, (93.6, 185.6): 0,
-            (180.0, 185.6): 'stop', (-252.0, 99.2): 'stop', (-165.6, 99.2): 0, (-79.2, 99.2): 0, (7.2, 99.2): 0, (93.6, 99.2): 0,
-            (180.0, 99.2): 'stop', (-252.0, 12.8): 'stop', (-165.6, 12.8): 0, (-79.2, 12.8): 0, (7.2, 12.8): 0, (93.6, 12.8): 0,
-            (180.0, 12.8): 'stop', (-252.0, -73.6): 'stop', (-165.6, -73.6): 0, (-79.2, -73.6): 0, (7.2, -73.6): 0, (93.6, -73.6): 0,
-            (180.0, -73.6): 'stop', (-252.0, -160.0): 'stop', (-165.6, -160.0): 'stop', (-79.2, -160.0): 'stop', (7.2, -160.0): 'stop',
-            (93.6, -160.0): 'stop', (180.0, -160.0): 'stop'}
+case_num = {(-257.5, 277.5): 'stop', (-257.5, 190.0): 'stop', (-257.5, 102.5): 'stop', (-257.5, 15.0): 'stop', (-257.5, -72.5): 'stop',
+            (-257.5, -160.0): 'stop', (-170.0, 277.5): 'stop', (-170.0, 190.0): 0, (-170.0, 102.5): 0, (-170.0, 15.0): 0, (-170.0, -72.5): 0,
+            (-170.0, -160.0): 'stop', (-82.5, 277.5): 'stop', (-82.5, 190.0): 0, (-82.5, 102.5): 0, (-82.5, 15.0): 0, (-82.5, -72.5): 0,
+            (-82.5, -160.0): 'stop', (5.0, 277.5): 'stop', (5.0, 190.0): 0, (5.0, 102.5): 0, (5.0, 15.0): 0, (5.0, -72.5): 0, (5.0, -160.0): 'stop',
+            (92.5, 277.5): 'stop', (92.5, 190.0): 0, (92.5, 102.5): 0, (92.5, 15.0): 0, (92.5, -72.5): 0, (92.5, -160.0): 'stop', (180.0, 277.5): 'stop',
+            (180.0, 190.0): 'stop', (180.0, 102.5): 'stop', (180.0, 15.0): 'stop', (180.0, -72.5): 'stop', (180.0, -160.0): 'stop'}
 hist = []
 retour_hist = []
 pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
@@ -248,8 +247,8 @@ def historique(direction):
 def new(newretour = 0):
     sleep(0.2)
     global nbr
-    listey = (185.6, 99.2, 12.8, -73.6)
-    listex = (-165.6, -79.2, 7.2, 93.6)
+    listey = (190, 102.5, 15, -72.5)
+    listex = (-170, -82.5, 5, 92.5)
     x = choice(listex)
     y = choice(listey)
     global case_num
@@ -268,7 +267,7 @@ def new(newretour = 0):
     else:
         new()
         
-
+        
 # cette fonction fait le changement de case     
 def changement(pos, suiv):
     global case_num
@@ -290,26 +289,26 @@ def changement(pos, suiv):
 # cette fonction calcule les coordonnées de la case suivante en fonction de la direction 
 def operation(x, y, direction):
     if direction == 'h':
-        return x, y + 150
+        return x, y + 87.5
     elif direction == 'b':
-        return x, y - 150
+        return x, y - 87.5
     elif direction == 'd':
-        return x + 150, y
+        return x + 87.5, y
     elif direction == 'g':
-        return x - 150, y
+        return x - 87.5, y
     
 
 # cette fonction permet de calculer les coordonnées de la case présedente
 # elle est utilisé si la case suivante est une bordure ou une case d'un autre chiffre
 def operation_inverse(x, y, direction):
     if direction == 'h':
-        return x, y - 150
+        return x, y - 87.5
     elif direction == 'b':
-        return x, y + 150
+        return x, y + 87.5
     elif direction == 'd':
-        return x - 150, y
+        return x - 87.5, y
     elif direction == 'g':
-        return x + 150, y
+        return x + 87.5, y
 
 
 # cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
@@ -374,7 +373,7 @@ def mouvement(direction):
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée   
 def haut():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('h')
         
@@ -382,7 +381,7 @@ def haut():
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée    
 def bas():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('b')
 
@@ -390,7 +389,7 @@ def bas():
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
 def gauche():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('g')
 
@@ -398,7 +397,7 @@ def gauche():
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
 def droite():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('d')
         
@@ -434,13 +433,12 @@ def rezero():
 def newgame():
     global hist
     global case_num
-    case_num = {(-252.0, 272.0): 'stop', (-165.6, 272.0): 'stop', (-79.2, 272.0): 'stop', (7.2, 272.0): 'stop', (93.6, 272.0): 'stop',
-                (180.0, 272.0): 'stop', (-252.0, 185.6): 'stop', (-165.6, 185.6): 0, (-79.2, 185.6): 0, (7.2, 185.6): 0, (93.6, 185.6): 0,
-                (180.0, 185.6): 'stop', (-252.0, 99.2): 'stop', (-165.6, 99.2): 0, (-79.2, 99.2): 0, (7.2, 99.2): 0, (93.6, 99.2): 0,
-                (180.0, 99.2): 'stop', (-252.0, 12.8): 'stop', (-165.6, 12.8): 0, (-79.2, 12.8): 0, (7.2, 12.8): 0, (93.6, 12.8): 0,
-                (180.0, 12.8): 'stop', (-252.0, -73.6): 'stop', (-165.6, -73.6): 0, (-79.2, -73.6): 0, (7.2, -73.6): 0, (93.6, -73.6): 0,
-                (180.0, -73.6): 'stop', (-252.0, -160.0): 'stop', (-165.6, -160.0): 'stop', (-79.2, -160.0): 'stop', (7.2, -160.0): 'stop',
-                (93.6, -160.0): 'stop', (180.0, -160.0): 'stop'}
+    case_num = {(-257.5, 277.5): 'stop', (-257.5, 190.0): 'stop', (-257.5, 102.5): 'stop', (-257.5, 15.0): 'stop', (-257.5, -72.5): 'stop',
+                (-257.5, -160.0): 'stop', (-170.0, 277.5): 'stop', (-170.0, 190.0): 0, (-170.0, 102.5): 0, (-170.0, 15.0): 0, (-170.0, -72.5): 0,
+                (-170.0, -160.0): 'stop', (-82.5, 277.5): 'stop', (-82.5, 190.0): 0, (-82.5, 102.5): 0, (-82.5, 15.0): 0, (-82.5, -72.5): 0,
+                (-82.5, -160.0): 'stop', (5.0, 277.5): 'stop', (5.0, 190.0): 0, (5.0, 102.5): 0, (5.0, 15.0): 0, (5.0, -72.5): 0, (5.0, -160.0): 'stop',
+                (92.5, 277.5): 'stop', (92.5, 190.0): 0, (92.5, 102.5): 0, (92.5, 15.0): 0, (92.5, -72.5): 0, (92.5, -160.0): 'stop', (180.0, 277.5): 'stop',
+                (180.0, 190.0): 'stop', (180.0, 102.5): 'stop', (180.0, 15.0): 'stop', (180.0, -72.5): 'stop', (180.0, -160.0): 'stop'}
     rezero()
     hist = []
     reboutons(1, 1, 1)
