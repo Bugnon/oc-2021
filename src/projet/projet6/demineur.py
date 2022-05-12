@@ -7,14 +7,7 @@ from turtle import *
 from time import *
 from tkinter import *
 
-s = getscreen()
-setup(500,500)
-hideturtle()
-up()
-tracer(0)
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps', '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
-bgcolor='black'
-partieencour = False
 
 class Rectangle: 
     def __init__(self, pos, size, color='green'):
@@ -58,7 +51,6 @@ class Text:
         """Draw the text."""
         goto(self.pos)
         write(self.text, font=('Arial', self.size), align=self.align)
-
 
 class Button:
     def __init__(self, pos, text, size=(80, 30), color='lightgray'):
@@ -195,10 +187,82 @@ def grille(p):
             end_fill()
             fd(60)            
 
+def ligne(p, q):
+    goto(p)
+    down()
+    goto(q)
+    up()
+
+class Game:
+     def __init__(self):
+
+
+        setup(600,400)
+        hideturtle()
+        tracer(0)
+        up()
+
+        self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
+        self.grid = Grid()
+        self.selection = Selection()
+        s = getscreen()
+        s.listen()
+
+class Selection:
+
+    def __init__(pos, ):
+            ...
+    
+class Grid:
+     def __init__(self, n=8, m=8, d=40, ongrid=True):
+        """Create a new Grid instance"""
+        self.n = n        # vertical (y)
+        self.m = m        # horizontal (x)
+        self.d = d        # distance
+        self.ongrid = ongrid
+        self.x0 = m * d // 2
+        self.y0 = n * d // 2
+        
+        self.draw()
+        print(self)
+
+     
+     def draw(self):
+        """Draw the grid."""
+        for x in range(-self.x0, self.x0+1, self.d):
+            ligne((x, -self.y0), (x, self.y0))
+
+        for y in range(-self.y0, self.y0+1, self.d):
+            ligne((-self.x0, y), (self.x0, y))
+
+     def inside(self, x, y):
+        """Check if (x, y) is inside the grid."""
+        x0 = self.x0
+        y0 = self.y0
+        if self.ongrid:
+            x0 += self.d // 2
+            y0 += self.d // 2    
+        return -x0 < x < x0 and -y0 < y < y0
+            
+     def get_cell(self, x, y):
+        """Returns the coordinates of center or intersection."""
+        
+        x += self.x0
+        y += self.y0
+        if self.ongrid:
+            x += self.d // 2
+            y += self.d // 2
+            
+        i = int(y // self.d)
+        j = int(x // self.d)
+        
+        print(i, j)
+               
+     def __str__(self):
+        return f'Grid({self.n}, {self.m})'
+
 '6 = bombe '
 
 '7 = drapeau'
 
-UI()
-s.listen()
-done()
+game = Game()
