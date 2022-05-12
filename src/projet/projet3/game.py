@@ -171,7 +171,7 @@ class Game:
         self.score = 0
         self.history = []
         self.grid = Grid()
-        self.title = Text((0,  170), 'Title of your Game', 24, 'center')
+        self.title = Text((0,  170), 'OKLM*', 24, 'center')
         self.status = Text((-280, -190), 'status line')
         self.bt_clear = Button((200, 100), 'Clear')
         self.bt_new = Button((200, 50), 'New')
