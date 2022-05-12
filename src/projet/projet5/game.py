@@ -9,7 +9,7 @@ Your game must define at a minimum these 5 classes :
 - Rectangle
 - Text
 - Button (composed of class Rectangle and Button)
-- Grid
+- Grid -> grille 
 - Game (composed of class Grid, Text and Button)
 
 You can modify these classes.
