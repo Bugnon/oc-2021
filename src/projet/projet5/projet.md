@@ -2,11 +2,10 @@
 
 Louna et Garance
 
-* Notre projet se portera sur le jeu très connu: Snake
-
- Voici une image pour un aperçu: 
+Notre projet se portera sur le jeu très connu: Snake.  
+Voici une image pour un aperçu: 
  
-
+![](snake.png)
 
 ## La mise en forme du jeu: 
 Le fond est assez clair, avec un quadrillage de 2 couleurs.  
@@ -23,8 +22,8 @@ Plusieurs niveaux avec des vitesses différentes pour augmenter la difficulté d
 
 ## Sources: Youtube 
 
-* Snake Game In Python - Python Begginer Tutorial 
-* Code a Snake Game with Python and Pygame - Tutorial 
+* Snake Game In Python - Python Begginer Tutorial  [](https://youtu.be/M_npdRYD4K0) 
+* Code a Snake Game with Python and Pygame - Tutorial   [](https://youtu.be/8dfePlONtls)
 
 
 ## Codeplay
