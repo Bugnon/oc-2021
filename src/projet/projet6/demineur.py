@@ -143,44 +143,41 @@ class Game:
          print(state)
          for i in range(8):
              for n in range(8):
-                 if i != 0:
-                     if state[i][n] == 6:
-                         state[i][n-1] += 1
-                         state[i][n+1] += 1
-                         state[i-1][n+1] += 1
-                         state[i-1][n-1] += 1
-                         state[i-1][n] += 1
-                 if i != 7:
-                     if state[i][n] == 6:
-                         state[i][n-1] += 1
-                         state[i][n+1] += 1
-                         state[i+1][n+1] += 1
-                         state[i+1][n-1] += 1
-                         state[i+1][n] += 1
-                 if n != 0:
-                     if state[i][n] == 6:
-                         state[i][n+1] += 1
-                         state[i+1][n+1] += 1
-                         state[i+1][n] += 1
-                         state[i-1][n+1] += 1
-                         state[i-1][n] += 1
-                 if n != 7:
-                     if state[i][n] == 6:
-                         state[i][n-1] += 1
-                         state[i+1][n-1] += 1
-                         state[i+1][n] += 1
-                         state[i-1][n-1] += 1
-                         state[i-1][n] += 1
-
                  if state[i][n] == 6:
-                     state[i][n-1] += 1
-                     state[i][n+1] += 1
-                     state[i+1][n+1] += 1
-                     state[i+1][n-1] += 1
-                     state[i+1][n] += 1
-                     state[i-1][n+1] += 1
-                     state[i-1][n-1] += 1
-                     state[i-1][n] += 1
+                     if i != 0:
+                         state[i][n-1] += 1
+                         state[i][n+1] += 1
+                         state[i-1][n+1] += 1
+                         state[i-1][n-1] += 1
+                         state[i-1][n] += 1
+                     if n != 7:
+                         state[i][n-1] += 1
+                         state[i+1][n-1] += 1
+                         state[i+1][n] += 1
+                         state[i-1][n-1] += 1
+                         state[i-1][n] += 1
+                     if i != 7:
+                         state[i][n-1] += 1
+                         state[i][n+1] += 1
+                         state[i+1][n+1] += 1
+                         state[i+1][n-1] += 1
+                         state[i+1][n] += 1
+                     if n != 0:
+                         state[i][n+1] += 1
+                         state[i+1][n+1] += 1
+                         state[i+1][n] += 1
+                         state[i-1][n+1] += 1
+                         state[i-1][n] += 1
+                     else:
+                         state[i][n-1] += 1
+                         state[i][n+1] += 1
+                         state[i+1][n+1] += 1
+                         state[i+1][n-1] += 1
+                         state[i+1][n] += 1
+                         state[i-1][n+1] += 1
+                         state[i-1][n-1] += 1
+                         state[i-1][n] += 1
+                     
          print(state)
 
 
