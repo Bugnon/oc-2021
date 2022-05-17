@@ -3,6 +3,7 @@ from turtle import *
 from freegames import floor, vector
 
 state = {'score': 0}
+# path est la tortue principale, writer s'occupe des points
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
@@ -100,6 +101,7 @@ def move():
 
     index = offset(pacman)
 
+    # Si la tile = 1, il y a une pièce, on augmente le score et on set la tile à la 2, ce qui veut dire qu'elle est vide.
     if tiles[index] == 1:
         tiles[index] = 2
         state['score'] += 1
