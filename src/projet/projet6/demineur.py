@@ -9,6 +9,14 @@ from tkinter import *
 
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps', '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
 
+state = [[0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0]]
 class Rectangle: 
     def __init__(self, pos, size, color='green'):
         self.pos = pos
@@ -83,7 +91,6 @@ def ligne(p, q):
 class Game:
      def __init__(self):
 
-
         setup(600,400)
         hideturtle()
         tracer(0)
@@ -97,22 +104,23 @@ class Game:
 
         self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
         self.grid = Grid()
+        self.start = Start()
         s = getscreen()
         s.listen()
         done()
 
-    def inside(self, p):
+     def inside(self, p):
         x, y = self.pos
         w, h = self.size
         return 0 < p[0]-x < w and 0 < p[1]-y < h
 
-    def click(self, x, y):
+     def click(self, x, y):
         if self.grid.inside(x, y):
             goto(x, y)
             dot()
             write(x, y)
 
-    def f(x,y):
+     def f(x,y):
         if bt_new.inside((x,y)):
             clear()
             game()
@@ -121,11 +129,15 @@ class Game:
             Highscores()
 
 
-class Highscores:
 
-
-
-    
+class Start:
+    def __init__(self, pos):
+        self.pos = pos
+        
+    def placemine(self):
+        print(state)        
+            
+        
     
 class Grid:
      def __init__(self, n=8, m=8, d=40, ongrid=True):
