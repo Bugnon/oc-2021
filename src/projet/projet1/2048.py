@@ -510,5 +510,4 @@ done()
 # show nbrmax
 # quit when win?????
 # sup nbr avec retour_hist
-# fusible
 # back
