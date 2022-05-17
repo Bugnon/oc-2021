@@ -508,6 +508,7 @@ done()
 
 #class Game:
 
+
 # perdre
 # new 1x sur 2 un 4
 # win trop de reboutons
@@ -515,3 +516,5 @@ done()
 # quit when win?????
 # sup nbr avec retour_hist
 # back
+# 2 + 2 + 4 = 4 + 4
+#score
