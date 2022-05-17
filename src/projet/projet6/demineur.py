@@ -89,12 +89,15 @@ def ligne(p, q):
     up()
 
 class Game:
-     def __init__(self):
+     def __init__(self, pos):
 
         setup(600,400)
         hideturtle()
         tracer(0)
+        n = 0
         up()
+
+        self.pos = pos
         
         self.highscore = []
         self.title = Text((0,165), 'Welcome to the best game ever: The Demineur', 20, 'center')
@@ -104,39 +107,51 @@ class Game:
 
         self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
         self.grid = Grid()
-        self.start = Start()
         s = getscreen()
         s.listen()
         done()
+
+     def click(self, x, y):
+         if self.grid.inside(x, y):
+            goto(x, y)
+            dot()
+            write(x, y)
+
+     def f(self,x,y):
+         if bt_new.inside((x,y)):
+             clear()
+             self.generate()
+
+         if bt.highscores.inside((x,y)):
+             clear()
+             self.Highscores = Highscores()
+        
+         if bt_difficulty.inside((x,y)):
+            clear()
+            self.difficulty = difficulty()
 
      def inside(self, p):
         x, y = self.pos
         w, h = self.size
         return 0 < p[0]-x < w and 0 < p[1]-y < h
 
-     def click(self, x, y):
-        if self.grid.inside(x, y):
-            goto(x, y)
-            dot()
-            write(x, y)
+     def generate(self):
+         if n < 10:
+            state[randint(0, 8)][randint(0, 8)] = 6
+            n += 1
+            print(state)
+         if n == 10:
+             self.play = Play()
 
-     def f(x,y):
-        if bt_new.inside((x,y)):
-            clear()
-            game()
-        if bt.highscores.inside((x,y)):
-            clear()
-            Highscores()
-
-
-
-class Start:
-    def __init__(self, pos):
-        self.pos = pos
-        
-    def placemine(self):
-        print(state)        
             
+ class Play:
+     def __init__(self, pos):
+         self.pos = pos
+
+      def inside(self. pos):
+          x,y = self.pos
+          if pos = 
+
         
     
 class Grid:
@@ -150,7 +165,6 @@ class Grid:
         self.y0 = n * d // 2
         
         self.draw()
-        print(self)
 
      
      def draw(self):
