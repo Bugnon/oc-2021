@@ -94,7 +94,6 @@ class Game:
         setup(600,400)
         hideturtle()
         tracer(0)
-        n = 0
         up()
 
         self.pos = pos
@@ -107,6 +106,7 @@ class Game:
 
         self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
         self.grid = Grid()
+        self.generate()
         s = getscreen()
         s.listen()
         done()
@@ -118,40 +118,81 @@ class Game:
             write(x, y)
 
      def f(self,x,y):
-         if bt_new.inside((x,y)):
+         if self.bt_new.inside((x,y)):
              clear()
-             self.generate()
+             game = Game()
 
-         if bt.highscores.inside((x,y)):
+         if self.bt.highscores.inside((x,y)):
              clear()
              self.Highscores = Highscores()
         
-         if bt_difficulty.inside((x,y)):
+         if self.bt_difficulty.inside((x,y)):
             clear()
-            self.difficulty = difficulty()
+            self.difficulty = Difficulty()
 
      def inside(self, p):
         x, y = self.pos
-        w, h = self.size
         return 0 < p[0]-x < w and 0 < p[1]-y < h
 
      def generate(self):
-         if n < 10:
-            state[randint(0, 8)][randint(0, 8)] = 6
-            n += 1
-            print(state)
-         if n == 10:
-             self.play = Play()
+         for i in range(9):
+            state[randint(0, 7)][randint(0, 7)] = 6
+         self.check()
 
-            
- class Play:
-     def __init__(self, pos):
-         self.pos = pos
+     def check(self):
+         print(state)
+         for i in range(8):
+             for n in range(8):
+                 if i != 0:
+                     if state[i][n] == 6:
+                         state[i][n-1] += 1
+                         state[i][n+1] += 1
+                         state[i-1][n+1] += 1
+                         state[i-1][n-1] += 1
+                         state[i-1][n] += 1
+                 if i != 7:
+                     if state[i][n] == 6:
+                         state[i][n-1] += 1
+                         state[i][n+1] += 1
+                         state[i+1][n+1] += 1
+                         state[i+1][n-1] += 1
+                         state[i+1][n] += 1
+                 if n != 0:
+                     if state[i][n] == 6:
+                         state[i][n+1] += 1
+                         state[i+1][n+1] += 1
+                         state[i+1][n] += 1
+                         state[i-1][n+1] += 1
+                         state[i-1][n] += 1
+                 if n != 7:
+                     if state[i][n] == 6:
+                         state[i][n-1] += 1
+                         state[i+1][n-1] += 1
+                         state[i+1][n] += 1
+                         state[i-1][n-1] += 1
+                         state[i-1][n] += 1
 
-      def inside(self. pos):
-          x,y = self.pos
-          if pos = 
+                 if state[i][n] == 6:
+                     state[i][n-1] += 1
+                     state[i][n+1] += 1
+                     state[i+1][n+1] += 1
+                     state[i+1][n-1] += 1
+                     state[i+1][n] += 1
+                     state[i-1][n+1] += 1
+                     state[i-1][n-1] += 1
+                     state[i-1][n] += 1
+         print(state)
 
+
+
+
+class Highscores:
+     def __init__(self):
+         ...
+
+class Difficulty:
+     def __init__(self):
+         ...
         
     
 class Grid:
@@ -201,8 +242,7 @@ class Grid:
      def __str__(self):
         return f'Grid({self.n}, {self.m})'
 
-'6 = bombe '
 
 '7 = drapeau'
 
-game = Game()
+game = Game(1)
