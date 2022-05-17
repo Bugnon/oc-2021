@@ -236,7 +236,7 @@ def retour():
     resultat()
     
 
-# cette fonction permet de mémoriser la position de chaque cases
+# cette fonction permet de mémoriser la position de chaque case
 def retour_calcul():
     global retour_hist
     global state
@@ -504,6 +504,9 @@ s.onkey(droite, 'Right')
 s.onclick(f)
 s.listen()
 done()
+
+#class Game:
+
 # perdre
 # new 1x sur 2 un 4
 # win trop de reboutons
