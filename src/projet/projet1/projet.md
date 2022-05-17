@@ -10,45 +10,43 @@ Alice et Grégory
 ## Codeplay
 
 ```{codeplay}
+
+#2048
 from turtle import *
 from random import choice
 from time import sleep
-from pygame import mixer
 setup(600, 400)
-case_num = {(-252.0, 272.0): 'stop', (-165.6, 272.0): 'stop', (-79.2, 272.0): 'stop', (7.2, 272.0): 'stop', (93.6, 272.0): 'stop',
-            (180.0, 272.0): 'stop', (-252.0, 185.6): 'stop', (-165.6, 185.6): 0, (-79.2, 185.6): 0, (7.2, 185.6): 0, (93.6, 185.6): 0,
-            (180.0, 185.6): 'stop', (-252.0, 99.2): 'stop', (-165.6, 99.2): 0, (-79.2, 99.2): 0, (7.2, 99.2): 0, (93.6, 99.2): 0,
-            (180.0, 99.2): 'stop', (-252.0, 12.8): 'stop', (-165.6, 12.8): 0, (-79.2, 12.8): 0, (7.2, 12.8): 0, (93.6, 12.8): 0,
-            (180.0, 12.8): 'stop', (-252.0, -73.6): 'stop', (-165.6, -73.6): 0, (-79.2, -73.6): 0, (7.2, -73.6): 0, (93.6, -73.6): 0,
-            (180.0, -73.6): 'stop', (-252.0, -160.0): 'stop', (-165.6, -160.0): 'stop', (-79.2, -160.0): 'stop', (7.2, -160.0): 'stop',
-            (93.6, -160.0): 'stop', (180.0, -160.0): 'stop'}
+hideturtle()
+tracer(0)
+up()
+
+state = [
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+]
+
+correspondance = {
+(0, 0): (-170.0, 190.0), (0, 1): (-82.5, 190.0), (0, 2): (5.0, 190.0), (0, 3): (92.5, 190.0),
+(1, 0): (-170.0, 102.5), (1, 1): (-82.5, 102.5), (1, 2): (5.0, 102.5), (1, 3): (92.5, 102.5),
+(2, 0): (-170.0, 15.0), (2, 1): (-82.5, 15.0), (2, 2): (5.0, 15.0), (2, 3): (92.5, 15.0),
+(3, 0): (-170.0, -72.5), (3, 1): (-82.5, -72.5), (3, 2): (5.0, -72.5), (3, 3): (92.5, -72.5)
+}
+
+correspondance_inverse = {value: key for key, value in correspondance.items()}
 hist = []
 retour_hist = []
-pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
-color_num = {0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
+pause, modifi , nbr, score, endjeu, not_op = 0, 0, 0, 0, 1, 0
+color_num = {-1 : 'grey', 0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
              64 : 'magenta3', 128 : 'DeepPink', 256 : 'MediumVioletRed', 512 : 'VioletRed1', 1024 : 'LightSeaGreen',
              2048 : 'turquoise1'}
-tracer(0)
-addshape('bois.gif')
-shape('bois.gif')
-hideturtle()
-up()
-#show nbrmax
 
-
-# cette fonction permet de dessiner le cadre du jeu 
-def tour():
-    color('grey')
-    goto(-180, -160)
-    begin_fill()
-    for pos in (180, -160), (180, 200), (-180, 200):
-        goto(pos)
-    end_fill()
 
 
 # Ce modèle sert à créer les cases qui se calqueront sur les cases, de la fonction cases(), avec leur chiffre et couleur
 class Case:
-    def __init__(self, pos, text, size=(72, 72)):
+    def __init__(self, pos, text, size = 77.5):
         self.pos = pos
         self.size = size
         self.text = text
@@ -64,12 +62,11 @@ class Case:
         color(couleur)
         begin_fill()
         for i in range(4):
-            forward(72)
+            forward(self.size)
             right(90)
         end_fill()
-        if self.text != 0:
-            goto(x + 36, y - 46)
-            w, h = self.size
+        if self.text != 0 and self.text != -1:
+            goto(x + self.size /2, y - self.size /2 - 10)
             color('black')
             write(self.text, font=('Arial', 20), align='center')
             
@@ -80,6 +77,7 @@ class Case:
 # Ce modèle crée des boutons
 class Button:
     def __init__(self, pos, text, size, color= 'Lightgrey'):
+        # hello
         self.pos = pos
         self.size = size
         self.text = text
@@ -111,11 +109,11 @@ class Button:
         return 0 < p[0]-x < w and 0 < p[1]-y < h
    
 
-# cette fonction permet de créer les 16 cases vides du début du jeu   
+# cette fonction permet de créer le tour et les 16 cases vides du début du jeu 
 def cases():
-    color('darkgrey')
-    for y in 185.6, 99.2, 12.8, -73.6:
-        for x in -165.6, -79.2, 7.2, 93.6:
+    tour = Case((-180, 200), -1, 360)
+    for y in 190, 102.5, 15, -72.5:
+        for x in -170, -82.5, 5, 92.5:
             case_begin = Case((x, y), 0)
 
 
@@ -140,20 +138,6 @@ def reboutons(rage, hist = 1, back = 0):
         button_back = Button((210, 60), 'Back', (60, 30))
     button_quit = Button((210, -70), 'Quit', (60, 30))
 
-
-# cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
-def song(win):
-    mixer.music.stop()
-    if win:
-        mixer.music.load('win.mp3')
-        mixer.music.play()
-        sleep(6)
-    else:
-        mixer.music.load('cri.wav')
-        mixer.music.play()
-        sleep(1)
-    mixer.music.load('Sojiada-Lanmou.mp3')
-    mixer.music.play(-1)
 
 # cette fonction sert à écrire l'historique sous formes de flèches
 def end_hist():
@@ -193,13 +177,12 @@ def end(text, win):
         goto(0, 200)
         write('👍     ╰*°▽°*╯     👍', font=('Arial', 50), align='center')
     color('black')
-    song(win)
         
 
 # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
 def resultat():
     global score
-    global case_num
+    global state
     goto(-170, -175)
     width(20)
     down()
@@ -209,29 +192,36 @@ def resultat():
     width(5)
     color('black')
     goto(0, -185)
-    nbrmax1 = []
-    for nbr in case_num:
-        if case_num[nbr] != 'stop':
-            nbrmax1.append(case_num[nbr])
-    nbrmax = max(nbrmax1)
+    nbrmax = 0
+    for y in state:
+        if max(y) > nbrmax:
+            nbrmax = max(y)
     write('score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax), font=('Arial', 13), align='center')
     if nbrmax == 2048:
         sleep(1)
         end('2048 c\'est la win! :)', 1)
 
 
+
+# cette fonction prend les coordonnées de la case et retourn la valeur de celle-ci
+def coord_to_res(xcoord, ycoord):
+    global correspondance_inverse
+    yres, xres = correspondance_inverse[(xcoord, ycoord)]
+    global state
+    return state[yres][xres]     
+
+
 # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
 def retour():
     global retour_hist
     retour_hist.pop()
-    rh = retour_hist[-1]
-    n = 0
-    global case_num
-    for case in case_num:
-        if case_num[case] != 'stop':
-            case_num[case] = rh[n]
-            n += 1
-            caseback = Case(case, case_num[case])
+    global state
+    global correspondance
+    for res in correspondance:
+        yres, xres = res
+        xcoord, ycoord = correspondance[res]
+        state[yres][xres] = retour_hist[-1][yres][xres]
+        caseback = Case((xcoord, ycoord), state[yres][xres])
     global hist
     hist.pop()
     global score
@@ -244,12 +234,8 @@ def retour():
 # cette fonction permet de mémoriser la position de chaque cases
 def retour_calcul():
     global retour_hist
-    global case_num
-    rappel = []
-    for case in case_num:
-        if case_num[case] != 'stop':
-            rappel.append(case_num[case])
-    retour_hist.append(rappel)
+    global state
+    retour_hist.append(state)
 
 
 # cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
@@ -267,18 +253,17 @@ def historique(direction):
 
 #  cette fonction permet de créer une nouvelle case après un coup
 def new(newretour = 0):
-    sleep(0.2)
     global nbr
-    listey = (185.6, 99.2, 12.8, -73.6)
-    listex = (-165.6, -79.2, 7.2, 93.6)
-    x = choice(listex)
-    y = choice(listey)
-    global case_num
+    listexy = (0, 1, 2, 3)
+    xres = choice(listexy)
+    yres = choice(listexy)
+    global state
+    global correspondance
     if nbr == 16:
         end('Game Over', 0)
-    elif case_num[(x, y)] == 0:
-        case2 = Case((x, y), 2)
-        case_num[(x, y)] = 2
+    elif state[yres][xres] == 0:
+        case2 = Case(correspondance[(yres, xres)], 2)
+        state[yres][xres] = 2
         nbr += 1
         global pause
         pause = 1
@@ -288,20 +273,23 @@ def new(newretour = 0):
             retour_calcul()
     else:
         new()
-        
+
 
 # cette fonction fait le changement de case     
-def changement(pos, suiv):
-    global case_num
-    if pos != suiv:
-        if case_num[suiv] == 0:
-            nbrsuiv = case_num[pos]
+def changement(xpos, ypos, xsuiv, ysuiv):
+    if (xpos, ypos) != (xsuiv, ysuiv):
+        if coord_to_res(xsuiv, ysuiv) == 0:
+            nbrsuiv = coord_to_res(xpos, ypos)
         else:
-            nbrsuiv = case_num[pos] * 2
-        casei = Case(suiv, nbrsuiv)
-        case_num[suiv] = nbrsuiv
-        case0 = Case(pos, 0)
-        case_num[pos] = 0
+            nbrsuiv = coord_to_res(xpos, ypos) * 2
+        global correspondance_inverse
+        global state
+        casei = Case((xsuiv, ysuiv), nbrsuiv)
+        ysuivres, xsuivres = correspondance_inverse[(xsuiv, ysuiv)]
+        state[ysuivres][xsuivres] = nbrsuiv
+        case0 = Case((xpos, ypos), 0)
+        yposres, xposres = correspondance_inverse[(xpos, ypos)]
+        state[yposres][xposres] = 0
         global nbr
         nbr -= 1
         global modifi
@@ -309,65 +297,71 @@ def changement(pos, suiv):
     
 
 # cette fonction calcule les coordonnées de la case suivante en fonction de la direction 
-def operation(x, y, direction):
+def operation(coord, direction):
+    global correspondance_inverse
+    xcoord, ycoord = coord
+    coord_memoire = coord
     if direction == 'h':
-        return x, y + 150
+        ycoord += 87.5
     elif direction == 'b':
-        return x, y - 150
+        ycoord -= 87.5
     elif direction == 'd':
-        return x + 150, y
+        xcoord += 87.5
     elif direction == 'g':
-        return x - 150, y
-    
-
+        xcoord -= 87.5
+    if (xcoord, ycoord) not in correspondance_inverse:
+        global not_op
+        not_op = 1
+        xcoord, ycoord = coord_memoire
+    return xcoord, ycoord
+        
 # cette fonction permet de calculer les coordonnées de la case présedente
 # elle est utilisé si la case suivante est une bordure ou une case d'un autre chiffre
-def operation_inverse(x, y, direction):
+def operation_inverse(coord, direction):
+    global correspondance_inverse
+    xcoord, ycoord = coord
     if direction == 'h':
-        return x, y - 150
+        ycoord -= 87.5
     elif direction == 'b':
-        return x, y + 150
+        ycoord += 87.5
     elif direction == 'd':
-        return x - 150, y
+        xcoord -= 87.5
     elif direction == 'g':
-        return x + 150, y
+        xcoord += 87.5
+    return xcoord, ycoord
 
 
 # cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
-def notsame(pos, direction, suiv):
-    global case_num
-    fusible = 0
+def notsame(xpos, ypos, xsuiv, ysuiv, direction):
+    global not_op
     while True:
-        if case_num[suiv] == 0:
-            x, y = suiv
-            suiv = operation(x, y, direction)
-            fusible += 1
-            if fusible > 5:
+        if coord_to_res(xsuiv, ysuiv) == 0:
+            xsuiv, ysuiv = operation((xsuiv, ysuiv), direction)
+            if not_op:
+                not_op = 0
+                changement(xpos, ypos, xsuiv, ysuiv)
                 break
-        elif case_num[suiv] == 'stop':
-            x, y = suiv
-            suiv = operation_inverse(x, y, direction)
-            changement(pos, suiv)
+        elif coord_to_res(xpos, ypos) == coord_to_res(xsuiv, ysuiv):
+            changement(xpos, ypos, xsuiv, ysuiv)
             break
-        elif case_num[pos] == case_num[suiv]:
-            changement(pos, suiv)
+        elif coord_to_res(xpos, ypos) != coord_to_res(xsuiv, ysuiv):
+            xsuiv, ysuiv = operation_inverse((xsuiv, ysuiv), direction)
+            changement(xpos, ypos, xsuiv, ysuiv)
             break
-        elif case_num[pos] != case_num[suiv]:
-            x, y = suiv
-            suiv = operation_inverse(x, y, direction)
-            changement(pos, suiv)
     
 
 # cette fonction calcule si le chiffre dans la case est le même que le suivant    
 def calcul(pos, direction):
-    global case_num
-    x, y = pos
-    suiv = operation(x, y, direction)
-    if suiv in case_num:
-        if case_num[suiv] == case_num[pos]:
-            changement(pos, suiv)
+    global not_op
+    xsuiv, ysuiv = operation(pos, direction)
+    if not not_op:
+        xpos, ypos = pos
+        if coord_to_res(xpos, ypos) == coord_to_res(xsuiv, ysuiv):
+            changement(xpos, ypos, xsuiv, ysuiv)
         else:
-            notsame(pos, direction, suiv)
+            notsame(xpos, ypos, xsuiv, ysuiv, direction)
+    else:
+        not_op = 0
                 
 
 # cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
@@ -377,11 +371,13 @@ def mouvement(direction):
     if endjeu:
         global modifi
         modifi = 0
-        global case_num
+        global state
+        global correspondance_inverse
         for i in range(4):
-            for pos in case_num:
-                if case_num[pos] != 0 and case_num[pos] != 'stop':
-                    calcul(pos, direction)
+            for coord in correspondance_inverse:
+                xcoord, ycoord = coord
+                if coord_to_res(xcoord, ycoord) != 0:
+                    calcul(coord, direction)
         if modifi == 1:         
             new()
             resultat()
@@ -390,12 +386,12 @@ def mouvement(direction):
             pause = 1
         historique(direction)
         retour_calcul()
-   
+
 
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée   
 def haut():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('h')
         
@@ -403,7 +399,7 @@ def haut():
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée    
 def bas():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('b')
 
@@ -411,7 +407,7 @@ def bas():
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
 def gauche():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('g')
 
@@ -419,26 +415,17 @@ def gauche():
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
 def droite():
     global pause
-    if pause == 1:
+    if pause:
         pause = 0
         mouvement('d')
-        
-
-# cette fonction lance le son de fond
-def son_fond():
-    mixer.init()
-    mixer.music.load('Meydn-SynthwaveVibe.mp3')
-    mixer.music.play(-1)
 
 
 # cette fonction déssine le cadre du jeu et lance le son de fond
 def main():
     goto(0, 0)
     stamp()
-    tour()
     cases()
     new(1)
-    son_fond()
     resultat()
     
 
@@ -455,22 +442,19 @@ def rezero():
 # cette fonction remet les variables comment ils étaient au début et redessine le jeu   
 def newgame():
     global hist
-    global case_num
-    case_num = {(-252.0, 272.0): 'stop', (-165.6, 272.0): 'stop', (-79.2, 272.0): 'stop', (7.2, 272.0): 'stop', (93.6, 272.0): 'stop',
-                (180.0, 272.0): 'stop', (-252.0, 185.6): 'stop', (-165.6, 185.6): 0, (-79.2, 185.6): 0, (7.2, 185.6): 0, (93.6, 185.6): 0,
-                (180.0, 185.6): 'stop', (-252.0, 99.2): 'stop', (-165.6, 99.2): 0, (-79.2, 99.2): 0, (7.2, 99.2): 0, (93.6, 99.2): 0,
-                (180.0, 99.2): 'stop', (-252.0, 12.8): 'stop', (-165.6, 12.8): 0, (-79.2, 12.8): 0, (7.2, 12.8): 0, (93.6, 12.8): 0,
-                (180.0, 12.8): 'stop', (-252.0, -73.6): 'stop', (-165.6, -73.6): 0, (-79.2, -73.6): 0, (7.2, -73.6): 0, (93.6, -73.6): 0,
-                (180.0, -73.6): 'stop', (-252.0, -160.0): 'stop', (-165.6, -160.0): 'stop', (-79.2, -160.0): 'stop', (7.2, -160.0): 'stop',
-                (93.6, -160.0): 'stop', (180.0, -160.0): 'stop'}
+    global state
+    state = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    ]
     rezero()
     hist = []
     reboutons(1, 1, 1)
-    tour()
     cases()
     new(1)
     resultat()
-    son_fond()
     
 
 # cette fonction permet de savoir si le joueur à cliquer dans un boutons et, si oui, lance la fonction de ce dernier    
@@ -488,7 +472,6 @@ def f(x, y):
         reboutons(0, 0)
         end_hist()
     if button_quit.inside((x, y)):
-        mixer.quit()
         bye()
 
 
@@ -506,6 +489,13 @@ s.onkey(droite, 'Right')
 s.onclick(f)
 s.listen()
 done()
+# perdre
+# new 1x sur 2 un 4
+# win trop de reboutons
+# show nbrmax
+# quit when win?????
+# sup nbr avec retour_hist
+# back
 
 ```
 
