@@ -90,8 +90,8 @@ class Game:
         up()
         
         self.highscore = []
-        self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, 'center')
-        self.bt_clear = Button((200, 100), 'Clear')
+        self.title = Text((0,165), 'Welcome to the best game ever: The Demineur', 20, 'center')
+        self.bt_highscore = Button((200, 100), 'Highscores')
         self.bt_new = Button((200, 50), 'New')
         self.bt_difficulty = Button((200, 0), 'Diffuculty')
 
@@ -100,6 +100,30 @@ class Game:
         s = getscreen()
         s.listen()
         done()
+
+    def inside(self, p):
+        x, y = self.pos
+        w, h = self.size
+        return 0 < p[0]-x < w and 0 < p[1]-y < h
+
+    def click(self, x, y):
+        if self.grid.inside(x, y):
+            goto(x, y)
+            dot()
+            write(x, y)
+
+    def f(x,y):
+        if bt_new.inside((x,y)):
+            clear()
+            game()
+        if bt.highscores.inside((x,y)):
+            clear()
+            Highscores()
+
+
+class Highscores:
+
+
 
     
     

@@ -236,7 +236,7 @@ def retour():
     resultat()
     
 
-# cette fonction permet de mémoriser la position de chaque cases
+# cette fonction permet de mémoriser la position de chaque case
 def retour_calcul():
     global retour_hist
     global state
@@ -339,15 +339,10 @@ def operation_inverse(coord, direction):
 # cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
 def notsame(xpos, ypos, xsuiv, ysuiv, direction):
     global not_op
-    fusible = 0
     while True:
         if coord_to_res(xsuiv, ysuiv) == 0:
             xsuiv, ysuiv = operation((xsuiv, ysuiv), direction)
-            if not not_op:
-                fusible += 1
-                if fusible > 5:
-                    break
-            else:
+            if not_op:
                 not_op = 0
                 changement(xpos, ypos, xsuiv, ysuiv)
                 break
@@ -509,6 +504,9 @@ s.onkey(droite, 'Right')
 s.onclick(f)
 s.listen()
 done()
+
+#class Game:
+
 # perdre
 # new 1x sur 2 un 4
 # win trop de reboutons
