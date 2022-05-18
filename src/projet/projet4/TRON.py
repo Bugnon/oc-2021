@@ -1,3 +1,10 @@
+""""TRON
+
+Deux motos génèrent des traces derrière eux, et qui ne peut pas être franchi 
+
+La trace est représenter
+
+"""
 from dis import dis
 import os
 import pygame
@@ -12,16 +19,16 @@ pygame.display.set_caption("TRON", 'moto.png')
 screen = pygame.display.set_mode((500, 500))
 
 
-class game:
+class Game:
     def __init__(self):
         
-        self.moto1 = moto(moto1image,50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_d,pygame.K_a,pygame.K_s,pygame.K_w],(255,0,0),180,"red")
-        self.moto2 = moto(moto2image,screen.get_width() - 50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_RIGHT,pygame.K_LEFT,pygame.K_DOWN,pygame.K_UP],(0,0,255),0,"blue")
+        self.moto1 = Moto(moto1image,50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_d,pygame.K_a,pygame.K_s,pygame.K_w],(255,0,0),180,"red")
+        self.moto2 = Moto(moto2image,screen.get_width() - 50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_RIGHT,pygame.K_LEFT,pygame.K_DOWN,pygame.K_UP],(0,0,255),0,"blue")
 
 def dist(xa,ya,xb,yb):
     return math.sqrt((xb - xa)**2 + (yb - ya)**2)
 
-class moto(pygame.sprite.Sprite):
+class Moto(pygame.sprite.Sprite):
     def __init__(self,img,posx,posy,touches,couleur,rotation,name):
         super().__init__()
         self.name = name
@@ -44,7 +51,7 @@ class moto(pygame.sprite.Sprite):
         self.color = couleur
 
         self.points = [self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2]
-        self.maxpoints = 25
+        self.maxpoints = 30
         self.d_entre_pts = 1
         self.points_distance = 1
         self.point_connecte = []
@@ -129,7 +136,7 @@ class moto(pygame.sprite.Sprite):
             self.points.append(self.rect.y + self.image.get_height() / 2)
         if int(len(self.points)) > 4:
             for i in range(0,int(len(self.points)) - 4,2):
-                pygame.draw.line(screen,self.color,(self.points[i],self.points[i+1]),(self.points[i+2],self.points[i+3]),5)
+                pygame.draw.line(screen,self.color,(self.points[i],self.points[i+1]),(self.points[i+2],self.points[i+3]),1)
         for i in range(0,int(len(self.line_points)),2):
                 pygame.draw.circle(screen,self.color,(self.line_points[i],self.line_points[i+1]),2)
         
@@ -184,7 +191,7 @@ son.set_volume(0.1)
 son.play(loops=-1, maxtime=0, fade_ms=0)
 
 bg = pygame.image.load('bg.png')
-game = game()
+game = Game()
 running = True
 while running:
     fond(bg)
