@@ -143,26 +143,42 @@ class Game:
          print(state)
          for i in range(8):
              for n in range(8):
-                 if state[i][n] == 6:
-                     if i != 0:
+                 if state[i][n] >= 6:
+                     if i == 0 and n == 0:
+                         state[i][n+1] += 1
+                         state[i+1][n+1] += 1
+                         state[i+1][n] += 1
+                     if i == 7 and n == 0:
+                         state[i][n+1] += 1
+                         state[i-1][n] += 1
+                         state[i-1][n+1] += 1
+                     if i == 0 and n == 7:
+                         state[i][n-1] += 1
+                         state[i+1][n] += 1
+                         state[i+1][n-1] += 1
+                     if i == 7 and n == 7:
+                         state[i][n-1] += 1
+                         state[i-1][n] += 1
+                         state[i-1][n-1] += 1
+                     if i == 0 and n == range(1,7):
                          state[i][n-1] += 1
                          state[i][n+1] += 1
                          state[i-1][n+1] += 1
                          state[i-1][n-1] += 1
                          state[i-1][n] += 1
-                     if n != 7:
+                     if n == 7 and i == range(1,7):
                          state[i][n-1] += 1
                          state[i+1][n-1] += 1
                          state[i+1][n] += 1
                          state[i-1][n-1] += 1
                          state[i-1][n] += 1
-                     if i != 7:
+                     if i == 7 and n == range(1,7):
                          state[i][n-1] += 1
                          state[i][n+1] += 1
                          state[i+1][n+1] += 1
                          state[i+1][n-1] += 1
                          state[i+1][n] += 1
-                     if n != 0:
+                     if n == 0 and i == range(1,7):
                          state[i][n+1] += 1
                          state[i+1][n+1] += 1
                          state[i+1][n] += 1
