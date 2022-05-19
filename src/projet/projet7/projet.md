@@ -10,10 +10,61 @@ Un autre aspect intéressant du puissance 4 est qu'il faut vérifier si un des j
 
 De plus j'ai quelques idées, par exemple permettre au(x) joueur(s) d'entrer leur nom au début du jeu, puis ce nom changera de couleur si c'est à lui de jouer ou non, ou alors (lorsqu'un joueur a gagné) de changer l'aspect des pions gagnants (donc le programme doit connaitre les coordonnées des pions gagnants), ou encore de permettre au joueur de sélectionner dans un premier temps la colonne dans laquelle il veut jouer, puis dans un second temps de confirmer si il souhaite jouer dans cette colonne.
 
+## Description du jeu
+
+blabla
+
+## Réprésentation de l'état
+
+L'état du jeu est représenté avec un tableau 2D appelé ``state``
+
+```{codeplay}
+state = []
+
+for i in range(6):
+    state.append([0] *7)
+
+for line in state:
+    print(line)
+```
+
+Après deux tours, l'état pourrait se présenter ainsi:
+
+```{codeplay}
+state = []
+
+for i in range(6):
+    state.append([0] *7)
+
+state[5][1] = 1
+state[5][2] = 2
+    
+for line in state:
+    print(line)
+```
+
+## Les variables
+
+Formules mathématiques en LaTeX
+
+$$ a^2 = x_2 $$
+
+## Comment jouer
+
+votre interface
+
+![description](image.png)
+
+
 ## Codeplay
 
 ```{codeplay}
-from turtle import *
+state = []
 
+for i in range(6):
+    state.append([0] *7)
+
+for line in state:
+    print(line)
 ```
 

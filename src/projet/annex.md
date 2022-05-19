@@ -68,3 +68,9 @@ Pour créer les pages web dans le dossier `build``
 ```text
 sphinx-build src/projet build -E
 ```
+
+alternativement
+
+```text
+python3 -m sphinx src/projet build -E
+```
