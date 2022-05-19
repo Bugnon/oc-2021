@@ -153,8 +153,6 @@ class Game:
          print(state)
          for i in range(8):
              for n in range(8):
-                 print(i)
-                 print(n)
                  if state[i][n] >= 6:
                      if i == 0:
                          if n == 0:
@@ -208,7 +206,6 @@ class Game:
                              state[6][n+1] += 1
                              state[6][n-1] += 1
                              state[6][n] += 1
-                             print('yes')
         
         
                     
