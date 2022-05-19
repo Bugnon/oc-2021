@@ -16,19 +16,19 @@ You can modify these classes.
 You can add more classes (ex. Player, Enemy, Score, Room, Level, etc.)
 The last command to be called must be Game()
 
-Author: Raphael Holzer
-Date: 11 May 2022
+"""
+
+"""
+Classes : (name / attributes / methods)
+- Text / pos, string, font / X
+- Button / pos, size, color, text, selectable, selected, displayed / draw, inside
+- Grid / pos, size, state / draw, check_win
+- Player / name, score / X
+- Game / grid, buttons, players, state, chrono, current_player / click, onkey
+
 """
 
 from turtle import *
-
-def ligne(p, q):
-    """Draws a ligne from point p to point q."""
-
-    goto(p)
-    down()
-    goto(q)
-    up()
 
 
 class Rectangle:
@@ -168,22 +168,36 @@ class Game:
         tracer(0)
         up()
    
-        self.score = 0
+        # self.score = 0
         self.history = []
         self.grid = Grid()
-        self.title = Text((0,  170), 'Title of your Game', 24, 'center')
-        self.status = Text((-280, -190), 'status line')
-        self.bt_clear = Button((200, 100), 'Clear')
-        self.bt_new = Button((200, 50), 'New')
+        self.title = Text((0,  170), 'Puissance 4', 24, 'center')
+        # self.status = Text((-280, -190), 'status line')
+        self.bt_undo = Button((200, 100), 'Undo')
+        # self.bt_new = Button((200, 50), 'New')
         
         s = getscreen()
+
         s.onclick(self.click)
-        s.onkey(up, 'u')
-        s.onkey(down, 'd')
-        s.onkey(clear, 'BackSpace')
-        s.onkey(self.draw, ' ')  
-        s.listen()
+
+        s.onkey(self.move(1), '1')
+        # s.onkey(self.move(2), '2')
+        # s.onkey(self.move(3), '3')
+        # s.onkey(self.move(4), '4')
+        # s.onkey(self.move(5), '5')
+        # s.onkey(self.move(6), '6')
+        # s.onkey(self.move(7), '7')
         
+        # s.onkey(clear, 'enter')
+        s.onkey(self.draw, ' ')
+
+        s.listen()
+    
+
+    def move(self, column):
+        print('choose the column', column)
+
+
     def click(self, x, y):
         """Reacts to mouse clicks."""
         if self.grid.inside(x, y):
@@ -210,3 +224,5 @@ class Game:
         down()
 
 game = Game()
+
+done()
