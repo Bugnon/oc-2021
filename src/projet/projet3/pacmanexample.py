@@ -2,8 +2,76 @@ from random import choice
 from turtle import *
 from freegames import floor, vector
 
+class Text:
+    """Draw a text at a given position."""
+    
+    def __init__(self, pos, text, size=16, color='white', align='left'):
+        """Initilizes the text"""
+        self.pos = pos
+        self.text = text
+        self.size = size
+        self.align = align
+        self.color = color
+        self.draw()
+        
+    def draw(self):
+        """Draw the text."""
+        goto(self.pos)
+        color(self.color)
+        write(self.text, font=('Brushed script', self.size), align=self.align)
+
+class Rectangle:
+    """Draw a filled rectangle."""
+    
+    def __init__(self, pos, size, color='gray'):
+        """Initialize the rectangle and draw it."""
+        self.pos = pos
+        self.size = size
+        self.color = color
+        self.draw()
+    
+    def outline(self):
+        """Draw just the outline of the rectangle."""
+        goto(self.pos)
+        down()
+        for x in self.size * 2:
+            forward(x)
+            left(90)
+        up()
+        
+    def draw(self):
+        """Draw the outline of the rectangle and fill it a color is defined."""
+        if self.color:
+            fillcolor(self.color)
+            begin_fill()
+            self.outline()
+            end_fill()
+        else:
+            self.outline()
+            
+    def inside(self, p):
+        """Check if the point p is inside the rectangle."""
+        x, y = self.pos
+        w, h = self.size
+        
+        return 0 < p[0]-x < w and 0 < p[1]-y < hc
+
+class Button:
+    def __init__(self, pos, text, size=(80, 30), color='lightgray', align='center'):
+        self.rect = Rectangle(pos, size, color)
+        x, y = pos
+        w, h = size
+        self.label = Text((x + w//2, y + h//4), text, h//2, 'center')
+        
+    def draw(self):
+        self.rect.draw()
+        self.label.draw()
+    
+    def inside(self, p):
+        return self.rect.inside(p)
+
+
 state = {'score': 0}
-# path est la tortue principale, writer s'occupe des points
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
 aim = vector(5, 0)
@@ -71,6 +139,8 @@ def valid(point):
 
     return point.x % 20 == 0 or point.y % 20 == 0
 
+t = Text((160, 160), 'Pacman', 24, 'white')
+
 def world():
     "Draw world using path."
     bgcolor('black')
@@ -89,6 +159,7 @@ def world():
                 path.goto(x + 10, y + 10)
                 path.dot(2, 'white')
 
+
 def move():
     "Move pacman and all ghosts."
     writer.undo()
@@ -101,7 +172,6 @@ def move():
 
     index = offset(pacman)
 
-   
     if tiles[index] == 1:
         tiles[index] = 2
         state['score'] += 1
@@ -136,6 +206,8 @@ def move():
     for point, course in ghosts:
         if abs(pacman - point) < 20:
             return
+
+    t.draw()
 
     ontimer(move, 100)
 
