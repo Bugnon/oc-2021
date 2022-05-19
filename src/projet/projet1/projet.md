@@ -15,7 +15,6 @@ Alice et Grégory
 from turtle import *
 from random import choice
 from time import sleep
-setup(600, 400)
 hideturtle()
 tracer(0)
 up()
