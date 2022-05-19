@@ -100,11 +100,23 @@ class Button:
    
 
 # cette fonction permet de créer le tour et les 16 cases vides du début du jeu 
-def cases():
-    tour = Case((-180, 200), -1, 360)
-    for y in 190, 102.5, 15, -72.5:
-        for x in -170, -82.5, 5, 92.5:
-            case_begin = Case((x, y), 0)
+class Cases:
+    """ """
+
+    def __init__(self, pos, size, color='gray'):
+        """ """
+        self.pos = pos
+        self.size = size
+        self.color = color
+        self.draw()
+
+
+
+#def cases():
+    #tour = Case((-180, 200), -1, 360)
+    #for y in 190, 102.5, 15, -72.5:
+        #for x in -170, -82.5, 5, 92.5:
+            #case_begin = Case((x, y), 0)
 
 
 # cette fonction sert à écrire un citation lors d'un échec
@@ -506,8 +518,12 @@ s.onclick(f)
 s.listen()
 done()
 
-#class Game:
-
+class Game:
+     def __init__(self):
+         setup(600, 400)
+         hideturtle()
+         tracer(0)
+         up()
 
 # perdre
 # new 1x sur 2 un 4
