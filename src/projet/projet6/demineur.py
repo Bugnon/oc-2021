@@ -17,6 +17,16 @@ state = [[0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0]]
+
+state1 = [[0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0]]
+
 class Rectangle: 
     def __init__(self, pos, size, color='green'):
         self.pos = pos
@@ -143,58 +153,70 @@ class Game:
          print(state)
          for i in range(8):
              for n in range(8):
-                 if state[i][n] >= 6:
-                     if i == 0 and n == 0:
-                         state[i][n+1] += 1
-                         state[i+1][n+1] += 1
-                         state[i+1][n] += 1
-                     if i == 7 and n == 0:
-                         state[i][n+1] += 1
-                         state[i-1][n] += 1
-                         state[i-1][n+1] += 1
-                     if i == 0 and n == 7:
-                         state[i][n-1] += 1
-                         state[i+1][n] += 1
-                         state[i+1][n-1] += 1
-                     if i == 7 and n == 7:
-                         state[i][n-1] += 1
-                         state[i-1][n] += 1
-                         state[i-1][n-1] += 1
-                     if i == 0 and n == range(1,7):
-                         state[i][n-1] += 1
-                         state[i][n+1] += 1
-                         state[i-1][n+1] += 1
-                         state[i-1][n-1] += 1
-                         state[i-1][n] += 1
-                     if n == 7 and i == range(1,7):
-                         state[i][n-1] += 1
-                         state[i+1][n-1] += 1
-                         state[i+1][n] += 1
-                         state[i-1][n-1] += 1
-                         state[i-1][n] += 1
-                     if i == 7 and n == range(1,7):
-                         state[i][n-1] += 1
-                         state[i][n+1] += 1
-                         state[i+1][n+1] += 1
-                         state[i+1][n-1] += 1
-                         state[i+1][n] += 1
-                     if n == 0 and i == range(1,7):
-                         state[i][n+1] += 1
-                         state[i+1][n+1] += 1
-                         state[i+1][n] += 1
-                         state[i-1][n+1] += 1
-                         state[i-1][n] += 1
-                     else:
-                         state[i][n-1] += 1
-                         state[i][n+1] += 1
-                         state[i+1][n+1] += 1
-                         state[i+1][n-1] += 1
-                         state[i+1][n] += 1
-                         state[i-1][n+1] += 1
-                         state[i-1][n-1] += 1
-                         state[i-1][n] += 1
-                     
+                 print(i)
+                 print(n)
+                 if state[i][n] == 6:
+                     if i == 0:
+                         if n == 0:
+                             state[0][1] += 1
+                             state[1][1] += 1
+                             state[1][0] += 1
+                         if n == 7:
+                             state[0][6] += 1
+                             state[1][7] += 1
+                             state[1][6] += 1
+                         if n == range(1,7):
+                             state[i][n-1] += 1
+                             state[i][n+1] += 1
+                             state[i+1][n+1] += 1
+                             state[i+1][n-1] += 1
+                             state[i+1][n] += 1
+                     if i == range(1,7):
+                         if n == 0:
+                             state[i][n+1] += 1
+                             state[i+1][n+1] += 1
+                             state[i+1][n] += 1
+                             state[i-1][n+1] += 1
+                             state[i-1][n] += 1
+                         if n == 7:
+                             state[i-1][n] += 1
+                             state[i-1][n-1] += 1
+                             state[i][n-1] += 1
+                             state[i+1][n-1] += 1
+                             state[i+1][n] += 1
+                         if n == range(1,7):
+                             state[i][n-1] += 1
+                             state[i+1][n-1] += 1
+                             state[i+1][n] += 1
+                             state[i-1][n-1] += 1
+                             state[i-1][n] += 1
+                             state[i][n+1] += 1
+                             state[i-1][n-1] += 1
+                             state[i+1][n+1] += 1
+                     if i == 7:
+                         if n == 0:
+                             state[7][1] += 1
+                             state[6][0] += 1
+                             state[6][1] += 1
+                         if n == 7:
+                             state[7][6] += 1
+                             state[6][7] += 1
+                             state[6][6] += 1
+                         if n == range(1,7):
+                             state[i][n-1] += 1
+                             state[i][n+1] += 1
+                             state[i-1][n+1] += 1
+                             state[i-1][n-1] += 1
+                             state[i-1][n] += 1 
+        
+        
+                    
          print(state)
+
+         def play(self, pos):
+             if onclick:
+                ...
+
 
 
 
