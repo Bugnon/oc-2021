@@ -5,10 +5,10 @@ Deux motos génèrent des traces derrière eux, et qui ne peut pas être franchi
 La trace est représenter
 
 """
-
-
+from dis import dis
 import os
 import pygame
+import math
 pygame.init()
 os.chdir('assets')
 moto1image = pygame.image.load('Player1.png')
@@ -18,15 +18,20 @@ clock = pygame.time.Clock()
 pygame.display.set_caption("TRON", 'moto.png')
 screen = pygame.display.set_mode((500, 500))
 
+
 class Game:
     def __init__(self):
         
-        self.moto1 = Moto(moto1image,50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_d,pygame.K_a,pygame.K_s,pygame.K_w],(255,0,0),180)
-        self.moto2 = Moto(moto2image,screen.get_width() - 50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_RIGHT,pygame.K_LEFT,pygame.K_DOWN,pygame.K_UP],(0,0,255),0)
+        self.moto1 = Moto(moto1image,50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_d,pygame.K_a,pygame.K_s,pygame.K_w],(255,0,0),180,"red")
+        self.moto2 = Moto(moto2image,screen.get_width() - 50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_RIGHT,pygame.K_LEFT,pygame.K_DOWN,pygame.K_UP],(0,0,255),0,"blue")
+
+def dist(xa,ya,xb,yb):
+    return math.sqrt((xb - xa)**2 + (yb - ya)**2)
 
 class Moto(pygame.sprite.Sprite):
-    def __init__(self,img,posx,posy,touches,couleur,rotation):
+    def __init__(self,img,posx,posy,touches,couleur,rotation,name):
         super().__init__()
+        self.name = name
         self.health = 1
         self.max_health = 1
         self.velocity = 2
@@ -44,7 +49,15 @@ class Moto(pygame.sprite.Sprite):
         self.line_rect = []
         self.touches = touches
         self.color = couleur
+
+        self.points = [self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2]
+        self.maxpoints = 30
+        self.d_entre_pts = 1
+        self.points_distance = 1
+        self.point_connecte = []
     def left(self):
+        if self.dir == (-1,0):
+            return
         self.line_points += self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2
         rect_a = self.image.get_rect()
         self.image = pygame.transform.rotate(self.base_image, 0)
@@ -55,7 +68,10 @@ class Moto(pygame.sprite.Sprite):
             self.rect.x += pos[0]
             self.rect.y += pos[1]
         self.dir = (-1,0)
+
     def down(self):
+        if self.dir == (0,-1):
+            return
         self.line_points += self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2
         rect_a = self.image.get_rect()
         self.image = pygame.transform.rotate(self.base_image, 90)
@@ -66,7 +82,10 @@ class Moto(pygame.sprite.Sprite):
             self.rect.x += pos[0]
             self.rect.y += pos[1]
         self.dir = (0,-1)    
+
     def right(self):
+        if self.dir == (1,0):
+            return
         self.line_points += self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2
         rect_a = self.image.get_rect()
         self.image = pygame.transform.rotate(self.base_image, 180)
@@ -77,7 +96,10 @@ class Moto(pygame.sprite.Sprite):
             self.rect.x += pos[0]
             self.rect.y += pos[1]
         self.dir = (1,0)
+
     def up(self):
+        if self.dir == (0,1):
+            return
         self.line_points += self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2
         rect_a = self.image.get_rect()
         self.image = pygame.transform.rotate(self.base_image, 270)
@@ -98,29 +120,56 @@ class Moto(pygame.sprite.Sprite):
             elif event.key == self.touches[2]:
                 self.down()
             elif event.key == self.touches[3]:
-                self.up()
+                self.up()                                   
     def move(self):
         self.rect.x += self.dir[0] * self.velocity
         self.rect.y -= self.dir[1] * self.velocity
         screen.blit(self.image, self.rect)
-    
+
     def draw_trail(self):
-        temps_entre_points = 0
-        #Creer un points tous les temps_entre_points
-
         self.line_rect.clear()
-        for i in range(int(len(self.line_points) / 2) - 1):
-            self.line_rect += pygame.draw.line(screen,self.color,(self.line_points[2*i],self.line_points[2*i+1]),(self.line_points[2*i+2],self.line_points[2*i+3]),8)
-        self.line_rect += pygame.draw.line(screen,self.color,(self.line_points[int(len(self.line_points)) - 2],self.line_points[int(len(self.line_points)) - 1]),(self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2),8)
+        if dist(self.points[-2],self.points[-1],self.rect.x + self.image.get_width() / 2,self.rect.y + self.image.get_height() / 2) > self.d_entre_pts:
+            if int(len(self.points) / 2) >= self.maxpoints:
+                del self.points[0]
+                del self.points[0]
+            self.points.append(self.rect.x + self.image.get_width() / 2)
+            self.points.append(self.rect.y + self.image.get_height() / 2)
+        if int(len(self.points)) > 4:
+            for i in range(0,int(len(self.points)) - 4,2):
+                pygame.draw.line(screen,self.color,(self.points[i],self.points[i+1]),(self.points[i+2],self.points[i+3]),1)
+        for i in range(0,int(len(self.line_points)),2):
+                pygame.draw.circle(screen,self.color,(self.line_points[i],self.line_points[i+1]),2)
+        
+        coins_possibles = []
+        for i in range(0,int(len(self.line_points)),2):
+            if self.check_coin(self.line_points[i],self.line_points[i+1]) == True or self.point_connecte.count(i) > 0:
+                coins_possibles.append(self.line_points[i])
+                coins_possibles.append(self.line_points[i+1])
+        for i in range(0,int(len(coins_possibles)) - 3,2):
+            self.line_rect += pygame.draw.line(screen,self.color,(coins_possibles[i],coins_possibles[i+1]),(coins_possibles[i+2],coins_possibles[i+3]),5)
+            if(self.point_connecte.count(i) == 0):
+                self.point_connecte.append(i)
 
-    def collision_test(self):
+        if(len(coins_possibles)) > 1:
+            self.line_rect += pygame.draw.line(screen,self.color,(coins_possibles[-2],coins_possibles[-1]),(self.points[0],self.points[1]),5)
+
+    def check_coin(self,posx,posy):
+        for i in range(0,int(len(self.points)),2):
+            if not dist(posx,posy,self.points[i],self.points[i+1]) > self.points_distance:
+                return False
+        return True
+    
+    def get_collision(self):
+        collisions.extend(self.line_rect)
+    
+    def apply_collision(self):
         hit_list = []
-        for i in range(int(len(self.line_rect) / 4)):
-            rect = pygame.Rect(self.line_rect[(i*4):(i*4+4)])
-            print(rect)
+        for i in range(0,int(len(collisions)),4):
+            rect = pygame.Rect(collisions[(i):(i+4)])
             if(self.rect.colliderect(rect)):
                 hit_list.append(rect)
-        print(hit_list)
+        if len(hit_list) != 0:
+            print(self.name,"COLLISION")
 def pos_apres_rot(dirbase,image,dir1,dir2):
     pos = [0,0]
     if(dirbase == dir1 or dirbase == dir2):
@@ -137,7 +186,8 @@ def fond(image):
         for y in range(nb_y):
             screen.blit(image, (x * 100, y * 100))
 
-son = pygame.mixer.Sound('music/music_game.wav')
+son = pygame.mixer.Sound('music/music_TRON.wav')
+son.set_volume(0.1)
 son.play(loops=-1, maxtime=0, fade_ms=0)
 
 bg = pygame.image.load('bg.png')
@@ -152,10 +202,13 @@ while running:
            run = False
            pygame.quit()
     game.moto1.draw_trail()
-    game.moto1.move()
-    game.moto1.collision_test()
     game.moto2.draw_trail()
+    game.moto1.move()
     game.moto2.move()
-    game.moto2.collision_test()
+    collisions = []
+    game.moto1.get_collision()
+    game.moto2.get_collision()
+    game.moto1.apply_collision()
+    game.moto2.apply_collision()
     pygame.display.update()  
     clock.tick(60)
