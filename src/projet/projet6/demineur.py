@@ -1,6 +1,7 @@
 # Malik et Enrico
 # Projet Demineur
 
+from curses.textpad import rectangle
 from logging import root
 from random import *
 from turtle import *
@@ -9,23 +10,6 @@ from tkinter import *
 
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps', '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
 
-state = [[0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0]]
-
-state1 = [[0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0],
-         [0,0,0,0,0,0,0,0]]
 
 class Rectangle: 
     def __init__(self, pos, size, color='green'):
@@ -99,14 +83,23 @@ def ligne(p, q):
     up()
 
 class Game:
-     def __init__(self, pos):
+     def __init__(self):
 
         setup(600,400)
         hideturtle()
         tracer(0)
         up()
 
-        self.pos = pos
+        global state
+
+        state = [[0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0],
+         [0,0,0,0,0,0,0,0]]
         
         self.highscore = []
         self.title = Text((0,165), 'Welcome to the best game ever: The Demineur', 20, 'center')
@@ -118,31 +111,9 @@ class Game:
         self.grid = Grid()
         self.generate()
         s = getscreen()
+        s.onclick(self.click)
         s.listen()
         done()
-
-     def click(self, x, y):
-         if self.grid.inside(x, y):
-            goto(x, y)
-            dot()
-            write(x, y)
-
-     def f(self,x,y):
-         if self.bt_new.inside((x,y)):
-             clear()
-             game = Game()
-
-         if self.bt.highscores.inside((x,y)):
-             clear()
-             self.Highscores = Highscores()
-        
-         if self.bt_difficulty.inside((x,y)):
-            clear()
-            self.difficulty = Difficulty()
-
-     def inside(self, p):
-        x, y = self.pos
-        return 0 < p[0]-x < w and 0 < p[1]-y < h
 
      def generate(self):
          for i in range(9):
@@ -150,7 +121,6 @@ class Game:
          self.check()
 
      def check(self):
-         print(state)
          for i in range(8):
              for n in range(8):
                  if state[i][n] >= 6:
@@ -186,7 +156,7 @@ class Game:
                              state[i][n-1] += 1
                              state[i+1][n-1] += 1
                              state[i+1][n] += 1
-                             state[i-1][n-1] += 1
+                             state[i-1][n+1] += 1
                              state[i-1][n] += 1
                              state[i][n+1] += 1
                              state[i-1][n-1] += 1
@@ -206,17 +176,90 @@ class Game:
                              state[6][n+1] += 1
                              state[6][n-1] += 1
                              state[6][n] += 1
+
+     def click(self, x, y):
+         if self.grid.inside(x, y):
+             global i 
+             global j
+             j = int((x + 160) // 40)
+             i = int((159 - y) // 40)
+
+             if 0 <= i <=7 and 0 <= j <=7:
+                 self.load(i,j)
+             """"" i ligne
+                   j colonne"""
+            
+         p = x,y 
+
+         if self.bt_new.inside(p):
+             clear()
+             game = Game()
+
+         if self.bt_highscore.inside(p):
+             clear()
+             self.Highscores = Highscores()
         
-        
-                    
-         print(state)
+         if self.bt_difficulty.inside(p):
+            clear()
+            self.difficulty = Difficulty()
 
-         def play(self, pos):
-             if onclick:
-                ...
+     def load(self, ligne, colonne):
+         x = -180 + ((colonne + 1) * 40)
+         y = (130 - (ligne * 20) * 2)
 
+         if state[ligne][colonne] < 10:
+             if state[ligne][colonne] >= 6:
+                 """ inserer l'image d'une bombe """
+                 addshape('mine1.gif')
+                 shape('mine1.gif')
 
+             if state[ligne][colonne] < 6:
+                 """ montrer le chiffre """
+                 self.num = Text((x,y),state[ligne][colonne])
+                 if state[ligne][colonne] == 0:
+                     self.holes(ligne, colonne)
 
+     def holes(self, ligne, colonne):
+         if state[ligne][colonne + 1] == 0:
+             x = -180 + ((colonne + 2) * 40)
+             y = (130 - (ligne * 20) * 2)
+             self.num = Text((x,y),'0')
+
+         if state[ligne][colonne - 1] == 0:
+             x = -180 + ((colonne) * 40)
+             y = (130 - (ligne * 20) * 2)
+             self.num = Text((x,y),'0')
+             
+         if state[ligne + 1][colonne + 1] == 0:
+             x = -180 + ((colonne + 2) * 40)
+             y = (130 - (ligne * 20) * 2) - 40
+             self.num = Text((x,y),'0')
+             
+         if state[ligne + 1][colonne - 1] == 0:
+             x = -180 + ((colonne) * 40)
+             y = (130 - (ligne * 20) * 2) - 40
+             self.num = Text((x,y),'0')
+
+         if state[ligne - 1][colonne + 1] == 0:
+             x = -180 + ((colonne + 2) * 40)
+             y = (130 - (ligne * 20) * 2) + 40
+             self.num = Text((x,y),'0')
+             
+         if state[ligne - 1][colonne - 1] == 0:
+             x = -180 + ((colonne) * 40) 
+             y = (130 - (ligne * 20) * 2) + 40
+             self.num = Text((x,y),'0')
+                 
+         if state[ligne + 1][colonne] == 0:
+             x = -180 + ((colonne + 1) * 40)
+             y = (130 - (ligne * 20) * 2) - 40
+             self.num = Text((x,y),'0')
+             
+         if state[ligne - 1][colonne] == 0:
+             x = -180 + ((colonne + 1) * 40)
+             y = (130 - (ligne * 20) * 2) + 40
+             self.num = Text((x,y),'0')
+            
 
 
 class Highscores:
@@ -237,6 +280,7 @@ class Grid:
         self.ongrid = ongrid
         self.x0 = m * d // 2
         self.y0 = n * d // 2
+
         
         self.draw()
 
@@ -275,7 +319,4 @@ class Grid:
      def __str__(self):
         return f'Grid({self.n}, {self.m})'
 
-
-'7 = drapeau'
-
-game = Game(1)
+game = Game()
