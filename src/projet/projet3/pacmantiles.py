@@ -248,7 +248,7 @@ class Game:
             if abs(pacman.pos - ghost.pos) < 20:
                 return
         self.draw()
-        ontimer(self.move, 300)
+        ontimer(self.move, 200)
         
     def draw(self):
         """Draw all game objects."""
