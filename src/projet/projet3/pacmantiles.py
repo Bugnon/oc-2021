@@ -148,7 +148,7 @@ class World:
                 if  tile > 0:
                     x = -200 + j * 20
                     y =  180 - i * 20
-                    square(x, y)
+                    self.square(x, y)
 
                 if tile == 1:
                     path.up()
@@ -191,7 +191,20 @@ class World:
             return False
         
         return True        
-        
+    
+    def square(self, x, y):
+        """Draw square using path at (x, y)."""
+        path.up()
+        path.goto(x, y)
+        path.down()
+        path.begin_fill()
+
+        for count in range(4):
+            path.forward(20)
+            path.left(90)
+
+        path.end_fill()
+
     def __str__(self):
         return f'World({len(self.tiles)})'
                     
@@ -213,19 +226,6 @@ class Score:
         self.writer.write(self.score)
     
 score = Score()
-
-def square(x, y):
-    """Draw square using path at (x, y)."""
-    path.up()
-    path.goto(x, y)
-    path.down()
-    path.begin_fill()
-
-    for count in range(4):
-        path.forward(20)
-        path.left(90)
-
-    path.end_fill()
 
 def f(x, y):
     """Debug the tile index."""
