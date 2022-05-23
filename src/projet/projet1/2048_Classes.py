@@ -2,7 +2,7 @@
 from turtle import *
 from random import choice
 from time import sleep
-#rom pygame import mixer
+#from pygame import mixer
 setup(600, 400)
 hideturtle()
 tracer(0)
