@@ -12,10 +12,76 @@ Transformer en programmation orientée objet avec les classe :
 
 from random import choice
 from turtle import *
-from freegames import floor, vector
+from freegames import vector
 
 path = Turtle(visible=False)
 
+class Rectangle:
+    """Draw a filled rectangle."""
+    
+    def __init__(self, pos, size, color='gray'):
+        """Initialize the rectangle and draw it."""
+        self.pos = pos
+        self.size = size
+        self.color = color
+        self.draw()
+    
+    def outline(self):
+        """Draw just the outline of the rectangle."""
+        goto(self.pos)
+        down()
+        for x in self.size * 2:
+            forward(x)
+            left(90)
+        up()
+        
+    def draw(self):
+        """Draw the outline of the rectangle and fill it a color is defined."""
+        if self.color:
+            fillcolor(self.color)
+            begin_fill()
+            self.outline()
+            end_fill()
+        else:
+            self.outline()
+            
+    def inside(self, p):
+        """Check if the point p is inside the rectangle."""
+        x, y = self.pos
+        w, h = self.size
+        
+        return 0 < p[0]-x < w and 0 < p[1]-y < h
+        
+
+class Text:
+    """Draw a text at a given position."""
+    
+    def __init__(self, pos, text, size=16, align='left'):
+        """Initilizes the text"""
+        self.pos = pos
+        self.text = text
+        self.size = size
+        self.align = align
+        self.draw()
+        
+    def draw(self):
+        """Draw the text."""
+        goto(self.pos)
+        write(self.text, font=('Arial', self.size), align=self.align)
+     
+class Button:
+    def __init__(self, pos, text, size, color='lightgray', align='center'):
+        self.rect = Rectangle(pos, size, color)
+        x, y = pos
+        w, h = size
+        self.label = Text((x + w//2, y + h//4), text, h//2, 'center')
+        
+    def draw(self):
+        self.rect.draw()
+        self.label.draw()
+    
+    def inside(self, p):
+        return self.rect.inside(p)
 
 class Ghost:
     """Define a ghost."""
@@ -237,9 +303,12 @@ class Game:
     """Define the game class."""
     def __init__(self):
         up()
-        setup(420, 420, 370, 0)
+        setup(600, 400)
         hideturtle()
         tracer(False)
+        self.bt_quit = Button((150, 50), 'Quit', (100,50))
+        self.bt_retry = Button((200, 200), "Retry", (200,100))
+
 
         listen()
         onkey(lambda: pacman.change(5, 0), 'Right')
@@ -248,11 +317,15 @@ class Game:
         onkey(lambda: pacman.change(0, -5), 'Down')
         onkey(lambda: world.load(tiles2), '2')
         onkey(lambda: world.load(tiles), '1')
-        onscreenclick(f)
+        onscreenclick(self.click)
         world.draw()
         self.move()
         done()
         
+    def click(self, x, y):
+        if self.bt_quit.inside((x, y)):
+            quit()
+    
     def move(self):
         """Move all game objects."""
         pacman.move()
@@ -268,6 +341,7 @@ class Game:
         score.draw()
         clear()
         pacman.draw()
+        self.bt_quit.draw()
         for ghost in ghosts:
             ghost.draw()
 
