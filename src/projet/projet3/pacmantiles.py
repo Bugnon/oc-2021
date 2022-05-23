@@ -48,12 +48,15 @@ ghosts = [
 
 class Pacman:
     """Define a pacman."""
-    def __init__(self, pos, aim):
+    def __init__(self, pos, aim, direction):
         self.pos = pos
         self.aim = aim
+        self.direction = direction
         
     def move(self):
         """Move a pacman."""
+        if world.valid(self.pos + self.direction):
+            self.aim = self.direction
         if world.valid(self.pos + self.aim):
             self.pos.move(self.aim)
 
@@ -65,7 +68,10 @@ class Pacman:
             x = self.pos[0]
             y = self.pos[1]
             square(x, y)
-
+        
+    def change(self, x, y):
+        """Change pacman aim if valid."""
+        self.direction = vector(x, y)
         
     def draw(self):
         """Draw a pacman."""
@@ -76,7 +82,7 @@ class Pacman:
         """Represent a pacman with a string."""
         return f'Pacman({self.pos})'
     
-pacman = Pacman(vector(-40, -80), vector(5, 0))
+pacman = Pacman(vector(-40, -80), vector(5, 0), vector(5, 0))
 
 tiles = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -216,12 +222,6 @@ def square(x, y):
 
     path.end_fill()
 
-
-def change(x, y):
-    """Change pacman aim if valid."""
-    if world.valid(pacman.pos + vector(x, y)):
-        pacman.aim = vector(x, y)
-
 def f(x, y):
     """Debug the tile index."""
     p = vector(x, y)
@@ -237,10 +237,10 @@ class Game:
         tracer(False)
 
         listen()
-        onkey(lambda: change(5, 0), 'Right')
-        onkey(lambda: change(-5, 0), 'Left')
-        onkey(lambda: change(0, 5), 'Up')
-        onkey(lambda: change(0, -5), 'Down')
+        onkey(lambda: pacman.change(5, 0), 'Right')
+        onkey(lambda: pacman.change(-5, 0), 'Left')
+        onkey(lambda: pacman.change(0, 5), 'Up')
+        onkey(lambda: pacman.change(0, -5), 'Down')
         onkey(lambda: world.load(tiles2), '2')
         onkey(lambda: world.load(tiles), '1')
         onscreenclick(f)
