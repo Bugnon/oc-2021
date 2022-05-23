@@ -34,7 +34,7 @@ class Ghost:
         """Draw a ghost."""
         goto(self.pos.x + 10, self.pos.y + 10)
         dot(20, 'red')
-        
+
     def __str__(self):
         """Represent a ghost with a string."""
         return f'Ghost({self.pos})'
@@ -60,15 +60,15 @@ class Pacman:
         if world.valid(self.pos + self.aim):
             self.pos.move(self.aim)
 
-        i, j = world.index(self.pos)
+        i, j = world.index(self.pos + vector(10, 10))
 
         if world.tiles[i][j] == 1:
-            world.tiles[i][j] = 2
-            score.score += 1
-            x = self.pos[0]
-            y = self.pos[1]
-            square(x, y)
-        
+            """Check if the point is in Pacman"""
+            if abs(vector(-200 + j * 20 , 180 - i * 20) - pacman.pos) <= 5 :
+                world.tiles[i][j] = 2
+                score.score += 1
+                world.remove_point()
+
     def change(self, x, y):
         """Change pacman aim if valid."""
         self.direction = vector(x, y)
@@ -154,7 +154,12 @@ class World:
                     path.up()
                     path.goto(x + 10, y + 10)
                     path.dot(2, 'white')
-                    
+
+    def remove_point(self):
+        path.up()
+        path.goto(pacman.pos + vector(10, 10))
+        path.dot(20)
+
     def load(self, tiles):
         self.tiles = tiles
         path.clear()
@@ -253,10 +258,10 @@ class Game:
         pacman.move()
         for ghost in ghosts:
             ghost.move()
-            if abs(pacman.pos - ghost.pos) < 20:
+            if abs(pacman.pos - ghost.pos) < 19:
                 return
         self.draw()
-        ontimer(self.move, 200)
+        ontimer(self.move, 300)
         
     def draw(self):
         """Draw all game objects."""
