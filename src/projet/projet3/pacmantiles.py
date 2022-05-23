@@ -170,6 +170,14 @@ class World:
         i, j = self.index(point + vector(15, 15))
         if self.tiles[i][j] == 0:
             return False
+
+        i, j = self.index(point + vector(15, 0))
+        if self.tiles[i][j] == 0:
+            return False   
+        
+        i, j = self.index(point + vector(0, 15))
+        if self.tiles[i][j] == 0:
+            return False
         
         return True        
         
