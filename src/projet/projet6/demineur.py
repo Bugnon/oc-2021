@@ -7,7 +7,7 @@ from random import *
 from turtle import *
 from time import *
 from tkinter import *
-
+import pygame 
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps', '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
 
 
@@ -85,14 +85,14 @@ def ligne(p, q):
 class Game:
      def __init__(self):
 
-        setup(600,400)
-        hideturtle()
-        tracer(0)
-        up()
+         setup(600,400)
+         hideturtle()
+         tracer(0)
+         up()
 
-        global state
+         global state
 
-        state = [[0,0,0,0,0,0,0,0],
+         state = [[0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
@@ -100,20 +100,20 @@ class Game:
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0]]
-        
-        self.highscore = []
-        self.title = Text((0,165), 'Welcome to the best game ever: The Demineur', 20, 'center')
-        self.bt_highscore = Button((200, 100), 'Highscores')
-        self.bt_new = Button((200, 50), 'New')
-        self.bt_difficulty = Button((200, 0), 'Diffuculty')
+         
+         self.highscore = []
+         self.title = Text((0,165), 'Welcome to the best game ever: The Demineur', 20, 'center')
+         self.bt_highscore = Button((200, 100), 'Highscores')
+         self.bt_new = Button((200, 50), 'New')
+         self.bt_difficulty = Button((200, 0), 'Diffuculty')
 
-        self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
-        self.grid = Grid()
-        self.generate()
-        s = getscreen()
-        s.onclick(self.click)
-        s.listen()
-        done()
+         self.title = Text((0,650), 'Welcome to the best game ever: The Demineur', 20, align='center')
+         self.grid = Grid()
+         self.generate()
+         s = getscreen()
+         s.onclick(self.click)
+         s.listen()
+         done()
 
      def generate(self):
          for i in range(9):
@@ -210,9 +210,8 @@ class Game:
          if state[ligne][colonne] < 10:
              if state[ligne][colonne] >= 6:
                  """ inserer l'image d'une bombe """
-                 addshape('mine1.gif')
-                 shape('mine1.gif')
-
+                 pygame.blit('mine123.gif', (0,0))
+                 pygame.display.flip()
              if state[ligne][colonne] < 6:
                  """ montrer le chiffre """
                  self.num = Text((x,y),state[ligne][colonne])
@@ -260,7 +259,8 @@ class Game:
              y = (130 - (ligne * 20) * 2) + 40
              self.num = Text((x,y),'0')
             
-
+     def loose(self):
+         clear()
 
 class Highscores:
      def __init__(self):
