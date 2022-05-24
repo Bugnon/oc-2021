@@ -83,7 +83,7 @@ def ligne(p, q):
     up()
 
 class Game:
-     def __init__(self):
+    def __init__(self):
 
          setup(600,400)
          hideturtle()
@@ -100,6 +100,7 @@ class Game:
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,0,0]]
+         self.print_state()
          
          self.highscore = []
          self.title = Text((0,165), 'Welcome to the best game ever: The Demineur', 20, 'center')
@@ -115,12 +116,14 @@ class Game:
          s.listen()
          done()
 
-     def generate(self):
+    def generate(self):
          for i in range(9):
             state[randint(0, 7)][randint(0, 7)] = 6
+         self.print_state()
          self.check()
+         self.print_state()
 
-     def check(self):
+    def check(self):
          for i in range(8):
              for n in range(8):
                  if state[i][n] >= 6:
@@ -177,7 +180,7 @@ class Game:
                              state[6][n-1] += 1
                              state[6][n] += 1
 
-     def click(self, x, y):
+    def click(self, x, y):
          if self.grid.inside(x, y):
              global i 
              global j
@@ -203,7 +206,7 @@ class Game:
             clear()
             self.difficulty = Difficulty()
 
-     def load(self, ligne, colonne):
+    def load(self, ligne, colonne):
          x = -180 + ((colonne + 1) * 40)
          y = (130 - (ligne * 20) * 2)
 
@@ -218,61 +221,89 @@ class Game:
                  if state[ligne][colonne] == 0:
                      self.holes(ligne, colonne)
 
-     def holes(self, ligne, colonne):
-         if state[ligne][colonne + 1] == 0:
-             x = -180 + ((colonne + 2) * 40)
-             y = (130 - (ligne * 20) * 2)
-             self.num = Text((x,y),'0')
+    def draw_cell_text(self, ligne, colonne, texte):
+        x = -180 + ((colonne + 2) * 40)
+        y = (130 - (ligne * 20) * 2)
+        Text((x, y),'0')
 
-         if state[ligne][colonne - 1] == 0:
-             x = -180 + ((colonne) * 40)
-             y = (130 - (ligne * 20) * 2)
-             self.num = Text((x,y),'0')
-             
-         if state[ligne + 1][colonne + 1] == 0:
-             x = -180 + ((colonne + 2) * 40)
-             y = (130 - (ligne * 20) * 2) - 40
-             self.num = Text((x,y),'0')
-             
-         if state[ligne + 1][colonne - 1] == 0:
-             x = -180 + ((colonne) * 40)
-             y = (130 - (ligne * 20) * 2) - 40
-             self.num = Text((x,y),'0')
+    def print_state(self):
+        for ligne in state:
+            print(ligne)
+        print()
 
-         if state[ligne - 1][colonne + 1] == 0:
-             x = -180 + ((colonne + 2) * 40)
-             y = (130 - (ligne * 20) * 2) + 40
-             self.num = Text((x,y),'0')
-             
-         if state[ligne - 1][colonne - 1] == 0:
-             x = -180 + ((colonne) * 40) 
-             y = (130 - (ligne * 20) * 2) + 40
-             self.num = Text((x,y),'0')
-                 
-         if state[ligne + 1][colonne] == 0:
-             x = -180 + ((colonne + 1) * 40)
-             y = (130 - (ligne * 20) * 2) - 40
-             self.num = Text((x,y),'0')
-             
-         if state[ligne - 1][colonne] == 0:
-             x = -180 + ((colonne + 1) * 40)
-             y = (130 - (ligne * 20) * 2) + 40
-             self.num = Text((x,y),'0')
-            
-     def loose(self):
+    def holes(self, l, c):
+         """Affiche tous les 0 (cellules vides), quand le joueur clique dans la cellule state[l][c]."""
+         for i in range(3):
+             for n in range(3):
+                 ligne = l + n
+                 colonne = c + i
+                 if colonne != 7:
+                    if state[ligne][colonne + 1] == 0:
+                        # x = -180 + ((colonne + 2) * 40)
+                        # y = (130 - (ligne * 20) * 2)
+                        # self.num = Text((x,y),'0')
+                        self.draw_cell_text(ligne, colonne, '0')
+
+                 if colonne != 0:
+                    if state[ligne][colonne - 1] == 0:
+                        x = -180 + ((colonne) * 40)
+                        y = (130 - (ligne * 20) * 2)
+                        self.num = Text((x,y),'0')
+
+
+                 if ligne != 7 and colonne != 7:
+                    if state[ligne + 1][colonne + 1] == 0:
+                        x = -180 + ((colonne + 2) * 40)
+                        y = (130 - (ligne * 20) * 2) - 40
+                        self.num = Text((x,y),'0')
+
+                 if ligne != 0 and colonne != 0: 
+                    if state[ligne + 1][colonne - 1] == 0:
+                        x = -180 + ((colonne) * 40)
+                        y = (130 - (ligne * 20) * 2) - 40
+                        self.num = Text((x,y),'0')
+
+                 if ligne != 0 and colonne != 7:
+                    if state[ligne - 1][colonne + 1] == 0:
+                        x = -180 + ((colonne + 2) * 40)
+                        y = (130 - (ligne * 20) * 2) + 40
+                        self.num = Text((x,y),'0')
+                    
+                 if ligne != 0 and colonne != 0:
+                    if state[ligne - 1][colonne - 1] == 0:
+                        x = -180 + ((colonne) * 40) 
+                        y = (130 - (ligne * 20) * 2) + 40
+                        self.num = Text((x,y),'0')
+                        
+                 if ligne != 7:
+                    if state[ligne + 1][colonne] == 0:
+                        x = -180 + ((colonne + 1) * 40)
+                        y = (130 - (ligne * 20) * 2) - 40
+                        self.num = Text((x,y),'0')
+                    
+                 if ligne != 0:
+                    if state[ligne - 1][colonne] == 0:
+                        x = -180 + ((colonne + 1) * 40)
+                        y = (130 - (ligne * 20) * 2) + 40
+                        self.num = Text((x,y),'0')
+                
+    def loose(self):
          clear()
 
+    def win(self):
+         ...
+
 class Highscores:
-     def __init__(self):
+    def __init__(self):
          ...
 
 class Difficulty:
-     def __init__(self):
+    def __init__(self):
          ...
         
     
 class Grid:
-     def __init__(self, n=8, m=8, d=40, ongrid=True):
+    def __init__(self, n=8, m=8, d=40, ongrid=True):
         """Create a new Grid instance"""
         self.n = n        # vertical (y)
         self.m = m        # horizontal (x)
@@ -285,7 +316,7 @@ class Grid:
         self.draw()
 
      
-     def draw(self):
+    def draw(self):
         """Draw the grid."""
         for x in range(-self.x0, self.x0+1, self.d):
             ligne((x, -self.y0), (x, self.y0))
@@ -293,7 +324,7 @@ class Grid:
         for y in range(-self.y0, self.y0+1, self.d):
             ligne((-self.x0, y), (self.x0, y))
 
-     def inside(self, x, y):
+    def inside(self, x, y):
         """Check if (x, y) is inside the grid."""
         x0 = self.x0
         y0 = self.y0
@@ -302,7 +333,7 @@ class Grid:
             y0 += self.d // 2    
         return -x0 < x < x0 and -y0 < y < y0
             
-     def get_cell(self, x, y):
+    def get_cell(self, x, y):
         """Returns the coordinates of center or intersection."""
         
         x += self.x0
@@ -316,7 +347,7 @@ class Grid:
         
         print(i, j)
                
-     def __str__(self):
+    def __str__(self):
         return f'Grid({self.n}, {self.m})'
 
 game = Game()
