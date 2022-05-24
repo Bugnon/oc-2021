@@ -306,14 +306,13 @@ def f(x, y):
 
 class Game:
     """Define the game class."""
-    def __init__(self, waiting):
-        self.waiting = waiting
+    def __init__(self):
         up()
         setup(600, 400)
         hideturtle()
         tracer(False)
         self.bt_quit = Button((150, 50), 'Quit', (100,50))
-        self.bt_retry = Button((-200, 0), "Retry", (200,100))
+        self.bt_retry = Button((-125, -25), "Retry", (200,100))
 
 
 
@@ -338,14 +337,13 @@ class Game:
     
     def move(self):
         """Move all game objects."""
-        if self.waiting == False:
+        if pacman.isdead == False:
             pacman.move()
             for ghost in ghosts:
                 ghost.move()
                 if abs(pacman.pos - ghost.pos) < 19:
                     pacman.isdead = True
             if pacman.isdead == True:
-                self.waiting = True
                 self.bt_retry.draw()
                     
             else:
@@ -365,4 +363,4 @@ class Game:
     def restart(self):
         os.execl(sys.executable, sys.executable, *sys.argv)
 
-Game(False)
+Game()
