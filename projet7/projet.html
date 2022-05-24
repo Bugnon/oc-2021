@@ -261,9 +261,27 @@
 <p>Un autre aspect intéressant du puissance 4 est qu’il faut vérifier si un des joueurs a gagné, et donc vérifier (en plus des lignes et des colonnes) les diagonales. Pour l’instant cela reste un défi pour moi et j’ai hâte de me pencher sur ce problème.</p>
 <p>De plus j’ai quelques idées, par exemple permettre au(x) joueur(s) d’entrer leur nom au début du jeu, puis ce nom changera de couleur si c’est à lui de jouer ou non, ou alors (lorsqu’un joueur a gagné) de changer l’aspect des pions gagnants (donc le programme doit connaitre les coordonnées des pions gagnants), ou encore de permettre au joueur de sélectionner dans un premier temps la colonne dans laquelle il veut jouer, puis dans un second temps de confirmer si il souhaite jouer dans cette colonne.</p>
 </section>
+<section id="description-du-jeu">
+<h2>Description du jeu<a class="headerlink" href="#description-du-jeu" title="Lien permanent vers ce titre">¶</a></h2>
+<p>blabla</p>
+</section>
+<section id="representation-de-letat">
+<h2>Réprésentation de l’état<a class="headerlink" href="#representation-de-letat" title="Lien permanent vers ce titre">¶</a></h2>
+<p>L’état du jeu est représenté avec un tableau 2D appelé <code class="docutils literal notranslate"><span class="pre">state</span></code></p>
+<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoNik6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo3KQoKZm9yIGxpbmUgaW4gc3RhdGU6CiAgICBwcmludChsaW5lKQ==" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div><p>Après deux tours, l’état pourrait se présenter ainsi:</p>
+<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoNik6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo3KQoKc3RhdGVbNV1bMV0gPSAxCnN0YXRlWzVdWzJdID0gMgogICAgCmZvciBsaW5lIGluIHN0YXRlOgogICAgcHJpbnQobGluZSk=" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div><p>## Les variables</p>
+<p>Formules mathématiques en LaTeX</p>
+<div class="math-wrapper"><div class="math notranslate nohighlight">
+\[ a^2 = x_2 \]</div></div>
+</section>
+<section id="comment-jouer">
+<h2>Comment jouer<a class="headerlink" href="#comment-jouer" title="Lien permanent vers ce titre">¶</a></h2>
+<p>votre interface</p>
+<p><img alt="description" src="projet7/image.png"/></p>
+</section>
 <section id="codeplay">
 <h2>Codeplay<a class="headerlink" href="#codeplay" title="Lien permanent vers ce titre">¶</a></h2>
-<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="ZnJvbSB0dXJ0bGUgaW1wb3J0ICoK" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div></section>
+<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoNik6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo3KQoKZm9yIGxpbmUgaW4gc3RhdGU6CiAgICBwcmludChsaW5lKQ==" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div></section>
 </section>
 
         </article>
@@ -321,6 +339,9 @@
             <ul>
 <li><a class="reference internal" href="#">7. Puissance 4</a><ul>
 <li><a class="reference internal" href="#motivation">Motivation</a></li>
+<li><a class="reference internal" href="#description-du-jeu">Description du jeu</a></li>
+<li><a class="reference internal" href="#representation-de-letat">Réprésentation de l’état</a></li>
+<li><a class="reference internal" href="#comment-jouer">Comment jouer</a></li>
 <li><a class="reference internal" href="#codeplay">Codeplay</a></li>
 </ul>
 </li>
@@ -342,6 +363,8 @@
     <script src="../_static/blanks.js"></script>
     <script src="../_static/timeline.js"></script>
     <script src="../_static/translations.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="../_static/scripts/reactions.js"></script>
     <script src="../_static/scripts/progress.js"></script>
