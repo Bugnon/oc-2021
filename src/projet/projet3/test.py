@@ -313,7 +313,7 @@ class Game:
         hideturtle()
         tracer(False)
         self.bt_quit = Button((150, 50), 'Quit', (100,50))
-        self.bt_retry = Button((-200, 0), "Retry", (200,100))
+        self.bt_retry = Button((-125, -25), "Retry", (200,100))
 
 
 
