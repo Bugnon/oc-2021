@@ -2,7 +2,7 @@
 from turtle import *
 from random import choice
 from time import sleep
-#rom pygame import mixer
+from pygame import mixer
 setup(600, 400)
 hideturtle()
 tracer(0)
@@ -142,7 +142,7 @@ def reboutons(rage, hist = 1, back = 0):
 
 
 # cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
-"""def song(win):
+def song(win):
     mixer.music.stop()
     if win:
         mixer.music.load('win.mp3')
@@ -154,7 +154,7 @@ def reboutons(rage, hist = 1, back = 0):
         sleep(1)
     mixer.music.load('Sojiada-Lanmou.mp3')
     mixer.music.play(-1)
-"""
+
 
 # cette fonction sert à écrire l'historique sous formes de flèches
 def end_hist():
@@ -439,10 +439,10 @@ def droite():
         
 
 # cette fonction lance le son de fond
-"""def son_fond():
+def son_fond():
     mixer.init()
     mixer.music.load('Meydn-SynthwaveVibe.mp3')
-    mixer.music.play(-1)"""
+    mixer.music.play(-1)
 
 
 # cette fonction déssine le cadre du jeu et lance le son de fond
@@ -451,7 +451,7 @@ def main():
     stamp()
     cases()
     new(1)
-    #son_fond()
+    son_fond()
     resultat()
     
 
