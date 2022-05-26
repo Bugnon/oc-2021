@@ -3,10 +3,7 @@ from turtle import *
 from random import choice
 from time import sleep
 from pygame import mixer
-# setup(600, 400)
-# hideturtle()
-# tracer(0)
-# up()
+
 
 state = [
 [0, 0, 0, 0],
@@ -62,6 +59,13 @@ class Case:
             
     def __str__(self):
         return f'Case({self.pos}, {self.text})'
+    
+    
+    def cases():
+        tour = Case((-180, 200), -1, 360)
+        for y in 190, 102.5, 15, -72.5:
+            for x in -170, -82.5, 5, 92.5:
+                case_begin = Case((x, y), 0)
 
 
 
@@ -108,64 +112,66 @@ class Button:
     def __init__(self, pos, text, size=(60, 30), color= 'Lightgrey'):
         # hello
         self.rect = Rectangle(pos, size, color)
-        x, y = self.pos
-        w, h = self.size
-        self.label = Text((x+w/2, y+h/4 - 1), text, h//2, 'center')
+        x, y = pos
+        w, h = size
         self.color = color
-        self.draw()
+        self.label = Text((x+w/2, y+h/4 - 1), text, h//2, 'center')
+#         self.draw()
     
-    # cette fonction permet de dessiner le bouton
+#     # cette fonction permet de dessiner le bouton
     def draw(self):
-        goto(self.pos)
-        fillcolor(self.color)
-        begin_fill()
-        for x in self.size * 2:
-            forward(x)
-            left(90)
-        end_fill()
-#         x, y = self.pos
-#         w, h = self.size
-        goto(x+w/2, y+h/4 - 1)
-        color('black')
-        write(self.text, font=('Arial', h//2), align='center')
-
-    def __str__(self):
-        return f'Button({self.pos}, {self.text})'
+        self.rect.draw()
+        self.label.draw()
+#         goto(self.pos)
+# #         fillcolor(self.color)
+# #         begin_fill()
+# #         for x in self.size * 2:
+# #             forward(x)
+# #             left(90)
+# #         end_fill()
+# #         x, y = self.pos
+# #         w, h = self.size
+#         goto(x+w/2, y+h/4 - 1)
+#         color('black')
+#         write(self.text, font=('Arial', h//2), align='center')
+# 
+#     def __str__(self):
+#         return f'Button({self.pos}, {self.text})'
 
     # cette fonction permet de calculer si la position donnée est à l'intérieur du bouton
     def inside(self, p):
-        x, y = self.pos
-        w, h = self.size
-        return 0 < p[0]-x < w and 0 < p[1]-y < h
+        return self.rect.inside(p)
    
 
 # cette fonction permet de créer le tour et les 16 cases vides du début du jeu 
-class Cases:
-    """ """
-
-    def __init__(self, pos, size, color='gray'):
-        """ """
-        self.pos = pos
-        self.size = size
-        self.color = color
-        self.draw()
+# class Cases:
+#     """ """
+# 
+#     def __init__(self, pos, size, color='gray'):
+#         """ """
+#         self.pos = pos
+#         self.size = size
+#         self.color = color
+#         self.draw()
 
 
 
 class Text:
     """Draw a text at a given position."""
     
-    def __init__(self, pos, text, size, align):
+    def __init__(self, pos, text, size, align, color='black'):
         """Initilizes the text"""
         self.pos = pos
         self.text = text
         self.size = size
         self.align = align
+        self.color = color
         self.draw()
         
     def draw(self):
         """Draw the text."""
         goto(self.pos)
+        color(self.color)
         write(self.text, font=('Arial', self.size), align=self.align)
 
 
@@ -252,7 +258,7 @@ def end(text, win):
         goto(0, 200)
         write('👍     ╰*°▽°*╯     👍', font=('Arial', 50), align='center')
     color('black')
-    song(win)
+#     song(win)
         
 
 # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
@@ -536,46 +542,32 @@ def newgame():
     rezero()
     hist = []
     reboutons(1, 1, 1)
-    cases()
+    Case.cases()
     new(1)
     resultat()
-    son_fond()
+#     son_fond()
     
 
-# cette fonction permet de savoir si le joueur à cliquer dans un boutons et, si oui, lance la fonction de ce dernier    
-def f(x, y):
-    if pause == 1:
-        if button_end.inside((x, y)):
-            end('Tant Pis :(', 0)
-        if button_new.inside((x, y)):
-            newgame()
-        if button_back.inside((x, y)):
-            global hist
-            if len(hist) != 0:
-                retour()
-    if button_hist.inside((x, y)):
-        reboutons(0, 0)
-        end_hist()
-    if button_quit.inside((x, y)):
-        mixer.quit()
-        bye()
+# cette fonction permet de savoir si le joueur a cliqué dans un boutons et, si oui, lance la fonction de ce dernier    
+# def f(x, y):
+#     if pause == 1:
+#         if button_end.inside((x, y)):
+#             end('Tant Pis :(', 0)
+#         if button_new.inside((x, y)):
+#             newgame()
+#         if button_back.inside((x, y)):
+#             global hist
+#             if len(hist) != 0:
+#                 retour()
+#     if button_hist.inside((x, y)):
+#         reboutons(0, 0)
+#         end_hist()
+#     if button_quit.inside((x, y)):
+#         mixer.quit()
+#         bye()
 
 
-# button_hist = Button((210, -135), 'hist', (60, 30))
-# main()
-# button_end = Button((210, 125), 'Rage', (60, 30))
-# button_new = Button((210, -5), 'New', (60, 30))
-# button_back = Button((210, 60), 'Back', (60, 30))
-# button_quit = Button((210, -70), 'Quit', (60, 30))
-# s = getscreen()
-# s.onkey(haut, 'Up')
-# s.onkey(bas, 'Down')
-# s.onkey(gauche, 'Left')
-# s.onkey(droite, 'Right')
-# s.onkey(retour,'BackSpace')
-# s.onclick(f)
-# s.listen()
-done()
+# done()
 
 
 # -------------  Classes  -------------
@@ -590,12 +582,13 @@ class Game:
         
         addshape('bois.gif')
         shape('bois.gif')
+        stamp()
 
         self.score = 0
         self.historique = []
+        self.cases = Case.cases()
 #         self.
-#         self.
-        self.button_hist = Button((210, -135), 'hist')
+#         self.button_hist = Button((210, -135), 'hist')
         self.button_end = Button((210, 125), 'Rage')
         self.button_new = Button((210, -5), 'New')
         self.button_back = Button((210, 60), 'Back')
@@ -608,15 +601,33 @@ class Game:
         s.onkey(gauche, 'Left')
         s.onkey(droite, 'Right')
         s.onkey(retour,'BackSpace')
-        s.onclick(f)
+        s.onclick(self.click)
         s.listen()
+
+    
+    def click(self, x, y):
+        p = x, y
+        if self.button_quit.inside(p):
+#             mixer.quit()
+            bye()
+
+        if self.button_end.inside(p):
+            end('Tant Pis :(', 0)
+        if self.button_new.inside(p):
+            newgame()
+
+        if self.button_back.inside(p):
+             global hist
+             if len(hist) != 0:
+                retour()
+#         
 
     def draw(self):
         """Draws all the game objects."""
-#         self.cases.draw()
+        self.cases.draw()
 #         self.title.draw()
 #         self.status.draw()
-        self.button_hist.draw()
+#         self.button_hist.draw()
         self.button_end.draw()
         self.button_new.draw()
         self.button_back.draw()
