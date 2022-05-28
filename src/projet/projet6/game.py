@@ -183,13 +183,17 @@ class Game:
         s.onkey(clear, 'BackSpace')
         s.onkey(self.draw, ' ')  
         s.listen()
+        done()
         
     def click(self, x, y):
         """Reacts to mouse clicks."""
         if self.grid.inside(x, y):
+            j = int((x + 160) // 40)
+            i = int((159 - y) // 40)
+    
             goto(x, y)
             dot()
-            write(x, y)
+            write((i, j))
         
         p = x, y
         if self.bt_clear.inside(p):

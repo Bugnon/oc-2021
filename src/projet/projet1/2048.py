@@ -97,9 +97,9 @@ class Button:
         x, y = self.pos
         w, h = self.size
         return 0 < p[0]-x < w and 0 < p[1]-y < h
-   
 
-# cette fonction permet de créer le tour et les 16 cases vides du début du jeu 
+
+
 def cases():
     tour = Case((-180, 200), -1, 360)
     for y in 190, 102.5, 15, -72.5:
@@ -142,6 +142,7 @@ def song(win):
         sleep(1)
     mixer.music.load('Sojiada-Lanmou.mp3')
     mixer.music.play(-1)
+
 
 # cette fonction sert à écrire l'historique sous formes de flèches
 def end_hist():
@@ -506,8 +507,12 @@ s.onclick(f)
 s.listen()
 done()
 
-#class Game:
-
+class Game:
+     def __init__(self):
+         setup(600, 400)
+         hideturtle()
+         tracer(0)
+         up()
 
 # perdre
 # new 1x sur 2 un 4

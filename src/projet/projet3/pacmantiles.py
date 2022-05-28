@@ -13,10 +13,6 @@ Transformer en programmation orientée objet avec les classe :
 from random import choice
 from turtle import *
 from freegames import vector
-import time
-import os 
-import sys 
-import subprocess
 
 path = Turtle(visible=False)
 
@@ -117,15 +113,11 @@ ghosts = [
 ]
 
 class Pacman:
-    """Define a pacman.
-    With the argument game, Pacman can access its game environment.
-    """
-    def __init__(self, game, pos, aim, direction, isdead):
-        self.game = game
+    """Define a pacman."""
+    def __init__(self, pos, aim, direction):
         self.pos = pos
         self.aim = aim
         self.direction = direction
-        self.isdead = isdead 
         
     def move(self):
         """Move a pacman."""
@@ -138,15 +130,10 @@ class Pacman:
 
         if world.tiles[i][j] == 1:
             """Check if the point is in Pacman"""
-            if abs(vector(-200 + j * 20 , 180 - i * 20) - self.pos) <= 5 :
+            if abs(vector(-200 + j * 20 , 180 - i * 20) - pacman.pos) <= 5 :
                 world.tiles[i][j] = 2
-                self.game.score.value += 1
-                self.remove_point()
-
-    def remove_point(self):
-        path.up()
-        path.goto(self.pos + vector(10, 10))
-        path.dot(20)
+                score.score += 1
+                world.remove_point()
 
     def change(self, x, y):
         """Change pacman aim if valid."""
@@ -160,7 +147,8 @@ class Pacman:
     def __str__(self):
         """Represent a pacman with a string."""
         return f'Pacman({self.pos})'
-
+    
+pacman = Pacman(vector(-40, -80), vector(5, 0), vector(5, 0))
 
 tiles = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -195,10 +183,10 @@ tiles2 = [
     [0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
     [0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0],
-    [0, 0, 1, 0, 1, 0, 1, 0, 0, 8, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
     [0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
     [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
     [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
     [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
     [0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0],
@@ -209,31 +197,6 @@ tiles2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
-
-tiles3 = """
-01001001010010010000
-01001001010010010000
-010g1001010p10010000
-01001001010010010000
-01001001010g10010000
-"""
-
-
-
-class Setting:
-    """Define initial state (level)."""
-
-    def __init__(self, tiles, pacman, ghosts):
-        self.tiles
-        self.pacman
-        self.ghosts
-
-
-# level1 = Setings()
-# level1.tiles = ...
-# level1.pacman = ...
-
-
 
 
 class World:
@@ -257,6 +220,11 @@ class World:
                     path.up()
                     path.goto(x + 10, y + 10)
                     path.dot(2, 'white')
+
+    def remove_point(self):
+        path.up()
+        path.goto(pacman.pos + vector(10, 10))
+        path.dot(20)
 
     def load(self, tiles):
         self.tiles = tiles
@@ -312,18 +280,18 @@ world = World(tiles)
 class Score:
     """Show the score."""
     def __init__(self):
-        self.value = 0
+        self.score = 0
         self.writer = Turtle(visible=False)
         self.writer.goto(160, 160)
         self.writer.color('white')
-        self.writer.write(self.value, font=(None, 24))
+        self.writer.write(self.score)
     
     def draw(self):
         """Display the score."""
         self.writer.undo()
-        self.writer.write(self.value, font=(None, 24))
+        self.writer.write(self.score)
     
-# score = Score()
+score = Score()
 
 def f(x, y):
     """Debug the tile index."""
@@ -339,18 +307,14 @@ class Game:
         hideturtle()
         tracer(False)
         self.bt_quit = Button((150, 50), 'Quit', (100,50))
-        self.bt_retry = Button((-125, -25), "Retry", (200,100))
-
-        # The first argument of Pacmn is the game (self)
-        self.pacman = Pacman(self, vector(-40, -80), vector(5, 0), vector(5, 0), False)
-        self.score = Score()
+        self.bt_retry = Button((200, 200), "Retry", (200,100))
 
 
         listen()
-        onkey(lambda: self.pacman.change(5, 0), 'Right')
-        onkey(lambda: self.pacman.change(-5, 0), 'Left')
-        onkey(lambda: self.pacman.change(0, 5), 'Up')
-        onkey(lambda: self.pacman.change(0, -5), 'Down')
+        onkey(lambda: pacman.change(5, 0), 'Right')
+        onkey(lambda: pacman.change(-5, 0), 'Left')
+        onkey(lambda: pacman.change(0, 5), 'Up')
+        onkey(lambda: pacman.change(0, -5), 'Down')
         onkey(lambda: world.load(tiles2), '2')
         onkey(lambda: world.load(tiles), '1')
         onscreenclick(self.click)
@@ -361,36 +325,24 @@ class Game:
     def click(self, x, y):
         if self.bt_quit.inside((x, y)):
             quit()
-        
-        if self.bt_retry.inside((x, y)):
-            self.restart()
     
     def move(self):
         """Move all game objects."""
-        if self.pacman.isdead == False:
-            self.pacman.move()
-            for ghost in ghosts:
-                ghost.move()
-                if abs(self.pacman.pos - ghost.pos) < 19:
-                    self.pacman.isdead = True
-            if self.pacman.isdead == True:
-                self.bt_retry.draw()
-                    
-            else:
-                self.draw()
-                ontimer(self.move, 100)
-            
-
+        pacman.move()
+        for ghost in ghosts:
+            ghost.move()
+            if abs(pacman.pos - ghost.pos) < 19:
+                return
+        self.draw()
+        ontimer(self.move, 200)
+        
     def draw(self):
         """Draw all game objects."""
-        self.score.draw()
+        score.draw()
         clear()
-        self.pacman.draw()
+        pacman.draw()
         self.bt_quit.draw()
         for ghost in ghosts:
             ghost.draw()
-    
-    def restart(self):
-        os.execl(sys.executable, sys.executable, *sys.argv)
 
 Game()
