@@ -7,7 +7,7 @@ from random import *
 from turtle import *
 from time import *
 from tkinter import *
-import pygame
+
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps',
               '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
 
@@ -106,11 +106,12 @@ class Game:
                  [0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0]]
-        self.print_state()
 
         self.highscore = []
         self.title = Text(
             (0, 165), 'Welcome to the best game ever: The Demineur', 20, 'center')
+        self.bt_flag = Button((200,-50), 'Flag')
+        self.bt_bomb = Button((200,-100), 'Show')
         self.bt_highscore = Button((200, 100), 'Highscores')
         self.bt_new = Button((200, 50), 'New')
         self.bt_difficulty = Button((200, 0), 'Diffuculty')
@@ -127,9 +128,7 @@ class Game:
     def generate(self):
         for i in range(9):
             state[randint(0, 7)][randint(0, 7)] = 6
-        self.print_state()
         self.check()
-        self.print_state()
 
     def check(self):
         for i in range(8):
@@ -189,18 +188,20 @@ class Game:
                             state[6][n] += 1
 
     def click(self, x, y):
-        if self.grid.inside(x, y):
-            global i
-            global j
-            j = int((x + 160) // 40)
-            i = int((159 - y) // 40)
-
-            if 0 <= i <= 7 and 0 <= j <= 7:
-                self.load(i, j)
-            """"" i ligne
-                   j colonne"""
-
         p = x, y
+        b = 0
+        n = b + 0
+        if self.bt_flag.inside(p):
+            b = 1
+            print(n)
+            print(b)
+            
+
+        if self.bt_bomb.inside(p):
+            b = 0
+
+        if self.grid.inside(x,y):
+            self.flag(b,x,y)
 
         if self.bt_new.inside(p):
             clear()
@@ -214,20 +215,51 @@ class Game:
             clear()
             self.difficulty = Difficulty()
 
+    def bomb_position(self, ligne, colonne):
+        x = -180 + ((colonne + 1) * 40)
+        y = (130 - (ligne * 20) * 2)
+        Text((x-14,y+3), 'Bombe', 10)
+
+    def flag(self,n,x,y):
+        if n == 1:
+            self.onlyflags(x,y)
+        if n == 0:
+            self.onlyshow(x,y)
+
+    def onlyshow(self,x,y):
+        global i
+        global j
+        j = int((x + 160) // 40)
+        i = int((159 - y) // 40)
+        self.load(i,j)
+    
+
+    def onlyflags(self,x,y):
+        global i
+        global j
+        j = int((x + 160) // 40)
+        i = int((159 - y) // 40)
+        if 0 <= i <= 7 and 0 <= j <= 7:
+            x = -180 + ((j + 1) * 40)
+            y = (130 - (i * 20) * 2)
+            Text((x,y), '⚑')
+
     def load(self, ligne, colonne):
         x = -180 + ((colonne + 1) * 40)
         y = (130 - (ligne * 20) * 2)
 
-        if state[ligne][colonne] < 10:
-            if state[ligne][colonne] >= 6:
-                """ inserer l'image d'une bombe """
-                pygame.blit('mine123.gif', (0, 0))
-                pygame.display.flip()
-            if state[ligne][colonne] < 6:
-                """ montrer le chiffre """
-                self.num = Text((x, y), state[ligne][colonne])
-                if state[ligne][colonne] == 0:
-                    self.holes(ligne, colonne)
+        if state[ligne][colonne] >= 6:
+            """ inserer l'image d'une bombe """
+            for i in range(7):
+                for n in range(7):
+                    if state[i][n] > 5:
+                        self.bomb_position(i,n)
+
+        if state[ligne][colonne] < 6:
+            """ montrer le chiffre """
+            self.num = Text((x, y), state[ligne][colonne])
+            if state[ligne][colonne] == 0:
+                self.holes(ligne, colonne)
 
     def draw_cell_text(self, ligne, colonne, texte):
         x = -180 + ((colonne + 2) * 40)
@@ -238,6 +270,8 @@ class Game:
         for ligne in state:
             print(ligne)
         print()
+
+
 
     def holes(self, l, c):
         """Affiche tous les 0 (cellules vides), quand le joueur clique dans la cellule state[l][c]."""
@@ -294,8 +328,6 @@ class Game:
                         y = (130 - (ligne * 20) * 2) + 40
                         self.num = Text((x, y), '0')
 
-    def loose(self):
-        clear()
 
     def win(self):
         ...
