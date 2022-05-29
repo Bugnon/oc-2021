@@ -255,8 +255,8 @@ def end(text, win):
     if not win: 
         citation()
     else:
-        goto(0, 200)
-        write('👍     ╰*°▽°*╯     👍', font=('Arial', 50), align='center')
+        goto(0, -100)
+        write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
     color('black')
 #     song(win)
         
@@ -281,7 +281,7 @@ def resultat():
     write('score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax), font=('Arial', 13), align='center')
     if nbrmax == 2048:
         sleep(1)
-        end('2048 c\'est la win! :)', 1)
+        end('2048 c\'est la win!', 1)
 
 
 
@@ -296,14 +296,16 @@ def coord_to_res(xcoord, ycoord):
 # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
 def retour():
     global retour_hist
-    retour_hist.pop()
     global state
-    global correspondance
-    for res in correspondance:
-        yres, xres = res
-        xcoord, ycoord = correspondance[res]
-        state[yres][xres] = retour_hist[-1][yres][xres]
-        caseback = Case((xcoord, ycoord), state[yres][xres])
+    print(retour_hist)
+    retour_hist.pop(-1)
+    print(retour_hist)
+    state = retour_hist[-1]
+    global correspondance_inverse
+    for c in correspondance_inverse:
+        y, x = correspondance_inverse[c]
+        text = state[y][x]
+        case_back = Case(c, text)
     global hist
     hist.pop()
     global score
@@ -637,12 +639,10 @@ class Game:
 
 game = Game()
 
-# perdre
-# new 1x sur 2 un 4
-# win trop de reboutons
-# show nbrmax
-# quit when win?????
-# sup nbr avec retour_hist
+# (perdre)
+# (new 1x sur 2 un 4)
+# (show nbrmax)
+# (sup nbr avec retour_hist)
 # back
 # 2 + 2 + 4 = 4 + 4
-#score
+# score
