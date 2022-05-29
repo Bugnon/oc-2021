@@ -488,13 +488,6 @@ s.onkey(droite, 'Right')
 s.onclick(f)
 s.listen()
 done()
-# perdre
-# new 1x sur 2 un 4
-# win trop de reboutons
-# show nbrmax
-# quit when win?????
-# sup nbr avec retour_hist
-# back
 
 ```
 
