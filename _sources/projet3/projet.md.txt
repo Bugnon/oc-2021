@@ -1,12 +1,13 @@
-# Space invaders
+# Pacman
 
 Alex et Walid
 
 ## Motivation
 
-blabla
+Nous avons choisi Pacman car il s'agit d'un jeu mytique, un jeu des salles d'arcade et surtout intemporelle. 
 
 ## Description
+Le pacman (rond jaune) doit récolter un maximum de point en évitant les fantômes (rond rouge). Notre jeu possède deux labyrinths.
 
 ## Structure
 

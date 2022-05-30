@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="9. Annexe" href="../annex.html" /><link rel="prev" title="7. Puissance 4" href="../projet7/projet.html" />
 
     <link rel="shortcut icon" href="../_static/modulo-icon.ico"/><meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
-        <title>8. Projet - projet final</title>
+        <title>8. Othello - projet final</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../_static/codeplay.css" />
@@ -219,12 +219,12 @@
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../projet1/projet.html">1. Jeu 2048</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet2/projet.html">2. Survie</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../projet3/projet.html">3. Space invaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projet3/projet.html">3. Pacman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet4/projet.html">4. TRON</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet5/projet.html">5. Projet - Snake</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet6/projet.html">6. Démineur</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet7/projet.html">7. Puissance 4</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">8. Projet</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">8. Othello</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../annex.html">9. Annexe</a></li>
 </ul>
 
@@ -252,12 +252,32 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="projet">
-<h1><span class="section-number">8. </span>Projet<a class="headerlink" href="#projet" title="Lien permanent vers ce titre">¶</a></h1>
+          <section class="tex2jax_ignore mathjax_ignore" id="othello">
+<h1><span class="section-number">8. </span>Othello<a class="headerlink" href="#othello" title="Lien permanent vers ce titre">¶</a></h1>
 <p>Arthur</p>
-<section id="codeplay">
-<h2>Codeplay<a class="headerlink" href="#codeplay" title="Lien permanent vers ce titre">¶</a></h2>
-<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="ZnJvbSB0dXJ0bGUgaW1wb3J0ICoK" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div></section>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le jeu d’Othello se joue sur une grille 8 x 8</p>
+</section>
+<section id="representation">
+<h2>Représentation<a class="headerlink" href="#representation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le jeu est représenté avec une liste 2D par une variable <code class="docutils literal notranslate"><span class="pre">state</span></code>.</p>
+<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoOCk6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo4KQoKZm9yIGxpbmUgaW4gc3RhdGU6CiAgICBwcmludChsaW5lKQ==" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div><p>La signification</p>
+<ul class="simple">
+<li><p>0 : case vide</p></li>
+<li><p>1 : case rempli par joueur 1 (noir)</p></li>
+<li><p>2 : case rempli par joueur 2 (gris)</p></li>
+</ul>
+</section>
+<section id="evolution">
+<h2>Evolution<a class="headerlink" href="#evolution" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le joueur peut cliquer dans une cellule.
+Supposons qu’il clique dans la cellue de la rangée 2, colonne 3, ce qui correspond à <code class="docutils literal notranslate"><span class="pre">state[2][3]</span></code>.</p>
+<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoOCk6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo4KQoKc3RhdGVbMl1bM10gPSAxCgpmb3IgbGluZSBpbiBzdGF0ZToKICAgIHByaW50KGxpbmUp" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div></section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Lien permanent vers ce titre">¶</a></h2>
+<p>blabla</p>
+</section>
 </section>
 
         </article>
@@ -313,8 +333,11 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">8. Projet</a><ul>
-<li><a class="reference internal" href="#codeplay">Codeplay</a></li>
+<li><a class="reference internal" href="#">8. Othello</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#representation">Représentation</a></li>
+<li><a class="reference internal" href="#evolution">Evolution</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
 </ul>
