@@ -1,5 +1,17 @@
-# Malik et Enrico
-# Projet Demineur
+"""
+Projet Demineur
+Malik et Enrico
+
+Description de votre projet
+
+Les classes:
+
+- Rectangle
+- Button
+- Text
+- Grid
+- Game
+"""
 
 from curses.textpad import rectangle
 from logging import root
@@ -8,11 +20,16 @@ from turtle import *
 from time import *
 from tkinter import *
 
+
 highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps',
               '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
 
 
 class Rectangle:
+    """This class draws a filled rectangle defined by
+    position, size and color.
+    """
+
     def __init__(self, pos, size, color='green'):
         self.pos = pos
         self.size = size
@@ -20,6 +37,7 @@ class Rectangle:
         self.draw()
 
     def outline(self):
+        """Draws just the outline of the rectangle."""
         goto(self.pos)
         down()
         for x in self.size * 2:
@@ -28,6 +46,7 @@ class Rectangle:
         up()
 
     def draw(self):
+        """Draws the filled rectangle."""
         if self.color:
             fillcolor(self.color)
             begin_fill()
@@ -37,6 +56,7 @@ class Rectangle:
             self.outline()
 
     def inside(self, p):
+        """Checks if a point p is inside the rectangle."""
         x, y = self.pos
         w, h = self.size
 
@@ -88,6 +108,63 @@ def ligne(p, q):
     up()
 
 
+class Grid:
+    def __init__(self, n=8, m=8, d=40, ongrid=True):
+        """Create a new Grid instance"""
+        self.n = n        # vertical (y)
+        self.m = m        # horizontal (x)
+        self.d = d        # distance
+        self.ongrid = ongrid
+        self.x0 = m * d // 2
+        self.y0 = n * d // 2
+
+        self.draw()
+
+    def draw(self):
+        """Draw the grid."""
+        for x in range(-self.x0, self.x0+1, self.d):
+            ligne((x, -self.y0), (x, self.y0))
+
+        for y in range(-self.y0, self.y0+1, self.d):
+            ligne((-self.x0, y), (self.x0, y))
+
+    def inside(self, x, y):
+        """Check if (x, y) is inside the grid."""
+        x0 = self.x0
+        y0 = self.y0
+        if self.ongrid:
+            x0 += self.d // 2
+            y0 += self.d // 2
+        return -x0 < x < x0 and -y0 < y < y0
+
+    def get_cell(self, x, y):
+        """Returns the coordinates of center or intersection."""
+
+        x += self.x0
+        y += self.y0
+        if self.ongrid:
+            x += self.d // 2
+            y += self.d // 2
+
+        i = int(y // self.d)
+        j = int(x // self.d)
+
+        print(i, j)
+
+    def __str__(self):
+        return f'Grid({self.n}, {self.m})'
+
+
+class Highscores:
+    def __init__(self):
+        ...
+
+
+class Difficulty:
+    def __init__(self):
+        ...
+
+
 class Game:
     def __init__(self):
 
@@ -110,11 +187,16 @@ class Game:
         self.highscore = []
         self.title = Text(
             (0, 165), 'Welcome to the best game ever: The Demineur', 20, 'center')
-        self.bt_flag = Button((200,-50), 'Flag')
-        self.bt_bomb = Button((200,-100), 'Show')
+        self.bt_flag = Button((200, -50), 'Flag')
+        # Add an extra attribute for the state (on/off)
+        self.bt_flag.state = False
+        # list to save the flags
+        self.flags = []  
+
+        self.bt_bomb = Button((200, -100), 'Show')
         self.bt_highscore = Button((200, 100), 'Highscores')
         self.bt_new = Button((200, 50), 'New')
-        self.bt_difficulty = Button((200, 0), 'Diffuculty')
+        self.bt_difficulty = Button((200, 0), 'Difficulty')
 
         self.title = Text(
             (0, 650), 'Welcome to the best game ever: The Demineur', 20, align='center')
@@ -122,6 +204,7 @@ class Game:
         self.generate()
         s = getscreen()
         s.onclick(self.click)
+        s.onkey(self.print_state, ' ')   # for debugging only
         s.listen()
         done()
 
@@ -189,19 +272,20 @@ class Game:
 
     def click(self, x, y):
         p = x, y
-        b = 0
-        n = b + 0
         if self.bt_flag.inside(p):
-            b = 1
-            print(n)
-            print(b)
-            
+            self.bt_flag.state = not self.bt_flag.state    # invert the state
+            print(self.bt_flag.state)       # print for debugging
+            self.bt_flag.rect.color = 'gray' if self.bt_flag.state else 'lightgray'
+            self.bt_flag.draw()
 
         if self.bt_bomb.inside(p):
             b = 0
 
-        if self.grid.inside(x,y):
-            self.flag(b,x,y)
+        if self.grid.inside(x, y):
+            if self.bt_flag.state:
+                self.onlyflags(x, y)
+            else:
+                self.onlyshow(x, y)
 
         if self.bt_new.inside(p):
             clear()
@@ -218,23 +302,16 @@ class Game:
     def bomb_position(self, ligne, colonne):
         x = -180 + ((colonne + 1) * 40)
         y = (130 - (ligne * 20) * 2)
-        Text((x-14,y+3), 'Bombe', 10)
+        Text((x, y), '⚛︎', 20)  # bombe
 
-    def flag(self,n,x,y):
-        if n == 1:
-            self.onlyflags(x,y)
-        if n == 0:
-            self.onlyshow(x,y)
-
-    def onlyshow(self,x,y):
+    def onlyshow(self, x, y):
         global i
         global j
         j = int((x + 160) // 40)
         i = int((159 - y) // 40)
-        self.load(i,j)
-    
+        self.load(i, j)
 
-    def onlyflags(self,x,y):
+    def onlyflags(self, x, y):
         global i
         global j
         j = int((x + 160) // 40)
@@ -242,7 +319,17 @@ class Game:
         if 0 <= i <= 7 and 0 <= j <= 7:
             x = -180 + ((j + 1) * 40)
             y = (130 - (i * 20) * 2)
-            Text((x,y), '⚑')
+            if (i, j) in self.flags:
+                self.flags.remove((i, j))
+                color('white')
+                Text((x, y), '⚑')
+                color('black')
+            else:
+                self.flags.append((i, j))
+                color('black')
+                Text((x, y), '⚑')
+
+        print(self.flags)   # print for debugging
 
     def load(self, ligne, colonne):
         x = -180 + ((colonne + 1) * 40)
@@ -253,7 +340,7 @@ class Game:
             for i in range(7):
                 for n in range(7):
                     if state[i][n] > 5:
-                        self.bomb_position(i,n)
+                        self.bomb_position(i, n)
 
         if state[ligne][colonne] < 6:
             """ montrer le chiffre """
@@ -270,8 +357,6 @@ class Game:
         for ligne in state:
             print(ligne)
         print()
-
-
 
     def holes(self, l, c):
         """Affiche tous les 0 (cellules vides), quand le joueur clique dans la cellule state[l][c]."""
@@ -328,66 +413,8 @@ class Game:
                         y = (130 - (ligne * 20) * 2) + 40
                         self.num = Text((x, y), '0')
 
-
     def win(self):
         ...
-
-
-class Highscores:
-    def __init__(self):
-        ...
-
-
-class Difficulty:
-    def __init__(self):
-        ...
-
-
-class Grid:
-    def __init__(self, n=8, m=8, d=40, ongrid=True):
-        """Create a new Grid instance"""
-        self.n = n        # vertical (y)
-        self.m = m        # horizontal (x)
-        self.d = d        # distance
-        self.ongrid = ongrid
-        self.x0 = m * d // 2
-        self.y0 = n * d // 2
-
-        self.draw()
-
-    def draw(self):
-        """Draw the grid."""
-        for x in range(-self.x0, self.x0+1, self.d):
-            ligne((x, -self.y0), (x, self.y0))
-
-        for y in range(-self.y0, self.y0+1, self.d):
-            ligne((-self.x0, y), (self.x0, y))
-
-    def inside(self, x, y):
-        """Check if (x, y) is inside the grid."""
-        x0 = self.x0
-        y0 = self.y0
-        if self.ongrid:
-            x0 += self.d // 2
-            y0 += self.d // 2
-        return -x0 < x < x0 and -y0 < y < y0
-
-    def get_cell(self, x, y):
-        """Returns the coordinates of center or intersection."""
-
-        x += self.x0
-        y += self.y0
-        if self.ongrid:
-            x += self.d // 2
-            y += self.d // 2
-
-        i = int(y // self.d)
-        j = int(x // self.d)
-
-        print(i, j)
-
-    def __str__(self):
-        return f'Grid({self.n}, {self.m})'
 
 
 game = Game()
