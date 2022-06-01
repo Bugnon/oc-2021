@@ -16,6 +16,9 @@ Plusieurs niveaux avec des vitesses différentes pour augmenter la difficulté d
 ## Les images 
 
 
+## But du jeu 
+
+
 ## Le son 
 
 
