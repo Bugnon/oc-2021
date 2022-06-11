@@ -137,7 +137,10 @@ class Grid:
         self.d = d        # distance
         self.x0 = m * d // 2
         self.y0 = n * d // 2
-        self.state = [[0] * 7] * 6
+        # self.state = [[0] * 7] * 6
+        self.state = []
+        for i in range(6):
+            self.state.append([0] * 7)
         
         self.draw()
     
@@ -344,7 +347,11 @@ class Game:
     def undo(self):
         print('Undo !')
         if len(self.history) == 2:
-            self.grid.state = [[0] * 7] * 6
+            # self.grid.state = [[0] * 7] * 6
+            self.grid.state = []
+            for i in range(6):
+                self.grid.state.append([0] * 7)
+
             self.history.clear()
             self.history = [[[0] * 7] * 6]
         else:
