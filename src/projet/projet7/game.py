@@ -228,7 +228,7 @@ class Game:
 
         ''' TEST '''
         # affichage du “state“ actuel dans la console
-        print('\nbefore change :')
+        print('TEST\n\nbefore change :')
         for y in range(6):
             # affiche une ligne après l'autre
             # en commançant par celle du haut
@@ -242,6 +242,7 @@ class Game:
         print('\nafter change :')
         for y in range(6):
             print(self.grid.state[y])
+        print('FIN DU TEST\n\n')
         ''' FIN DU TEST - même problème dans game.click() '''
 
         self.save()
