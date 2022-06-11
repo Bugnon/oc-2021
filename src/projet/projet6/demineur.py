@@ -16,13 +16,14 @@ Les classes:
 from curses.textpad import rectangle
 from logging import root
 from random import *
+from sys import flags
+from tracemalloc import stop
 from turtle import *
 from time import *
 from tkinter import *
 
+from attr import NOTHING
 
-highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps',
-              '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
 
 
 class Rectangle:
@@ -157,7 +158,14 @@ class Grid:
 
 class Highscores:
     def __init__(self):
-        ...
+        global highscores
+
+        highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps',
+              '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
+        
+    
+
+
 
 
 class Difficulty:
@@ -192,11 +200,15 @@ class Game:
         self.bt_flag.state = False
         # list to save the flags
         self.flags = []  
+        self.winlt = []
 
-        self.bt_bomb = Button((200, -100), 'Show')
+        self.win = False
+
         self.bt_highscore = Button((200, 100), 'Highscores')
         self.bt_new = Button((200, 50), 'New')
         self.bt_difficulty = Button((200, 0), 'Difficulty')
+
+        # self.timer = Text((-200,50), 'ELapsed time: ' + blablabla)
 
         self.title = Text(
             (0, 650), 'Welcome to the best game ever: The Demineur', 20, align='center')
@@ -210,7 +222,10 @@ class Game:
 
     def generate(self):
         for i in range(9):
-            state[randint(0, 7)][randint(0, 7)] = 6
+            f = randint(0, 7)
+            b = randint(0, 7)
+            state[f][b] = 6
+            self.winlt.append(([f],[b]))
         self.check()
 
     def check(self):
@@ -278,10 +293,7 @@ class Game:
             self.bt_flag.rect.color = 'gray' if self.bt_flag.state else 'lightgray'
             self.bt_flag.draw()
 
-        if self.bt_bomb.inside(p):
-            b = 0
-
-        if self.grid.inside(x, y):
+        if self.grid.inside(x, y) and self.win == False:
             if self.bt_flag.state:
                 self.onlyflags(x, y)
             else:
@@ -309,7 +321,10 @@ class Game:
         global j
         j = int((x + 160) // 40)
         i = int((159 - y) // 40)
-        self.load(i, j)
+        if (i,j) in self.flags:
+            ...
+        if (i,j) not in self.flags:
+            self.load(i, j)
 
     def onlyflags(self, x, y):
         global i
@@ -319,28 +334,47 @@ class Game:
         if 0 <= i <= 7 and 0 <= j <= 7:
             x = -180 + ((j + 1) * 40)
             y = (130 - (i * 20) * 2)
-            if (i, j) in self.flags:
-                self.flags.remove((i, j))
+            if (([i],[j])) in self.flags:
+                self.flags.remove(([i],[j]))
                 color('white')
                 Text((x, y), '⚑')
                 color('black')
+                Rectangle((-270,100), (90,20),'white')
+                Text((-270,100), 'Mines left: ' + str(8 - len(self.flags)))
             else:
-                self.flags.append((i, j))
+                self.flags.append(([i],[j]))
                 color('black')
                 Text((x, y), '⚑')
+                Rectangle((-270,100), (90,20),'white')
+                Text((-270,100), 'Mines left: ' + str(8 - len(self.flags)))
+                if 8 - len(self.flags) == 0:
+                    for i in range(8):
+                        if self.winlt[i] in self.flags:
+                            n = i
+                            if n == 7:
+                                self.win = True
+                                self.winnow()
 
-        print(self.flags)   # print for debugging
+    def winnow(self):
+        if self.win == True:
+            #arreter le temps 
+            #ajouter au highscore
+            Rectangle((-270,0), (80,20),'white')
+            Text((-266,0), 'You win')
+
 
     def load(self, ligne, colonne):
         x = -180 + ((colonne + 1) * 40)
         y = (130 - (ligne * 20) * 2)
 
         if state[ligne][colonne] >= 6:
-            """ inserer l'image d'une bombe """
             for i in range(7):
                 for n in range(7):
                     if state[i][n] > 5:
                         self.bomb_position(i, n)
+            self.win = True
+            Rectangle((-270,0), (80,20),'white')
+            Text((-266,0), 'You loose')
 
         if state[ligne][colonne] < 6:
             """ montrer le chiffre """
@@ -412,9 +446,6 @@ class Game:
                         x = -180 + ((colonne + 1) * 40)
                         y = (130 - (ligne * 20) * 2) + 40
                         self.num = Text((x, y), '0')
-
-    def win(self):
-        ...
 
 
 game = Game()
