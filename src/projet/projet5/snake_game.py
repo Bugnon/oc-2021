@@ -36,6 +36,7 @@ head.direction = 'Stop'
 point = tur.Turtle()
 colors = random.choice(['green', 'red'])
 shape = random.choice(['circle'])
+food = tur.Turtle()
 food.speed(0)
 food.shape(shape)
 food.color(colors)
