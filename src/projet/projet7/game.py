@@ -33,49 +33,43 @@ to add:
 - Player.chrono
 """
 
+from textwrap import fill
 from turtle import *
-
-
-def ligne(p, q):
-    """Draws a ligne from point p to point q."""
-
-    goto(p)
-    down()
-    goto(q)
-    up()
 
 
 class Rectangle:
     """Draw a filled rectangle."""
     
-    def __init__(self, pos, size, color='gray'):
+    def __init__(self, pos, size, color='gray', outline=True):
         """Initialize the rectangle and draw it."""
         self.pos = pos
         self.size = size
         self.color = color
+        self.outline = outline
         self.draw()
     
 
-    def outline(self):
-        """Draw just the outline of the rectangle."""
-        goto(self.pos)
-        pensize(5)
-        down()
+    def trace(self):
         for x in self.size * 2:
             forward(x)
             left(90)
-        up()
-
+        
 
     def draw(self):
         """Draw the outline of the rectangle and fill it a color is defined."""
+        goto(self.pos)
+        
         if self.color:
             fillcolor(self.color)
             begin_fill()
-            self.outline()
+            self.trace()
             end_fill()
-        else:
-            self.outline()
+        
+        if self.outline:
+            pensize(5)
+            down()
+            self.trace()
+            up()
 
      
     def inside(self, p):
@@ -90,7 +84,7 @@ class Text:
     """Draw a text at a given position."""
     
     def __init__(self, pos, text, size=16, align='center'):
-        """Initilizes the text"""
+        """Initilizes the text."""
         self.pos = pos
         self.text = text
         self.size = size
@@ -101,25 +95,30 @@ class Text:
     def draw(self):
         """Draw the text."""
         goto(self.pos)
-        write(self.text, font=('Arial', self.size), align=self.align)
+        write(self.text, font=('Times', self.size), align=self.align)
 
 
 class Button:
+    """Create a button that the player can interact with."""
+    
     def __init__(self, pos, text, size=(80, 30), color='mediumslateblue', displayed=True):
+        """Create a new Button instance."""
         self.rect = Rectangle(pos, size, color)
         x, y = pos
         w, h = size
         self.label = Text((x + w//2, y + h//4), text, h//2)
         self.displayed = displayed
-
-
-    def draw(self):
-        self.rect.draw()
-        self.label.draw()
     
 
     def inside(self, p):
+        """Check if p = (x, y) is inside the button."""
         return self.rect.inside(p)
+    
+
+    def draw(self):
+        """Draw the button."""
+        self.rect.draw()
+        self.label.draw()
 
 
 class Grid:
@@ -129,32 +128,19 @@ class Grid:
     m the number of columns.
     """
 
-    # d = 52
     def __init__(self, n=6, m=7, d=45):
-        """Create a new Grid instance"""
+        """Create a new Grid instance."""
         self.n = n        # vertical (y)
         self.m = m        # horizontal (x)
         self.d = d        # distance
         self.x0 = m * d // 2
         self.y0 = n * d // 2
-        # self.state = [[0] * 7] * 6
+
         self.state = []
         for i in range(6):
             self.state.append([0] * 7)
         
         self.draw()
-    
-
-    def draw(self):
-        """Draw the grid."""
-        up()
-        colors = {0:'deepskyblue', 1:'red', 2:'yellow'}
-        for x in range(self.m):
-            for y in range(self.n):
-                goto(-self.x0 + x * self.d + self.d // 2, self.y0 - y * self.d - self.d // 2)
-                dot(self.d * 25 // 32, 'black')
-                col = colors[self.state[y][x]]
-                dot(self.d * 3 // 5, col)
 
     
     def inside(self, x, y):
@@ -167,9 +153,9 @@ class Grid:
     
 
     def get_cell(self, x, y, pixels=False):
-        """Returns the coordinates of center or intersection.
-        The result will be between 0 and 5 or 6 (for y or x) if pixels=False
-        Else, the result will be in pixel (like “-104.0 -78.0“)
+        """Returns the coordinates of center.
+        The result will be between 0 and 5 or 6 (for y or x) if pixels=False.
+        Otherwise, the result will be in pixel (like “-104.0 -78.0“).
         """
         
         x = (x + self.d // 2) // self.d * self.d
@@ -185,19 +171,25 @@ class Grid:
             return i, j
 
     
-    def __str__(self):
-        return f'Grid({self.n}, {self.m})'
+    def draw(self):
+        """Draw the grid."""
+        up()
+        colors = {0:'deepskyblue', 1:'red', 2:'yellow'}
+        for x in range(self.m):
+            for y in range(self.n):
+                goto(-self.x0 + x * self.d + self.d // 2, self.y0 - y * self.d - self.d // 2)
+                dot(self.d * 25 // 32, 'black')
+                col = colors[self.state[y][x]]
+                dot(self.d * 3 // 5, col)
 
 
 class Player:
-    '''This is blablabla
-    '''
+    """Create a player"""
 
     def __init__(self, name, col):
-        '''Add explanations
-        '''
         self.name = name
         self.col = col
+        self.score = 0
 
 
 class Game:
@@ -215,68 +207,52 @@ class Game:
         hideturtle()
         tracer(0)
         up()
-   
-        # self.score = 0
+
         self.grid = Grid()
         self.title = Text((0,  170), 'Puissance 4', 24)
-        self.status = Text((-280, -190), 'status line', align='left')
+        self.author = Text((285, -190), 'by Emilien Barde', align='right')
         self.bt_undo = Button((200, 100), 'Undo')
-        # self.bt_new = Button((200, 50), 'New')
+        self.bt_new = Button((200, 50), 'New')
         self.player1 = Player('Player 1', 'red')
         self.player2 = Player('Player 2', 'yellow')
+        self.status = Text((-285, -190), f'{self.player1.name} ({self.player1.col}) to move', align='left')
+        self.status_eraser = Rectangle(self.status.pos, (300, 20), color='deepskyblue', outline=False)
+        self.players = (self.player1, self.player2)
         self.current_player = 1
-        self.history = [[[0] * 7] * 6]
+        self.history = []
+
+        self.reset()
         self.board()
         self.draw()
 
-        ''' TEST '''
-        # affichage du “state“ actuel dans la console
-        print('TEST\n\nbefore change :')
-        for y in range(6):
-            # affiche une ligne après l'autre
-            # en commançant par celle du haut
-            print(self.grid.state[y])
-        
-        # changement de l'état
-        # j'essaie de changer une case au milieu du plateau
-        self.grid.state[3][3] = 2
-
-        # ré-affichage du “state“ actuel dans la console
-        print('\nafter change :')
-        for y in range(6):
-            print(self.grid.state[y])
-        print('FIN DU TEST\n\n')
-        ''' FIN DU TEST - même problème dans game.click() '''
-
-        self.save()
-        self.grid.draw()
         s = getscreen()
 
+        # when the player uses the keyboard
         s.onclick(self.click)
 
-        s.onkey(self.move(1), '1')
-        # s.onkey(self.move(2), '2')
-        # s.onkey(self.move(3), '3')
-        # s.onkey(self.move(4), '4')
-        # s.onkey(self.move(5), '5')
-        # s.onkey(self.move(6), '6')
-        # s.onkey(self.move(7), '7')
+        # when the player uses the keyboard
+        s.onkey(self.key(1), '1')
         
-        # s.onkey(clear, 'enter')
-        s.onkey(self.draw, ' ')
 
         s.listen()
     
     
     def board(self):
+        """Draw the background and the darkblue board."""
         home()
+        
+        # background
         dot(2000, 'deepskyblue')
+
+        # board, initialization of the turtle
         goto(-self.grid.x0 + self.grid.d // 2, self.grid.y0 + self.grid.d // 2)
         color('black')
         fillcolor('navy')
         pensize(8)
         down()
         begin_fill()
+
+        # Board's drawing
         for i in range(2):
             forward(2 * self.grid.x0 - self.grid.d)
             circle(-self.grid.d, 90)
@@ -286,40 +262,40 @@ class Game:
         up()
 
     
-    def move(self, column):
+    def key(self, column):
+        """Reacts to keyboard."""
         # print('choose the column', column)
         pass
 
 
     def click(self, x, y):
         """Reacts to mouse clicks."""
+
+        # the player clicks on the grid
         if self.grid.inside(x, y):
             i = self.grid.get_cell(x, y)[0]
-            for j in range(5, 0, -1):
-                if self.grid.state[j][i] == 0:
-                    # print(f'i = {i}; j = {j} =>', self.grid.state[j][i])
-
-                    # print('grid state before click :\n\t\t', (self.grid.state[k] for k in range(6)))
-                    self.grid.state[j][i] = self.current_player
-                    # print('grid state after click :\n\t\t', (self.grid.state[k] for k in range(6)))
-
-                    self.save()
-                    self.current_player = self.current_player % 2 + 1
-                    break
-            
+            self.play(i)
             self.draw()
         
+        # buttons
         p = x, y
+
+        # the player clicks on the “undo“ button
         if self.bt_undo.inside(p) and len(self.history) > 1:
             self.undo()
-            self.current_player = self.current_player % 2 + 1
+            self.draw()
+
         # if self.bt_clear.inside(p):
         #     clear()
         #     self.bt_new.draw()
         #     self.bt_clear.draw()
         
-        # if self.bt_new.inside(p):
-        #     self.draw()
+        # the player clicks on the “new“ button
+        if self.bt_new.inside(p):
+            self.reset()
+            self.draw()
+        
+        # print the grid's state (debugging)
         for i in range(len(self.history)):
             print(f'step {i + 1} :')
             for j in range(6):
@@ -327,48 +303,108 @@ class Game:
         print('\n')
 
 
+    def reset(self):
+        """Reset the game.
+        It resets the grid, the history and the current player."""
+
+        # grid initialization
+        self.grid.state = []
+        for i in range(6):
+            self.grid.state.append([0] * 7)
+        
+        # history initialization
+        self.history = []
+        history_temp = []
+        for i in range(6):
+            history_temp.append([0] * 7)
+        self.history.append(history_temp)
+
+        # reset the current player
+        self.current_player = 1
+        self.status.text = f'{self.player1.name} ({self.player1.col}) to move'
+
+        # board and game drawing
+        self.board()
+
+
+    def switch_players(self):
+        """Switch the current player and the game's status."""
+        self.current_player = self.current_player % 2 + 1
+        player = self.players[self.current_player - 1]  # to simplify the next line
+        self.status.text = f'{player.name} ({player.col}) to move'
+
+
+    def play(self, column):
+        """Change the state of one grid's column."""
+        # from the bottom to the top of the column
+        for j in range(5, -1, -1):
+            # if the cell is free, we change his value
+            if self.grid.state[j][column] == 0:
+                self.grid.state[j][column] = self.current_player
+                self.save()
+                self.switch_players()
+                break
+
+
+    def undo(self):
+        """Cancel the last move."""
+        print('Undo !')
+        
+        # when there is only one move played
+        if len(self.history) == 2:
+            self.reset()            
+
+        else:
+            last_state = []
+
+            for line in range(6):
+                last_cells = []
+                for cell in range(7):
+                    # the cells of one column are added to the temporary cells's list
+                    last_cells.append(int(self.grid.state[line][cell]))
+                
+                # the line is added to the temporary state's list
+                last_state.append(list(last_cells))
+            
+            self.grid.state = last_state
+            self.history.pop()
+        
+        self.switch_players()
+    
+
     def save(self):
+        """Save the state of the game in the history."""
         current_state = []
 
         for line in range(6):
             current_cells = []
             for cell in range(7):
+                # the cells of one column are added to the temporary cells's list
                 current_cells.append(int(self.grid.state[line][cell]))
             
+            # the line is added to the temporary state's list
             current_state.append(list(current_cells))
         self.history.append(list(current_state))
 
+        # print for debugging
         for i in range(len(self.history)):
             print(f'step {i + 1} :')
             for j in range(6):
                 print('\t\t', self.history[i][j])
-
-
-    def undo(self):
-        print('Undo !')
-        if len(self.history) == 2:
-            # self.grid.state = [[0] * 7] * 6
-            self.grid.state = []
-            for i in range(6):
-                self.grid.state.append([0] * 7)
-
-            self.history.clear()
-            self.history = [[[0] * 7] * 6]
-        else:
-            self.grid.state = list(self.history[-2])
-            self.history.pop()
-        self.draw()
     
-
+    
     def draw(self):
         """Draws all the game objects."""
         self.grid.draw()
         self.title.draw()
+        self.author.draw()
+
+        self.status_eraser.draw()
         self.status.draw()
-        for button in [self.bt_undo]:
+
+        for button in [self.bt_undo, self.bt_new]:
             if button.displayed:
                 button.draw()
-        down()
 
 
 game = Game()
