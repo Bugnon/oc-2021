@@ -16,7 +16,8 @@ Plusieurs niveaux avec des vitesses différentes pour augmenter la difficulté d
 ## Les images 
 
 
-## But du jeu 
+## But du jeu : 
+Manger les points pour que le serpent grandisse et ne pas toucher 
 
 
 ## Le son 
