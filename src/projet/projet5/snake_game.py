@@ -24,3 +24,11 @@ screen.bgcolor('black')
 screen.setup(width = 600, height = 600)
 screen.tracer(0)
 
+# création de la tête du snake (forme, couleur)
+head = tur.Turtle()
+head.shape('circle')
+head.color('white')
+head.penup()
+head.goto(0, 0)
+head.direction = 'Stop'
+
