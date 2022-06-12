@@ -32,3 +32,14 @@ head.penup()
 head.goto(0, 0)
 head.direction = 'Stop'
 
+#création de la nourriture/point du jeu
+point = tur.Turtle()
+colors = random.choice(['green', 'red'])
+shape = random.choice(['circle'])
+food.speed(0)
+food.shape(shape)
+food.color(colors)
+food.penup()
+food.goto(0, 100)
+                   
+
