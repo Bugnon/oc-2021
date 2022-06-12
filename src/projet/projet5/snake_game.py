@@ -1,5 +1,6 @@
-# importer les différents modules pour commencer la réalisation
+# importer les différents modules requis pour commencer la réalisation
 from turtle import *
+import turtle as tur
 import time
 import random
 
@@ -15,9 +16,9 @@ high_score = 0
 
 # construire l'affichage du jeu: 
 # l'écran 
-screen = turtle.Screen()
+screen = tur.Screen()
 screen.title('Snake Game')
-screen.color('white')
+screen.bgcolor('black')
 
 #la taille en largeur (width) et hauteur (height)
 screen.setup(width = 600, height = 600)
