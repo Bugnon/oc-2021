@@ -85,3 +85,15 @@ screen.onkeypress(go_down, 'Down')
 screen.onkeypress(go_left, 'Left')
 screen.onkeypress(go_right, 'Right')    
 
+while True:
+    screen.update()
+    
+
+# fonctions     
+move()
+go_up()
+go_down()
+go_right()
+go_left()
+       
+
