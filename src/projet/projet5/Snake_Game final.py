@@ -77,3 +77,11 @@ def move():
     if head.direction == 'right':
        x = head.xcor()
        head.setx(x + 20)
+
+# onkeypress 
+screen.listen()
+screen.onkeypress(go_up, 'Up')
+screen.onkeypress(go_down, 'Down')
+screen.onkeypress(go_left, 'Left')
+screen.onkeypress(go_right, 'Right')    
+
