@@ -29,3 +29,11 @@ head.goto(0, 0)
 head.penup()
 head.speed(0)
 head.direction = 'stop'
+
+# création de la nourriture (food) avec forme, couleur
+food = turtle.Turtle()
+food.speed(0)
+food.shape('circle')
+food.color('red')
+food.penup()
+food.goto(0, 100)
