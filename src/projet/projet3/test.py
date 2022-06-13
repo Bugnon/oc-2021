@@ -56,7 +56,6 @@ class Rectangle:
         
         return 0 < p[0]-x < w and 0 < p[1]-y < h
         
-
 class Text:
     """Draw a text at a given position."""
     
@@ -74,6 +73,7 @@ class Text:
         write(self.text, font=('Arial', self.size), align=self.align)
      
 class Button:
+    """Create a clickable rectangle"""
     def __init__(self, pos, text, size, color='lightgray', align='center'):
         self.rect = Rectangle(pos, size, color)
         x, y = pos
@@ -89,7 +89,8 @@ class Button:
 
 class Ghost:
     """Define a ghost."""
-    def __init__(self, pos, aim):
+    def __init__(self, game, pos, aim):
+        self.game = game
         self.pos = pos
         self.aim = aim
         
@@ -108,13 +109,6 @@ class Ghost:
     def __str__(self):
         """Represent a ghost with a string."""
         return f'Ghost({self.pos})'
-
-ghosts = [
-    Ghost(vector(-180, 160), vector(5, 0)),
-    Ghost(vector(-180, -160), vector(0, 5)),
-    Ghost(vector(100, 160), vector(0, -5)),
-    Ghost(vector(100, -160), vector(-5, 0)),
-]
 
 class Pacman:
     """Define a pacman.
@@ -322,18 +316,17 @@ class Score:
         """Display the score."""
         self.writer.undo()
         self.writer.write(self.value, font=(None, 24))
-    
-# score = Score()
 
 def f(x, y):
     """Debug the tile index."""
     p = vector(x, y)
     print(p, world.index(p))
 
-
 class Game:
     """Define the game class."""
+    
     def __init__(self):
+        
         up()
         setup(600, 400)
         hideturtle()
@@ -341,11 +334,16 @@ class Game:
         self.bt_quit = Button((150, 50), 'Quit', (100,50))
         self.bt_retry = Button((-125, -25), "Retry", (200,100))
 
-        # The first argument of Pacmn is the game (self)
+        # The first argument of Pacman is the game (self)
         self.pacman = Pacman(self, vector(-40, -80), vector(5, 0), vector(5, 0), False)
+        self.ghost = [
+            Ghost(self, vector(-180, 160), vector(5, 0)),
+            Ghost(self, vector(-180, -160), vector(0, 5)),
+            Ghost(self, vector(100, 160), vector(0, -5)),
+            Ghost(self, vector(100, -160), vector(-5, 0)),
+        ]
         self.score = Score()
-
-
+        
         listen()
         onkey(lambda: self.pacman.change(5, 0), 'Right')
         onkey(lambda: self.pacman.change(-5, 0), 'Left')
@@ -359,6 +357,8 @@ class Game:
         done()
         
     def click(self, x, y):
+        """Verify if the click is in a button"""
+        
         if self.bt_quit.inside((x, y)):
             quit()
         
@@ -369,7 +369,7 @@ class Game:
         """Move all game objects."""
         if self.pacman.isdead == False:
             self.pacman.move()
-            for ghost in ghosts:
+            for ghost in self.ghost:
                 ghost.move()
                 if abs(self.pacman.pos - ghost.pos) < 19:
                     self.pacman.isdead = True
@@ -379,7 +379,6 @@ class Game:
             else:
                 self.draw()
                 ontimer(self.move, 100)
-            
 
     def draw(self):
         """Draw all game objects."""
@@ -387,10 +386,11 @@ class Game:
         clear()
         self.pacman.draw()
         self.bt_quit.draw()
-        for ghost in ghosts:
+        for ghost in self.ghost:
             ghost.draw()
     
     def restart(self):
+        """Restart the game"""
         os.execl(sys.executable, sys.executable, *sys.argv)
 
 Game()
