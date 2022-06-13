@@ -1,15 +1,3 @@
-"""Pacman 4 - Score
-
-Transformer en programmation orientée objet avec les classe :
-
-- Ghost *
-- Pacman *
-- World *
-- Score *
-- Game
-
-"""
-
 from random import choice
 from turtle import *
 from freegames import vector
@@ -56,7 +44,6 @@ class Rectangle:
         
         return 0 < p[0]-x < w and 0 < p[1]-y < h
         
-
 class Text:
     """Draw a text at a given position."""
     
@@ -74,6 +61,7 @@ class Text:
         write(self.text, font=('Arial', self.size), align=self.align)
      
 class Button:
+    """Create a clickable rectangle"""
     def __init__(self, pos, text, size, color='lightgray', align='center'):
         self.rect = Rectangle(pos, size, color)
         x, y = pos
@@ -81,21 +69,24 @@ class Button:
         self.label = Text((x + w//2, y + h//4), text, h//2, 'center')
         
     def draw(self):
+        """draw the button"""
         self.rect.draw()
         self.label.draw()
     
     def inside(self, p):
+        """Check if the point p is inside the button"""
         return self.rect.inside(p)
 
 class Ghost:
     """Define a ghost."""
-    def __init__(self, pos, aim):
+    def __init__(self, game, pos, aim):
+        self.game = game
         self.pos = pos
         self.aim = aim
         
     def move(self):
         """Move a ghost."""
-        if world.valid(self.pos + self.aim):
+        if self.game.world.valid(self.pos + self.aim):
             self.pos.move(self.aim)
         else:
             self.aim = choice([vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)])
@@ -109,18 +100,12 @@ class Ghost:
         """Represent a ghost with a string."""
         return f'Ghost({self.pos})'
 
-ghosts = [
-    Ghost(vector(-180, 160), vector(5, 0)),
-    Ghost(vector(-180, -160), vector(0, 5)),
-    Ghost(vector(100, 160), vector(0, -5)),
-    Ghost(vector(100, -160), vector(-5, 0)),
-]
-
 class Pacman:
     """Define a pacman.
     With the argument game, Pacman can access its game environment.
     """
     def __init__(self, game, pos, aim, direction, isdead):
+        """aim is where he's going, direction is where he wants to go"""
         self.game = game
         self.pos = pos
         self.aim = aim
@@ -128,22 +113,25 @@ class Pacman:
         self.isdead = isdead 
         
     def move(self):
-        """Move a pacman."""
-        if world.valid(self.pos + self.direction):
+        """Move a pacman. If direction is not valid, it keeps its aim until direction is valid"""
+        if self.game.world.valid(self.pos + self.direction):
             self.aim = self.direction
-        if world.valid(self.pos + self.aim):
+        if self.game.world.valid(self.pos + self.aim):
             self.pos.move(self.aim)
 
-        i, j = world.index(self.pos + vector(10, 10))
+        i, j = self.game.world.index(self.pos + vector(10, 10))
 
-        if world.tiles[i][j] == 1:
+        if self.game.world.tiles[i][j] == 1:
             """Check if the point is in Pacman"""
             if abs(vector(-200 + j * 20 , 180 - i * 20) - self.pos) <= 5 :
-                world.tiles[i][j] = 2
+                self.game.world.tiles[i][j] = 2
                 self.game.score.value += 1
                 self.remove_point()
+                if self.game.score.value == 160:
+                    self.game.world.load(tiles2)
 
     def remove_point(self):
+        """remove the drawing of the point"""
         path.up()
         path.goto(self.pos + vector(10, 10))
         path.dot(20)
@@ -187,61 +175,38 @@ tiles = [
 
 
 tiles2 = [
-    [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0],
-    [0, 0, 1, 0, 1, 0, 1, 0, 0, 8, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0],
-    [0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0],
+    [0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+    [0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+    [0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
 
-tiles3 = """
-01001001010010010000
-01001001010010010000
-010g1001010p10010000
-01001001010010010000
-01001001010g10010000
-"""
-
-
-
-class Setting:
-    """Define initial state (level)."""
-
-    def __init__(self, tiles, pacman, ghosts):
-        self.tiles
-        self.pacman
-        self.ghosts
-
-
-# level1 = Setings()
-# level1.tiles = ...
-# level1.pacman = ...
-
-
-
 
 class World:
-    def __init__(self, tiles):
+    """Define the world"""
+
+    def __init__(self, game, tiles):
         """Draw world using path."""        
         bgcolor('black')
         path.color('blue')
         self.tiles = tiles
+        self.game = game
         
     def draw(self):
         """Draw the path."""
@@ -259,11 +224,20 @@ class World:
                     path.dot(2, 'white')
 
     def load(self, tiles):
+        """load a level"""
         self.tiles = tiles
         path.clear()
         self.draw()
-                    
+        self.game.pacman = Pacman(self.game, vector(-40, -80), vector(5, 0), vector(5, 0), False)
+        self.game.ghost = [
+            Ghost(self.game, vector(-180, 160), vector(5, 0)),
+            Ghost(self.game, vector(-180, -160), vector(0, 5)),
+            Ghost(self.game, vector(100, 160), vector(0, -5)),
+            Ghost(self.game, vector(100, -160), vector(-5, 0)),
+        ]
+
     def index(self, point):
+        """Return the index of the point in the tiles, return i vertically and j horizontally"""
         x, y = point
         j = int((x + 200) // 20)
         i = int((199 - y) // 20)
@@ -304,15 +278,14 @@ class World:
         path.end_fill()
 
     def __str__(self):
+        "Debug"
         return f'World({len(self.tiles)})'
-                    
-world = World(tiles)
-        
         
 class Score:
     """Show the score."""
-    def __init__(self):
+    def __init__(self, game):
         self.value = 0
+        self.game = game
         self.writer = Turtle(visible=False)
         self.writer.goto(160, 160)
         self.writer.color('white')
@@ -321,19 +294,13 @@ class Score:
     def draw(self):
         """Display the score."""
         self.writer.undo()
-        self.writer.write(self.value, font=(None, 24))
-    
-# score = Score()
-
-def f(x, y):
-    """Debug the tile index."""
-    p = vector(x, y)
-    print(p, world.index(p))
-
+        self.writer.write( self.value, font=(None, 24))
 
 class Game:
     """Define the game class."""
+    
     def __init__(self):
+        
         up()
         setup(600, 400)
         hideturtle()
@@ -341,24 +308,32 @@ class Game:
         self.bt_quit = Button((150, 50), 'Quit', (100,50))
         self.bt_retry = Button((-125, -25), "Retry", (200,100))
 
-        # The first argument of Pacmn is the game (self)
+        # The first argument of Pacman and the ghosts is the game (self)
         self.pacman = Pacman(self, vector(-40, -80), vector(5, 0), vector(5, 0), False)
-        self.score = Score()
-
-
+        self.ghost = [
+            Ghost(self, vector(-180, 160), vector(5, 0)),
+            Ghost(self, vector(-180, -160), vector(0, 5)),
+            Ghost(self, vector(100, 160), vector(0, -5)),
+            Ghost(self, vector(100, -160), vector(-5, 0)),
+        ]
+        self.score = Score(self)
+        self.world = World(self, tiles)
+        
         listen()
         onkey(lambda: self.pacman.change(5, 0), 'Right')
         onkey(lambda: self.pacman.change(-5, 0), 'Left')
         onkey(lambda: self.pacman.change(0, 5), 'Up')
         onkey(lambda: self.pacman.change(0, -5), 'Down')
-        onkey(lambda: world.load(tiles2), '2')
-        onkey(lambda: world.load(tiles), '1')
+        onkey(lambda: self.world.load(tiles2), '2')
+        onkey(lambda: self.world.load(tiles), '1')
         onscreenclick(self.click)
-        world.draw()
+        self.world.draw()
         self.move()
         done()
         
     def click(self, x, y):
+        """Verify if the click is in a button"""
+        
         if self.bt_quit.inside((x, y)):
             quit()
         
@@ -369,7 +344,7 @@ class Game:
         """Move all game objects."""
         if self.pacman.isdead == False:
             self.pacman.move()
-            for ghost in ghosts:
+            for ghost in self.ghost:
                 ghost.move()
                 if abs(self.pacman.pos - ghost.pos) < 19:
                     self.pacman.isdead = True
@@ -379,7 +354,6 @@ class Game:
             else:
                 self.draw()
                 ontimer(self.move, 100)
-            
 
     def draw(self):
         """Draw all game objects."""
@@ -387,10 +361,11 @@ class Game:
         clear()
         self.pacman.draw()
         self.bt_quit.draw()
-        for ghost in ghosts:
+        for ghost in self.ghost:
             ghost.draw()
     
     def restart(self):
+        """Restart the game"""
         os.execl(sys.executable, sys.executable, *sys.argv)
 
 Game()

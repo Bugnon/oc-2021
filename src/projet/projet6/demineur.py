@@ -193,6 +193,8 @@ class Game:
                  [0, 0, 0, 0, 0, 0, 0, 0]]
 
         self.highscore = []
+        self.begin = []
+        self.score = False
         self.title = Text(
             (0, 165), 'Welcome to the best game ever: The Demineur', 20, 'center')
         self.bt_flag = Button((200, -50), 'Flag')
@@ -294,6 +296,10 @@ class Game:
             self.bt_flag.draw()
 
         if self.grid.inside(x, y) and self.win == False:
+            if len(self.begin) == 0:
+                begin = time()
+                print(begin)
+                self.begin.append(begin)
             if self.bt_flag.state:
                 self.onlyflags(x, y)
             else:
@@ -356,11 +362,13 @@ class Game:
                                 self.winnow()
 
     def winnow(self):
-        if self.win == True:
-            #arreter le temps 
-            #ajouter au highscore
+        if self.win == False:
+            end = time()
+            final = end - self.begin[0]
             Rectangle((-270,0), (80,20),'white')
             Text((-266,0), 'You win')
+            Rectangle((-270,-50), (80, 20), 'white')
+            Text((-270,-50), 'your time is: ' + str(final))
 
 
     def load(self, ligne, colonne):
