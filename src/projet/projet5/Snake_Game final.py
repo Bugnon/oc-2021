@@ -3,3 +3,8 @@ from turtle import *
 import turtle as tur
 import time
 import random 
+
+# définir le retard, le score et le meilleur score du point initial
+delay = 0.1
+score = 0
+high_score = 0
