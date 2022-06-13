@@ -44,4 +44,5 @@ pen.color('red')
 pen.penup()
 pen.hideturtle()
 oen.goto(250)
+# Ecrire Score et High Score et définir la police d'écriture, la taille et en gras
 pen.write("Score : 0   High Score : 0", align ="center", font = ("Arial", 28, "bold"))
