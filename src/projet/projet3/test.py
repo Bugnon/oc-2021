@@ -1,15 +1,3 @@
-"""Pacman 4 - Score
-
-Transformer en programmation orientée objet avec les classe :
-
-- Ghost *
-- Pacman *
-- World *
-- Score *
-- Game
-
-"""
-
 from random import choice
 from turtle import *
 from freegames import vector
@@ -81,10 +69,12 @@ class Button:
         self.label = Text((x + w//2, y + h//4), text, h//2, 'center')
         
     def draw(self):
+        """draw the button"""
         self.rect.draw()
         self.label.draw()
     
     def inside(self, p):
+        """Check if the point p is inside the button"""
         return self.rect.inside(p)
 
 class Ghost:
@@ -115,6 +105,7 @@ class Pacman:
     With the argument game, Pacman can access its game environment.
     """
     def __init__(self, game, pos, aim, direction, isdead):
+        """aim is where he's going, direction is where he wants to go"""
         self.game = game
         self.pos = pos
         self.aim = aim
@@ -122,7 +113,7 @@ class Pacman:
         self.isdead = isdead 
         
     def move(self):
-        """Move a pacman."""
+        """Move a pacman. If direction is not valid, it keeps its aim until direction is valid"""
         if world.valid(self.pos + self.direction):
             self.aim = self.direction
         if world.valid(self.pos + self.aim):
@@ -138,6 +129,7 @@ class Pacman:
                 self.remove_point()
 
     def remove_point(self):
+        """remove the drawing of the point"""
         path.up()
         path.goto(self.pos + vector(10, 10))
         path.dot(20)
@@ -228,9 +220,9 @@ class Setting:
 # level1.pacman = ...
 
 
-
-
 class World:
+    """Define the world"""
+
     def __init__(self, tiles):
         """Draw world using path."""        
         bgcolor('black')
@@ -253,11 +245,13 @@ class World:
                     path.dot(2, 'white')
 
     def load(self, tiles):
+        """load a level"""
         self.tiles = tiles
         path.clear()
         self.draw()
                     
     def index(self, point):
+        """Return the index of the point in the tiles, return i vertically and j horizontally"""
         x, y = point
         j = int((x + 200) // 20)
         i = int((199 - y) // 20)
@@ -298,10 +292,10 @@ class World:
         path.end_fill()
 
     def __str__(self):
+        "Debug"
         return f'World({len(self.tiles)})'
                     
 world = World(tiles)
-        
         
 class Score:
     """Show the score."""
@@ -334,7 +328,7 @@ class Game:
         self.bt_quit = Button((150, 50), 'Quit', (100,50))
         self.bt_retry = Button((-125, -25), "Retry", (200,100))
 
-        # The first argument of Pacman is the game (self)
+        # The first argument of Pacman and the ghosts is the game (self)
         self.pacman = Pacman(self, vector(-40, -80), vector(5, 0), vector(5, 0), False)
         self.ghost = [
             Ghost(self, vector(-180, 160), vector(5, 0)),
