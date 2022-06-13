@@ -1,6 +1,5 @@
 # importer des modules requis pour la création du jeu 
-from turtle import *
-import turtle as tur
+import turtle
 import time
 import random 
 
@@ -11,7 +10,7 @@ high_score = 0
 
 # construire l'affichage du jeu 
 # l'écran (screen) 
-screen = tur.Screen()
+screen = turtle.Screen()
 # titre du jeu 
 screen.title('Snake Game') 
 # couleur de fond du jeu 
@@ -22,7 +21,7 @@ screen.setup(width = 600, height = 600)
 screen.tracer(0)
 
 # création de la tête du snake (head) avec la forme, la couleur, la position et la vitesse 
-head = tur.Turtle()
+head = turtle.Turtle()
 head.shape('square')
 head.color('green')
 head.goto(0, 0)
@@ -31,7 +30,7 @@ head.speed(0)
 head.direction = 'stop'
 
 # création de la nourriture (food) avec forme, couleur
-food = tur.Turtle()
+food = turtle.Turtle()
 food.speed(0)
 food.shape('circle')
 food.color('red')
@@ -39,7 +38,7 @@ food.penup()
 food.goto(0, 100)
 
 # score et high score 
-pen = tur.Turtle()
+pen = turtle.Turtle()
 pen.color('white')
 pen.penup()
 pen.hideturtle()
