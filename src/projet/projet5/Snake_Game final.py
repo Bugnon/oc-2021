@@ -31,7 +31,7 @@ head.speed(0)
 head.direction = 'stop'
 
 # création de la nourriture (food) avec forme, couleur
-food = turtle.Turtle()
+food = tur.Turtle()
 food.speed(0)
 food.shape('circle')
 food.color('red')
