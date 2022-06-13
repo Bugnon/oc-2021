@@ -16,3 +16,8 @@ screen = tur.Screen()
 screen.title('Snake Game') 
 # couleur de fond du jeu 
 screen.bgcolor('black')
+
+#la taille de l'écran en largeur (width) et en hauteur (height)
+screen.setup(width = 600, height = 600)
+screen.tracer(0)
+
