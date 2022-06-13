@@ -10,6 +10,9 @@ score = 0
 high_score = 0
 
 # construire l'affichage du jeu 
+# l'écran (screen) 
 screen = tur.Screen()
-screen.title('Snake Game')
+# titre du jeu 
+screen.title('Snake Game') 
+# couleur de fond du jeu 
 screen.bgcolor('black')
