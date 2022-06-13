@@ -8,3 +8,8 @@ import random
 delay = 0.1
 score = 0
 high_score = 0
+
+# construire l'affichage du jeu 
+screen = tur.Screen()
+screen.title('Snake Game')
+screen.bgcolor('black')
