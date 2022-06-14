@@ -13,17 +13,16 @@ Les classes:
 - Game
 """
 
-from curses.textpad import rectangle
-from logging import root
+from ast import Pass
+from audioop import cross
 from random import *
-from sys import flags
-from tracemalloc import stop
 from turtle import *
 from time import *
 from tkinter import *
 
-from attr import NOTHING
+global highscore
 
+highscore = []
 
 
 class Rectangle:
@@ -158,12 +157,45 @@ class Grid:
 
 class Highscores:
     def __init__(self):
-        global highscores
 
-        highscores = {'1.': ' Pas encore de temps', '2.': ' Pas encore de temps', '3.': ' Pas encore de temps', '4.': ' Pas encore de temps', '5.': ' Pas encore de temps',
-              '6.': ' Pas encore de temps', '7.': ' Pas encore de temps', '8.': ' Pas encore de temps', '9.': ' Pas encore de temps', '9.': ' Pas encore de temps', '10.': ' Pas encore de temps'}
+        global high
+
+        high = {0: ' Pas encore de temps', 1: ' Pas encore de temps', 2: ' Pas encore de temps', 3: ' Pas encore de temps', 4: ' Pas encore de temps',
+              5: ' Pas encore de temps', 6: ' Pas encore de temps', 7: ' Pas encore de temps', 8: ' Pas encore de temps', 9: ' Pas encore de temps'}
         
-    
+        highscore.sort()
+
+        for i in range(len(highscore)):
+            f = highscore[i]
+            high[i] = f
+
+        self.txt_highscores = Text((0,165),'Highscores',20,'center')
+        self.bt_new = Button((200, 50), 'New')
+
+        self.show_hghscs()
+
+        s.onclick(self.click2)
+        listen()
+        done()
+
+    def click2(self,x,y):
+        p = x,y
+
+        if self.bt_new.inside(p):
+            clear()
+            game = Game()
+
+    def show_hghscs(self):
+        one = Text((-250,100), '1: ' + str(high[0]), '24')
+        two = Text((-250,75), '2: ' + str(high[1]) , '23')
+        three = Text((-250, 50), '3: ' + str(high[2]), '22')
+        four = Text((-250,25),'4: ' + str(high[3]) , '21')
+        five = Text((-250,0),'5' + str(high[4]),'20')
+        six = Text((-250,-25),'6' + str(high[5]),'19')
+        seven = Text((-250,-50),'7' + str(high[6]) ,'18')
+        eight = Text((-250,-75),'8' + str(high[7]),'17')
+        nine = Text((-250,-100),'9' + str(high[8]),'16')
+        ten = Text((-250,-125),'10' + str(high[9]),'15')
 
 
 
@@ -192,7 +224,6 @@ class Game:
                  [0, 0, 0, 0, 0, 0, 0, 0],
                  [0, 0, 0, 0, 0, 0, 0, 0]]
 
-        self.highscore = []
         self.begin = []
         self.score = False
         self.title = Text(
@@ -206,6 +237,8 @@ class Game:
 
         self.win = False
 
+        self.bouttons = True
+
         self.bt_highscore = Button((200, 100), 'Highscores')
         self.bt_new = Button((200, 50), 'New')
         self.bt_difficulty = Button((200, 0), 'Difficulty')
@@ -216,6 +249,7 @@ class Game:
             (0, 650), 'Welcome to the best game ever: The Demineur', 20, align='center')
         self.grid = Grid()
         self.generate()
+        global s
         s = getscreen()
         s.onclick(self.click)
         s.onkey(self.print_state, ' ')   # for debugging only
@@ -228,6 +262,7 @@ class Game:
             b = randint(0, 7)
             state[f][b] = 6
             self.winlt.append(([f],[b]))
+            print(self.winlt)
         self.check()
 
     def check(self):
@@ -311,8 +346,8 @@ class Game:
 
         if self.bt_highscore.inside(p):
             clear()
-            self.Highscores = Highscores()
-
+            highscores = Highscores()
+        
         if self.bt_difficulty.inside(p):
             clear()
             self.difficulty = Difficulty()
@@ -362,14 +397,15 @@ class Game:
                                 self.winnow()
 
     def winnow(self):
-        if self.win == False:
+        if self.win == True:
             end = time()
             final = end - self.begin[0]
-            Rectangle((-270,0), (80,20),'white')
+            highscore.append(int(final))
+            print(highscore)
+            Rectangle((-270,0), (70,20),'white')
             Text((-266,0), 'You win')
-            Rectangle((-270,-50), (80, 20), 'white')
-            Text((-270,-50), 'your time is: ' + str(final))
-
+            Rectangle((-293,-50), (125, 20), 'white')
+            Text((-290,-50), 'Your time is: ' + str(int(final)) + 's')
 
     def load(self, ligne, colonne):
         x = -180 + ((colonne + 1) * 40)
@@ -382,7 +418,7 @@ class Game:
                         self.bomb_position(i, n)
             self.win = True
             Rectangle((-270,0), (80,20),'white')
-            Text((-266,0), 'You loose')
+            Text((-266,0), 'You lost')
 
         if state[ligne][colonne] < 6:
             """ montrer le chiffre """
