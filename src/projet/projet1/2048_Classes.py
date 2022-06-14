@@ -177,33 +177,27 @@ class Text:
 
 # ------------  pas Classes  -------------
 
-#def cases():
-    #tour = Case((-180, 200), -1, 360)
-    #for y in 190, 102.5, 15, -72.5:
-        #for x in -170, -82.5, 5, 92.5:
-            #case_begin = Case((x, y), 0)
-
 
 # cette fonction sert à écrire un citation lors d'un échec
-def citation():
-    goto(0, -110)
-    write('''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement''',
-          font=('Didot', 10), align='center')
+# def citation():
+#     goto(0, -110)
+#     write('''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement''',
+#           font=('Didot', 10), align='center')
 
 
 # cette fonction permet de tout effacer en remettant l'arrière plan et de poser les boutons choisit en fonction des paramètres de la fonction
-def reboutons(rage, hist = 1, back = 0):
-    goto(0, 0)
-    stamp()
-    if rage:
-        button_end = Button((210, 125), 'Rage', (60, 30))
-    else:
-        if hist:
-            button_hist = Button((210, -135), 'hist', (60, 30))
-    button_new = Button((210, -5), 'New', (60, 30))
-    if back:
-        button_back = Button((210, 60), 'Back', (60, 30))
-    button_quit = Button((210, -70), 'Quit', (60, 30))
+# def reboutons(rage, hist = 1, back = 0):
+#     goto(0, 0)
+#     stamp()
+#     if rage:
+#         button_end = Button((210, 125), 'Rage', (60, 30))
+#     else:
+#         if hist:
+#             button_hist = Button((210, -135), 'hist', (60, 30))
+#     button_new = Button((210, -5), 'New', (60, 30))
+#     if back:
+#         button_back = Button((210, 60), 'Back', (60, 30))
+#     button_quit = Button((210, -70), 'Quit', (60, 30))
 
 
 # cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
@@ -245,43 +239,41 @@ def end_hist():
 
 
 # cette fonction permet de créer la page de fin
-def end(text, win):
-    global endjeu
-    endjeu = 1
-    reboutons(0)
-    color('white')
-    goto(0, 0)
-    write(text, font=('Arial', 40), align='center')
-    if not win: 
-        citation()
-    else:
-        goto(0, -100)
-        write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
-    color('black')
-#     song(win)
+# def end(text, win):
+#     global endjeu
+#     endjeu = 1
+#     reboutons(0)
+#     color('white')
+#     goto(0, 0)
+#     write(text, font=('Arial', 40), align='center')
+#     if not win: 
+#         citation()
+#     else:
+#         goto(0, -100)
+#         write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
+#     color('black')
+# #     song(win)
         
 
 # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
-def resultat():
-    global score
-    global state
-    goto(-170, -175)
-    width(20)
-    down()
-    color('white')
-    goto(170, -175)
-    up()
-    width(5)
-    color('black')
-    goto(0, -185)
-    nbrmax = 0
-    for y in state:
-        if max(y) > nbrmax:
-            nbrmax = max(y)
-    write('score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax), font=('Arial', 13), align='center')
-    if nbrmax == 2048:
-        sleep(1)
-        end('2048 c\'est la win!', 1)
+# def resultat():
+#     global score
+#     global state
+#     goto(-170, -175)
+#     width(20)
+#     down()
+#     color('white')
+#     goto(170, -175)
+#     up() 
+#     nbrmax = 0
+#     for y in state:
+#         if max(y) > nbrmax:
+#             nbrmax = max(y)
+#     txt_score = 'score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax)
+#     Text((0, -185), txt_score, 13, 'center')
+#     if nbrmax == 2048:
+#         sleep(1)
+#         end('2048 c\'est la win!', 1)
 
 
 
@@ -530,24 +522,6 @@ def rezero():
     global endjeu
     pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
     
-
-# cette fonction remet les variables comment ils étaient au début et redessine le jeu   
-def newgame():
-    global hist
-    global state
-    state = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    ]
-    rezero()
-    hist = []
-    reboutons(1, 1, 1)
-    Case.cases()
-    new(1)
-    resultat()
-#     son_fond()
     
 
 # cette fonction permet de savoir si le joueur a cliqué dans un boutons et, si oui, lance la fonction de ce dernier    
@@ -585,6 +559,24 @@ class Game:
         addshape('bois.gif')
         shape('bois.gif')
         stamp()
+        
+#         state = [
+#         [0, 0, 0, 0],
+#         [0, 0, 0, 0],
+#         [0, 0, 0, 0],
+#         [0, 0, 0, 0],
+#         ]
+# 
+#         correspondance = {
+#         (0, 0): (-170.0, 190.0), (0, 1): (-82.5, 190.0), (0, 2): (5.0, 190.0), (0, 3): (92.5, 190.0),
+#         (1, 0): (-170.0, 102.5), (1, 1): (-82.5, 102.5), (1, 2): (5.0, 102.5), (1, 3): (92.5, 102.5),
+#         (2, 0): (-170.0, 15.0), (2, 1): (-82.5, 15.0), (2, 2): (5.0, 15.0), (2, 3): (92.5, 15.0),
+#         (3, 0): (-170.0, -72.5), (3, 1): (-82.5, -72.5), (3, 2): (5.0, -72.5), (3, 3): (92.5, -72.5)
+#         }
+# 
+#         correspondance_inverse = {value: key for key, value in correspondance.items()}
+#         hist = []
+#         retour_hist = []
 
         self.score = 0
         self.historique = []
@@ -596,6 +588,8 @@ class Game:
         self.button_back = Button((210, 60), 'Back')
         self.button_quit = Button((210, -70), 'Quit')
         
+        self.resultat()
+        new(1)
         
         s = getscreen()
         s.onkey(haut, 'Up')
@@ -614,27 +608,103 @@ class Game:
             bye()
 
         if self.button_end.inside(p):
-            end('Tant Pis :(', 0)
+            self.end('Tant Pis :(', 0)
+
         if self.button_new.inside(p):
-            newgame()
+            self.newgame()
 
         if self.button_back.inside(p):
              global hist
              if len(hist) != 0:
                 retour()
-#         
+                
+#         if self.button_hist.inside(p):
+#             ...
+
+#     def reboutons():
+
+    # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
+    def resultat(self):
+        global score
+        global state
+        goto(-170, -175)
+        width(20)
+        down()
+        color('white')
+        goto(170, -175)
+        up() 
+        nbrmax = 0
+        for y in state:
+            if max(y) > nbrmax:
+                nbrmax = max(y)
+        txt_score = 'score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax)
+        Text((0, -185), txt_score, 13, 'center')
+        if nbrmax == 2048:
+            sleep(1)
+            end('2048 c\'est la win!', 1)
+    
+    def end(self, text, win):
+        clear()
+        goto(0,0)
+        addshape('bois.gif')
+        shape('bois.gif')
+        stamp()
+        
+        self.text = text
+        global endjeu
+        endjeu = 1
+#         reboutons(0)
+        Text((0, 0), self.text, 40, 'center', 'white')
+        if not win: 
+            Text((0, -110), 'text', 10, 'center')
+        else:
+            goto(0, -100)
+            write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
+        color('black')
+    #     song(win)
+        
+
+    def newgame(self):
+        # cette fonction remet les variables comment elles étaient au début et redessine le jeu   
+        clear()
+        
+        goto(0,0)
+        addshape('bois.gif')
+        shape('bois.gif')
+        stamp()
+        
+        self.draw()
+#         global hist
+#         global state
+        state = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        ]
+#         rezero()
+#         hist = []
+#         reboutons(1, 1, 1)
+# #         Case.cases()
+        new(1)
+# #         resultat()
+#     #     son_fond()
+
+
 
     def draw(self):
         """Draws all the game objects."""
-        self.cases.draw()
+#         self.cases.draw()
+        Case.cases()
 #         self.title.draw()
 #         self.status.draw()
 #         self.button_hist.draw()
+        self.resultat()
         self.button_end.draw()
         self.button_new.draw()
         self.button_back.draw()
         self.button_quit.draw()
-        down()
+
 
 
 game = Game()
@@ -646,3 +716,4 @@ game = Game()
 # back
 # 2 + 2 + 4 = 4 + 4
 # score
+
