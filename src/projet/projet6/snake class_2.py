@@ -1,3 +1,5 @@
+# importer des modules requis pour la création du jeu 
+
 from turtle import Turtle, Screen
 import time
 import random 
