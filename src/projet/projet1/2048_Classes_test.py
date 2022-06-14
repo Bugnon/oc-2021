@@ -22,10 +22,7 @@ from pygame import mixer
 # correspondance_inverse = {value: key for key, value in correspondance.items()}
 # hist = []
 # retour_hist = []
-pause, modifi , nbr, score, endjeu, not_op = 0, 0, 0, 0, 1, 0
-color_num = {-1 : 'grey', 0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
-             64 : 'magenta3', 128 : 'DeepPink', 256 : 'MediumVioletRed', 512 : 'VioletRed1', 1024 : 'LightSeaGreen',
-             2048 : 'turquoise1'}
+
 
 # addshape('bois.gif')
 # shape('bois.gif')
@@ -44,7 +41,9 @@ class Case:
         up()
         x, y = self.pos
         goto(x, y)
-        global color_num
+        color_num = {-1 : 'grey', 0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
+        64 : 'magenta3', 128 : 'DeepPink', 256 : 'MediumVioletRed', 512 : 'VioletRed1', 1024 : 'LightSeaGreen',
+        2048 : 'turquoise1'}
         couleur = color_num[self.text]
         color(couleur)
         begin_fill()
@@ -548,61 +547,24 @@ class Text:
 
 # -------------  Classes  -------------
 
-class Game:
+class Calculs:
+    def __init__(self, mouv):
+        self.mouv = mouv
+        self.mouvement(mouv)
+        self.pause, self.modifi , self.nbr, self.score, self.endjeu, self.not_op = 0, 0, 0, 0, 1, 0
 
-    def __init__(self):
-        setup(600, 400)
-        hideturtle()
-        tracer(0)
-        up()
-        
-        addshape('bois.gif')
-        shape('bois.gif')
+    def reboutons(rage, hist = 1, back = 0):
+        goto(0, 0)
         stamp()
-        
-        self.state = [
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
-        ]
-
-        self.correspondance = {
-        (0, 0): (-170.0, 190.0), (0, 1): (-82.5, 190.0), (0, 2): (5.0, 190.0), (0, 3): (92.5, 190.0),
-        (1, 0): (-170.0, 102.5), (1, 1): (-82.5, 102.5), (1, 2): (5.0, 102.5), (1, 3): (92.5, 102.5),
-        (2, 0): (-170.0, 15.0), (2, 1): (-82.5, 15.0), (2, 2): (5.0, 15.0), (2, 3): (92.5, 15.0),
-        (3, 0): (-170.0, -72.5), (3, 1): (-82.5, -72.5), (3, 2): (5.0, -72.5), (3, 3): (92.5, -72.5)
-        }
-
-        self.correspondance_inverse = {value: key for key, value in self.correspondance.items()}
-        self.hist = []
-        self.retour_hist = []
-#         pause, modifi , nbr, score, endjeu, not_op = 0, 0, 0, 0, 1, 0
-#         color_num = {-1 : 'grey', 0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
-#                      64 : 'magenta3', 128 : 'DeepPink', 256 : 'MediumVioletRed', 512 : 'VioletRed1', 1024 : 'LightSeaGreen',
-#                      2048 : 'turquoise1'}
-
-        self.score = 0
-        self.historique = []
-        self.cases = Case.cases()
-#         self.
-#         self.button_hist = Button((210, -135), 'hist')
-        self.button_end = Button((210, 125), 'Rage')
-        self.button_new = Button((210, -5), 'New')
-        self.button_back = Button((210, 60), 'Back')
-        self.button_quit = Button((210, -70), 'Quit')
-        
-        self.resultat()
-#         self.new(1)
-        
-        s = getscreen()
-        s.onkey(lambda:self.haut(), 'Up')
-        s.onkey(lambda:self.bas(), 'Down')
-        s.onkey(lambda:self.gauche(), 'Left')
-        s.onkey(lambda:self.droite(), 'Right')
-        s.onkey(lambda:self.retour(),'BackSpace')
-        s.onclick(self.click)
-        s.listen()
+        if rage:
+            button_end = Button((210, 125), 'Rage', (60, 30))
+        else:
+            if hist:
+                button_hist = Button((210, -135), 'hist', (60, 30))
+        button_new = Button((210, -5), 'New', (60, 30))
+        if back:
+            button_back = Button((210, 60), 'Back', (60, 30))
+        button_quit = Button((210, -70), 'Quit', (60, 30))
 
 
     # cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
@@ -619,7 +581,7 @@ class Game:
         mixer.music.load('Sojiada-Lanmou.mp3')
         mixer.music.play(-1)
 
-        # cette fonction sert à écrire l'historique sous formes de flèches
+    # cette fonction sert à écrire l'historique sous formes de flèches
     def end_hist(self):
         global hist
         goto(0, 180)
@@ -642,7 +604,7 @@ class Game:
                 write(part_str, font=('Arial', 12), align='center')
         color('black')
         
-        # cette fonction prend les coordonnées de la case et retourn la valeur de celle-ci
+    # cette fonction prend les coordonnées de la case et retourn la valeur de celle-ci
     def coord_to_res(self, xcoord, ycoord):
         global correspondance_inverse
         yres, xres = correspondance_inverse[(xcoord, ycoord)]
@@ -650,7 +612,7 @@ class Game:
         return state[yres][xres]     
 
 
-        # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
+    # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
     def retour(self):
         global retour_hist
         global state
@@ -672,14 +634,14 @@ class Game:
         self.resultat()
             
 
-        # cette fonction permet de mémoriser la position de chaque case
+    # cette fonction permet de mémoriser la position de chaque case
     def retour_calcul(self):
         global retour_hist
         global state
         retour_hist.append(state)
 
 
-        # cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
+    # cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
     def historique(self, direction):
         global hist
         if direction == 'h':
@@ -689,18 +651,18 @@ class Game:
         elif direction == 'd':
             hist.append('→')
         elif direction == 'g':
-            hist.append('←')
+                hist.append('←')
          
 
-        #  cette fonction permet de créer une nouvelle case après un coup
+    #  cette fonction permet de créer une nouvelle case après un coup
     def new(self, newretour = 0):
-        global nbr
+#         global nbr
         listexy = (0, 1, 2, 3)
         xres = choice(listexy)
         yres = choice(listexy)
-        global state
-        global correspondance
-        if nbr == 16:
+#         global state
+#         global correspondance
+        if self.nbr == 16:
             self.end('Game Over', 0)
         elif state[yres][xres] == 0:
             case2 = Case(correspondance[(yres, xres)], 2)
@@ -716,7 +678,7 @@ class Game:
             new()
 
 
-        # cette fonction fait le changement de case     
+    # cette fonction fait le changement de case     
     def changement(self, xpos, ypos, xsuiv, ysuiv):
         if (xpos, ypos) != (xsuiv, ysuiv):
             if coord_to_res(xsuiv, ysuiv) == 0:
@@ -737,7 +699,7 @@ class Game:
             modifi = 1
             
 
-        # cette fonction calcule les coordonnées de la case suivante en fonction de la direction 
+    # cette fonction calcule les coordonnées de la case suivante en fonction de la direction 
     def operation(self, coord, direction):
         global correspondance_inverse
         xcoord, ycoord = coord
@@ -756,8 +718,8 @@ class Game:
             xcoord, ycoord = coord_memoire
         return xcoord, ycoord
                 
-        # cette fonction permet de calculer les coordonnées de la case présedente
-        # elle est utilisé si la case suivante est une bordure ou une case d'un autre chiffre
+    # cette fonction permet de calculer les coordonnées de la case présedente
+    # elle est utilisé si la case suivante est une bordure ou une case d'un autre chiffre
     def operation_inverse(self, coord, direction):
         global correspondance_inverse
         xcoord, ycoord = coord
@@ -772,7 +734,7 @@ class Game:
         return xcoord, ycoord
 
 
-        # cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
+     # cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
     def notsame(self, xpos, ypos, xsuiv, ysuiv, direction):
         global not_op
         while True:
@@ -791,7 +753,7 @@ class Game:
                 break
             
 
-        # cette fonction calcule si le chiffre dans la case est le même que le suivant    
+    # cette fonction calcule si le chiffre dans la case est le même que le suivant    
     def calcul(self, pos, direction):
         global not_op
         xsuiv, ysuiv = operation(pos, direction)
@@ -805,8 +767,8 @@ class Game:
             not_op = 0
                         
 
-        # cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
-        # Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer 
+    # cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
+    # Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer 
     def mouvement(self, direction):
         global endjeu
         if endjeu:
@@ -829,55 +791,112 @@ class Game:
             retour_calcul()
 
 
+
+
+
+class Game:
+
+    def __init__(self):
+        setup(600, 400)
+        hideturtle()
+        tracer(0)
+        up()
+        
+        addshape('bois.gif')
+        shape('bois.gif')
+        stamp()
+        
+        self.state = [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        ]
+        
+
+        self.correspondance = {
+        (0, 0): (-170.0, 190.0), (0, 1): (-82.5, 190.0), (0, 2): (5.0, 190.0), (0, 3): (92.5, 190.0),
+        (1, 0): (-170.0, 102.5), (1, 1): (-82.5, 102.5), (1, 2): (5.0, 102.5), (1, 3): (92.5, 102.5),
+        (2, 0): (-170.0, 15.0), (2, 1): (-82.5, 15.0), (2, 2): (5.0, 15.0), (2, 3): (92.5, 15.0),
+        (3, 0): (-170.0, -72.5), (3, 1): (-82.5, -72.5), (3, 2): (5.0, -72.5), (3, 3): (92.5, -72.5)
+        }
+
+        self.correspondance_inverse = {value: key for key, value in self.correspondance.items()}
+        self.hist = []
+        self.retour_hist = []
+#         pause, modifi , nbr, score, endjeu, not_op = 0, 0, 0, 0, 1, 0
+
+        self.score = 0
+        self.historique = []
+        self.cases = Case.cases()
+#         self.
+#         self.button_hist = Button((210, -135), 'hist')
+        self.button_end = Button((210, 125), 'Rage')
+        self.button_new = Button((210, -5), 'New')
+        self.button_back = Button((210, 60), 'Back')
+        self.button_quit = Button((210, -70), 'Quit')
+        
+        self.resultat()
+#         self.new(1)
+        
+        s = getscreen()
+        s.onkey(lambda:self.haut(), 'Up')
+        s.onkey(lambda:self.bas(), 'Down')
+        s.onkey(lambda:self.gauche(), 'Left')
+        s.onkey(lambda:self.droite(), 'Right')
+        s.onkey(lambda:self.retour(),'BackSpace')
+        s.onclick(self.click)
+        s.listen()
+        
+
         # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée   
-    def haut(self):
-        global pause
-        if pause:
-            pause = 0
-            mouvement('h')
+        def haut(self):
+            if pause:
+                pause = 0
+                mouvement= Calules('h')
                 
 
         # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée    
-    def bas(self):
-        global pause
-        if pause:
-            pause = 0
-            mouvement('b')
+        def bas(self):
+            global pause
+            if pause:
+                pause = 0
+                mouvement('b')
 
 
         # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
-    def gauche(self):
-        global pause
-        if pause:
-            pause = 0
-            mouvement('g')
+        def gauche(self):
+            global pause
+            if pause:
+                pause = 0
+                mouvement('g')
 
 
         # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
-    def droite(self):
-        global pause
-        if pause:
-            pause = 0
-            mouvement('d')
+        def droite(self):
+            global pause
+            if pause:
+                pause = 0
+                mouvement('d')
                 
 
         # cette fonction lance le son de fond
-    def son_fond(self):
-        mixer.init()
-        mixer.music.load('Meydn-SynthwaveVibe.mp3')
-        mixer.music.play(-1)
+        def son_fond(self):
+            mixer.init()
+            mixer.music.load('Meydn-SynthwaveVibe.mp3')
+            mixer.music.play(-1)
         
 
         # cette fonction rement des variables comment ils étaient au début
-    def rezero(self):
-        global pause
-        global modifi
-        global nbr
-        global score
-        global endjeu
-        pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
+        def rezero(self):
+            global pause
+            global modifi
+            global nbr
+            global score
+            global endjeu
+            pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
 
-
+    
     def click(self, x, y):
         p = x, y
         if self.button_quit.inside(p):
@@ -902,8 +921,8 @@ class Game:
 
     # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
     def resultat(self):
-        global score
-        global state
+#         global score
+#         global state
         goto(-170, -175)
         width(20)
         down()
@@ -914,7 +933,7 @@ class Game:
         for y in self.state:
             if max(y) > nbrmax:
                 nbrmax = max(y)
-        txt_score = 'score: ' + str(score) + 20 * ' ' + 'max: ' + str(nbrmax)
+        txt_score = 'score: ' + str(self.score) + 20 * ' ' + 'max: ' + str(nbrmax)
         Text((0, -185), txt_score, 13, 'center')
         if nbrmax == 2048:
             sleep(1)
@@ -930,7 +949,7 @@ class Game:
         self.text = text
         global endjeu
         endjeu = 1
-#         reboutons(0)
+        Calculs.reboutons(0)
         Text((0, 0), self.text, 40, 'center', 'white')
         if not win: 
             Text((0, -110), 'text', 10, 'center')
@@ -963,7 +982,7 @@ class Game:
 #         hist = []
 #         reboutons(1, 1, 1)
 # #         Case.cases()
-        self.new(1)
+        Calculs.new(1)
 # #         resultat()
 #     #     son_fond()
 
@@ -983,8 +1002,8 @@ class Game:
         self.button_quit.draw()
 
 
-
 game = Game()
+done()
 
 # (perdre)
 # (new 1x sur 2 un 4)
