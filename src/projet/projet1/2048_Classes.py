@@ -922,6 +922,7 @@ class Game:
         down()
         color('white')
         goto(170, -175)
+        width(1)
         up() 
         nbrmax = 0
         for y in self.state:
