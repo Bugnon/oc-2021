@@ -37,6 +37,7 @@ to add:
 - Player.chrono
 """
 
+from http.client import SWITCHING_PROTOCOLS
 from textwrap import fill
 from turtle import *
 
@@ -156,7 +157,7 @@ class Grid:
         y0 = self.y0
         x0 += self.d // 2
         y0 += self.d // 2    
-        return -x0 < x < x0 and -y0 < y < y0
+        return -x0 < x < x0 - self.d // 2 and -y0 < y < y0 - self.d // 2
     
 
     def get_cell(self, x, y, pixels=False):
@@ -180,16 +181,19 @@ class Grid:
     def draw(self):
         """Draw the grid."""
         up()
-        colors = {0:'deepskyblue', 1:'red', 2:'yellow', 3:'lime'}
+        colors = {0:'deepskyblue', 1:'red', 2:'yellow', 3:'lime', 4:'black'}
         for x in range(self.m):
             for y in range(self.n):
                 goto(-self.x0 + x * self.d + self.d // 2, self.y0 - y * self.d - self.d // 2)
                 col = colors[self.state[y][x]]
-                if col != 'lime':
+                
+                if col != 'lime' and col != 'black':
                     dot(self.d * 25 // 32, 'black')
                     dot(self.d * 3 // 5, col)
-                else:
+                elif col == 'lime':
                     dot(self.d * 2 // 5, col)
+                else:
+                    dot(self.d // 4, col)
 
 
 class Player:
@@ -217,34 +221,51 @@ class Game:
         tracer(0)
         up()
 
+        dot(1500, 'deepskyblue')
+        write('Please enter the names of\nthe players in the console', font=('Times', 30), align='center')
+        
+        title = '\n* * * CONNECT 4 * * *\n\n\n'
+        rules = 'Goal of the game :\n\n\t-> The goal is to align 4 tokens of your colour vertically, horizontally or diagonally.\n\n\n'
+        how_to_play = 'How to play ?\n\n\t'
+        using_the_mouse = '- by using the mouse :\n\t\t- play : click on the column you want to play in.\n\t\t- undo (cancel the last move), new (reset the board), reset all (except the names), quit : click on the buttons.\n\n\t'
+        using_the_keyboard = '- by using the keyboard :\n\t\t- play : the columns are numbered from 1 to 7.\n\t\t- undo (cancel the last move): use the “delete“ button.\n\t\t- new (reset the board) : Tabulation.\n\t\t- reset all (except the names) : R\n\t\t- quit : Q\n\t\t- close the window : X\n\n\n'
+        before_starting = 'Before starting, please enter the names of the players :\n'
+        print(title + rules + how_to_play + using_the_mouse + using_the_keyboard + before_starting)
+
+        input_player1 = input('\tName of the first player : ')
+        input_player2 = input('\n\tName of the second player : ')
+
+        print('\nNames registered ! You can now play on the game\'s screen.\n\n\nHave a good game :)\n')
+
         self.grid = Grid()
         self.title = Text((0,  168), 'Connect 4', size=24, col='black')
         # self.title2 = Text((-2,  166), 'Connect 4', size=24, col='grey')
         self.author = Text((285, -190), 'by Emilien Barde', align='right')
         self.column_names = Text((0, -150), ' 1         2         3         4         5         6         7', size='15', col='white')
+        
         self.bt_undo = Button((200, 100), 'Undo')
         self.bt_new = Button((200, 50), 'New')
-        self.player1 = Player('Player 1', 'red')
-        self.player2 = Player('Player 2', 'yellow')
+        self.bt_reset_scores = Button((200, 0), 'Reset all')
+        self.bt_quit = Button((200, -50), 'QUIT', color='slategrey')
+        self.bt_close = Button((-80, -60), 'CLOSE', (160, 60), color='red', displayed=False)
+        
+        self.player1 = Player(input_player1, 'red')
+        self.player2 = Player(input_player2, 'yellow')
+        
         self.scores = Text((-280, 50), f'Scores :\n\n{self.player1.name} : {self.player1.score}\n\n{self.player2.name} : {self.player2.score}', align='left')
         self.scores_eraser = Rectangle(self.scores.pos, (80, 110), color='deepskyblue', outline=False)
-        # self.win_message = Text((-280, -50), 'Nobody win !!!', size=20, align='left')
+        self.win_message = Text((-285, -80), 'Nobody win !!!', size=18, align='left')
+        self.win_message_eraser = Rectangle(self.win_message.pos, (100, 100), color='deepskyblue', outline=False)
         self.status = Text((-285, -190), f'{self.player1.name} ({self.player1.col}) to move', align='left')
         self.status_eraser = Rectangle(self.status.pos, (300, 20), color='deepskyblue', outline=False)
+        
         self.players = (self.player1, self.player2)
         self.current_player = 1
         self.moves = 0
         self.playing = True
+        self.no_winner = False
         self.history = []
-
-        title = '\n* * * CONNECT 4 * * *\n\n\n'
-        rules = 'Goal og the game :\n\n\t-> The goal is to align 4 tokens of your colour vertically, horizontally or diagonally.\n\n\n'
-        how_to_play = 'How to play ?\n\n\t'
-        using_the_mouse = '- by using the mouse :\n\t\t- play : click on the column you want to play in.\n\t\t- undo (cancel the last move), new (reset the game) : click on the buttons.\n\n\t'
-        using_the_keyboard = '- by using the keyboard :\n\t\t- play : the columns are numbered from 1 to 7.\n\t\t- undo (cancel the last move): use the “delete“ button.\n\t\t- new (reset the game) : Tabulation.\n\n\n'
-        good_game = 'Good game !!!'
-
-        print(title + rules + how_to_play + using_the_mouse + using_the_keyboard + good_game)
+        self.run = True
 
         self.reset()
 
@@ -255,10 +276,14 @@ class Game:
         s.onclick(self.click)
 
         # when the player uses the keyboard
-        for num in range(1, 8):
-            s.onkey(lambda column=num : self.play(column - 1), num)
-        s.onkey(lambda:self.undo(), 'BackSpace')
-        s.onkey(lambda:self.reset(), 'Tab')
+        if self.run:
+            for num in range(1, 8):
+                s.onkey(lambda column=num : self.play(column - 1), num)
+            s.onkey(lambda:self.undo(), 'BackSpace')
+            s.onkey(lambda:self.reset(), 'Tab')
+            s.onkey(lambda:self.reset_scores(), 'r')
+            s.onkey(lambda:self.quit(), 'q')
+        s.onkey(lambda:quit(), 'x')
 
         s.listen()
     
@@ -298,14 +323,12 @@ class Game:
     def check_win(self):
         """Check if a player has won by lining up 4 tokens."""
         
+        self.draw()
+
         # some useful lists
         winning_cells = []
         winning_coordinates = []
 
-        # the board is full
-        if self.moves == 6 * 7:
-            print('DRAW !')
-            self.playing = False
         
         # check the columns
         for column in range(7):
@@ -460,15 +483,35 @@ class Game:
                 winning_cells.clear()
                 winning_coordinates.clear()
 
-    
+        # the board is full
+        if self.moves == 6 * 7:
+            self.no_winner = True
+            for line in range(self.grid.n):
+                for cell in range(self.grid.m):
+                    self.grid.state[line][cell] = 4
+            
+            self.win_message_eraser.draw()
+            self.win_message.text = f'*  *  *  *  *\nNobody\nWIN !!!\n*  *  *  *  *'
+            self.win_message.draw()
+            self.status_eraser.draw()
+            
+            self.playing = False
+
+            self.draw()
+
+
     def undo(self):
         """Cancel the last move."""
 
         self.switch_players()
         if not self.playing:
-            self.players[self.current_player - 1].score -= 1
+            if self.no_winner:
+                self.no_winner = False
+            else:
+                self.players[self.current_player - 1].score -= 1
             
             # draw the scores
+            self.win_message_eraser.draw()
             self.scores.text = f'Scores :\n\n{self.player1.name} : {self.player1.score}\n\n{self.player2.name} : {self.player2.score}'         
             self.scores_eraser.draw()
             self.scores.draw()
@@ -495,8 +538,6 @@ class Game:
             
             self.moves -= 1
 
-        for player in self.players:
-            print(f'{player.name} : {player.score}')
         self.draw()
     
 
@@ -519,15 +560,24 @@ class Game:
         self.history.append(history_temp)
 
         # reset the current player and the numbers of moves
-        self.current_player = 1
-        self.status.text = f'{self.player1.name} ({self.player1.col}) to move'
+        self.current_player = (self.player1.score + self.player2.score) % 2 + 1
+        self.status.text = f'{self.players[self.current_player - 1].name} ({self.players[self.current_player - 1].col}) to move'
         self.moves = 0
-
+        
         # board and game drawing
         self.board()
         self.scores.draw()
         self.draw()
     
+
+    def reset_scores(self):
+        for player in self.players:
+            player.score = 0
+        self.reset()
+        self.scores.text = f'Scores :\n\n{self.player1.name} : {self.player1.score}\n\n{self.player2.name} : {self.player2.score}'
+        self.scores_eraser.draw()
+        self.scores.draw()
+
 
     def save(self):
         """Save the state of the game in the history."""
@@ -561,11 +611,10 @@ class Game:
                     self.grid.state[j][column] = self.current_player
                     self.moves += 1
                     self.save()
-                    self.draw()
                     self.check_win()
 
                     
-                    if not self.playing:
+                    if not self.playing and  not self.no_winner:
                         # add a point to the score of the current player
                         self.players[self.current_player - 1].score += 1
                         self.scores.text = f'Scores :\n\n{self.player1.name} : {self.player1.score}\n\n{self.player2.name} : {self.player2.score}'
@@ -574,37 +623,62 @@ class Game:
                         self.scores_eraser.draw()
                         self.scores.draw()
                         
-                        # self.win_message.text = f'{self.players[self.current_player - 1].name} WIN !!!'
-                        # self.win_message.draw()
-                    self.switch_players()
+                        self.win_message_eraser.draw()
+                        self.win_message.text = f'*  *  *  *  *\n{self.players[self.current_player - 1].name}\nWINS !!!\n*  *  *  *  *'
+                        self.win_message.draw()
+                        self.switch_players()
+                    elif not self.no_winner:
+                        self.switch_players()
+                        self.status_eraser.draw()
+                        self.status.draw()
                     break
     
     
+    def quit(self):
+        self.run = False
+        dot(1500, 'deepskyblue')
+        goto(0, 50)
+        write('Thanks for playing !', font=('Times', 40), align='center')
+        self.author.draw()
+        self.bt_close.displayed = True
+        self.bt_close.draw()
+    
+
     def click(self, x, y):
         """Reacts to mouse clicks."""
 
-        # the player clicks on the grid
-        if self.grid.inside(x, y) and self.playing:
-            i = self.grid.get_cell(x, y)[0]
-            self.play(i)
-        
-        # buttons
-        p = x, y
+        if self.run:
+            # the player clicks on the grid
+            if self.grid.inside(x, y) and self.playing:
+                i = self.grid.get_cell(x, y)[0]
+                self.play(i)
+            
+            # buttons
+            p = x, y
 
-        # the player clicks on the “undo“ button
-        if self.bt_undo.inside(p) and len(self.history) > 1:
-            self.undo()
+            # the player clicks on the “undo“ button
+            if self.bt_undo.inside(p) and len(self.history) > 1:
+                self.undo()
 
-        # if self.bt_clear.inside(p):
-        #     clear()
-        #     self.bt_new.draw()
-        #     self.bt_clear.draw()
+            
+            # the player clicks on the “new“ button
+            if self.bt_new.inside(p):
+                self.reset()
+                self.draw()
+
+            # the player clicks on the “reset all“ button
+            if self.bt_reset_scores.inside(p):
+                self.reset_scores()
+            
+
+            # the player clicks on the “quit“ button
+            if self.bt_quit.inside(p):
+                self.quit()
         
-        # the player clicks on the “new“ button
-        if self.bt_new.inside(p):
-            self.reset()
-            self.draw()
-        
+        else:
+            if self.bt_close.inside((x, y)):
+                quit()
+
         # print the grid's state (debugging)
         # for i in range(len(self.history)):
         #     print(f'step {i + 1} :')
@@ -627,7 +701,7 @@ class Game:
         else:
             self.scores.draw()
 
-        for button in [self.bt_undo, self.bt_new]:
+        for button in [self.bt_undo, self.bt_new, self.bt_reset_scores, self.bt_quit]:
             if button.displayed:
                 button.draw()
 
