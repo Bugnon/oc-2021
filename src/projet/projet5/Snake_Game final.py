@@ -77,12 +77,19 @@ def move():
        x = head.xcor()
        head.setx(x + 20)
 
+<<<<<<< HEAD
+print(head.direction, head.pos())
+
+screen.update()
+screen.ontimer(move, 100)
+=======
     # Holzer : for debugging only
     print(head.direction, head.pos())   
 
     # Holzer : setup a callback function some time in the future
     screen.update()
     screen.ontimer(move, 500)
+>>>>>>> 9800e09df5fd3d5eb949de285e834582345684c9
 
 # onkeypress 
 screen.listen()
@@ -91,6 +98,9 @@ screen.onkeypress(go_down, 'Down')
 screen.onkeypress(go_left, 'Left')
 screen.onkeypress(go_right, 'Right')
 
+<<<<<<< HEAD
+
+=======
 # Holzer : call the function move once, afterwards it is called via ontimer()
 move()
 turtle.done()   
@@ -105,5 +115,6 @@ turtle.done()
 # go_down()
 # go_right()
 # go_left()
+>>>>>>> 9800e09df5fd3d5eb949de285e834582345684c9
        
 
