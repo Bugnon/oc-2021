@@ -6,12 +6,19 @@ Alice et Grégory
 
 ![image](https://user-images.githubusercontent.com/89935590/166827743-4511b79d-c453-41c3-bd73-c242957afa70.jpeg)
 
-
+## Réprésentation de l'état
+l'état du jeu est représenté avec un tableau 2d appelé state
 ## Codeplay
 
 ```{codeplay}
+state = [
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+[0, 0, 0, 0],
+]
 
-from turtle import *
+for ligne in state:
+    print(ligne)
 
 ```
-
