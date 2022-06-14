@@ -77,6 +77,11 @@ def move():
        x = head.xcor()
        head.setx(x + 20)
 
+print(head.direction, head.pos())
+
+screen.update()
+screen.ontimer(move, 100)
+
 # onkeypress 
 screen.listen()
 screen.onkeypress(go_up, 'Up')
@@ -84,15 +89,18 @@ screen.onkeypress(go_down, 'Down')
 screen.onkeypress(go_left, 'Left')
 screen.onkeypress(go_right, 'Right')    
 
-while True:
-    screen.update()
+move()
+turtle.done()
+
+#while True:
+    #screen.update()
     
 
 # fonctions     
-move()
-go_up()
-go_down()
-go_right()
-go_left()
+#move()
+#go_up()
+#go_down()
+#go_right()
+#go_left()
        
 
