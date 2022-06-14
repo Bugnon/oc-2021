@@ -42,7 +42,7 @@ pen = turtle.Turtle()
 pen.color('white')
 pen.penup()
 pen.hideturtle()
-oen.goto(250)
+pen.goto(0, 250)
 # Ecrire Score et High Score et définir la police d'écriture, la taille et en gras
 pen.write("Score : 0   High Score : 0", align ="center", font = ("Arial", 28, "bold"))
 
@@ -77,22 +77,33 @@ def move():
        x = head.xcor()
        head.setx(x + 20)
 
+    # Holzer : for debugging only
+    print(head.direction, head.pos())   
+
+    # Holzer : setup a callback function some time in the future
+    screen.update()
+    screen.ontimer(move, 500)
+
 # onkeypress 
 screen.listen()
 screen.onkeypress(go_up, 'Up')
 screen.onkeypress(go_down, 'Down')
 screen.onkeypress(go_left, 'Left')
-screen.onkeypress(go_right, 'Right')    
+screen.onkeypress(go_right, 'Right')
 
-while True:
-    screen.update()
-    
-
-# fonctions     
+# Holzer : call the function move once, afterwards it is called via ontimer()
 move()
-go_up()
-go_down()
-go_right()
-go_left()
+turtle.done()   
+
+# Holzer : Use a timer callback function to call move()
+# while True:
+#     screen.update()
+    
+# fonctions     
+# move()
+# go_up()
+# go_down()
+# go_right()
+# go_left()
        
 
