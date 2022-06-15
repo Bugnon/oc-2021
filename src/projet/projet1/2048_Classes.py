@@ -177,6 +177,17 @@ class Text:
         color(self.color)
         write(self.text, font=(self.typeface, self.size), align=self.align)
 
+# class Score:  #remplace resultat() et self.score
+#     
+#     def __init__(self, pos, color='white',)
+#                 x, y = pos
+#                 
+#     def 
+#     
+#     
+#     def draw(self):
+#         ...
+
 
 # ------------  pas Classes  -------------
 
