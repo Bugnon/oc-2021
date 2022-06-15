@@ -6,8 +6,6 @@ import os
 import sys 
 import subprocess
 
-path = Turtle(visible=False)
-
 class Rectangle:
     """Draw a filled rectangle."""
     
@@ -126,9 +124,9 @@ class Pacman:
             if abs(vector(-200 + j * 20 , 180 - i * 20) - self.pos) <= 5 :
                 self.game.world.tiles[i][j] = 2
                 self.game.score.value += 1
-                path.up()
-                path.goto(self.pos + vector(10, 10))
-                path.dot(20)
+                self.game.world.path.up()
+                self.game.world.path.goto(self.pos + vector(10, 10))
+                self.game.world.path.dot(20)
                 if self.game.score.value == 160:
                     self.game.world.load(tiles2)
 
@@ -200,7 +198,8 @@ class World:
     def __init__(self, game, tiles):
         """Draw world using path."""        
         bgcolor('black')
-        path.color('blue')
+        self.path = Turtle(visible=False)
+        self.path.color('blue')
         self.tiles = tiles
         self.game = game
         
@@ -215,14 +214,14 @@ class World:
                     self.square(x, y)
 
                 if tile == 1:
-                    path.up()
-                    path.goto(x + 10, y + 10)
-                    path.dot(2, 'white')
+                    self.path.up()
+                    self.path.goto(x + 10, y + 10)
+                    self.path.dot(2, 'white')
 
     def load(self, tiles):
         """load a level"""
         self.tiles = tiles
-        path.clear()
+        self.path.clear()
         self.draw()
         self.game.pacman = Pacman(self.game, vector(-40, -80), vector(5, 0), vector(5, 0), False)
         self.game.ghost = [
@@ -262,16 +261,16 @@ class World:
     
     def square(self, x, y):
         """Draw square using path at (x, y)."""
-        path.up()
-        path.goto(x, y)
-        path.down()
-        path.begin_fill()
+        self.path.up()
+        self.path.goto(x, y)
+        self.path.down()
+        self.path.begin_fill()
 
         for count in range(4):
-            path.forward(20)
-            path.left(90)
+            self.path.forward(20)
+            self.path.left(90)
 
-        path.end_fill()
+        self.path.end_fill()
 
     def __str__(self):
         "Debug"
