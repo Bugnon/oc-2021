@@ -1,8 +1,10 @@
 from enum import Enum
 from re import T
 from telnetlib import DO
+from tkinter.messagebox import askyesno
 from turtle import *
-from abc import get_cache_token
+from random import *
+
 
 """Template for a game
 
@@ -94,7 +96,7 @@ class Text:
         self.draw()
 
     def erasableWriter(self):
-        """Get a specific turtle to write and clear  text independently from the rest"""
+        """Get a specific turtle to write and clear text independently from the rest"""
         t = Turtle()
         t.hideturtle()
         t.up()
@@ -176,7 +178,7 @@ class Grid:
         self.y0 = n * d // 2
 
         self.draw()
-        # print(self)
+        
 
     def draw(self):
         """Draw the grid."""
@@ -219,9 +221,9 @@ class Grid:
         return f'Grid({self.n}, {self.m})'
 
 
-def position(event):
-    a, b = event.x, event.y
-    print('{}, {}'.format(a, b))
+# def position(event):
+#     a, b = event.x, event.y
+#     print('{}, {}'.format(a, b))
 
 
 class Game:
@@ -245,28 +247,27 @@ class Game:
         s = getscreen()
         s.onclick(self.click)
         s.onkey(self.print, 'p')
-        s.onkey(clear, 'BackSpace')
+        s.onkey(self.reset, 'BackSpace')
         s.onkey(self.draw, ' ')
         s.listen()
 
-        ws = getcanvas()
-        ws.bind('<Motion>', self.mouse_pos)
         self.draw()
         done()
 
     def init_board(self):
         """Init board values"""
-        self.score = 0
-        self.history = []
+        self.score_white = 0
+        self.score_black = 0
         self.grid = Grid()
         self.title = Text((0,  200), 'Othello', 24, 'center')
         self.status = Text((-280, -200), '', erasable=True)
+        self.score = Text((-280, 200), '', erasable=True)
         self.headers = CellHeaders()
-        self.bt_clear = Button((200, 100), 'Clear')
         self.bt_new = Button((200, 50), 'New')
         self.currentPlayer = PieceColor.BLACK
-        self.possible_moves = []
-        self.state = []
+        self.state = []        
+        self.last_move = []
+        self.possible_moves = []        
         for i in range(8):
             self.state.append([PieceColor.EMPTY] * 8)
         # start pieces
@@ -274,20 +275,26 @@ class Game:
         self.set_cell_value(4, 5, PieceColor.BLACK)
         self.set_cell_value(5, 4, PieceColor.BLACK)
         self.set_cell_value(5, 5, PieceColor.WHITE)
-        self.possible_moves = []
-        self.calculate_possible_moves()
+        self.set_possible_moves(self.get_possible_moves(self.currentPlayer))
+        # if a player cannot play, it is incremented. If it reaches 2, the game is over
+        self.try_count = 0
 
     def set_status(self, text):
         """Display status"""
         self.status.text = text
         self.status.draw()
+    
+    def set_possible_moves(self, moves):
+        self.possible_moves = moves
 
-    def mouse_pos(self, event):
-        """Display current cell in status"""
-        # a, b = event.x, event.y
-        # # text = '{}, {}'.format(a, b)
-        # cell = self.grid.get_cell(event.x, event. y)
-        # self.set_status(cell)
+    def announce_end_of_game(self, text):
+        response = askyesno("La partie est finie", text + "\nOn recommence ?")
+        if response:
+            self.new_game()
+
+    def increment_try_count(self):
+        self.try_count = self.try_count + 1
+        self.check_winner()
 
     def print(self):
         """Print state"""
@@ -299,28 +306,76 @@ class Game:
             text.append(self.get_cell_name(move[0], move[1]))
         print("Possible moves: {0}".format(text))
         print("Current player: {0}".format(self.currentPlayer))
+    
+    def has_possible_moves(self):
+        if len(self.possible_moves) > 0:
+            return True
+        else:
+            return False
 
     def click(self, x, y):
         """Reacts to mouse clicks."""
         if self.grid.inside(x, y):
+            # we have clicked in the grid
             x = x//self.grid.d * self.grid.d + self.grid.d//2
             y = y//self.grid.d * self.grid.d + self.grid.d//2
             goto(x, y)
             if (self.put_new_piece_on_board(x, y, self.currentPlayer)):
+                self.try_count = 0
+                self.check_winner()
+                # the move was valid and we have put a piece on board
                 self.toggle_player()
-
+                self.set_possible_moves(self.get_possible_moves(self.currentPlayer))
+                self.check_winner()                
+                self.bot_plays()                
+                self.draw_board()
+                # we cannot play
+                if (not self.has_possible_moves()):
+                    self.pass_your_turn()
         p = x, y
-        if self.bt_clear.inside(p):
-            clear()
-            self.bt_new.draw()
-            self.bt_clear.draw()
-            self.reset()
-
+      
         if self.bt_new.inside(p):
-            self.init_board()
-            self.draw_board()
+            self.new_game()
 
-        self.calculate_possible_moves()
+    def pass_your_turn(self):
+        self.increment_try_count()
+        self.toggle_player()    
+        self.set_possible_moves(self.get_possible_moves(self.currentPlayer))
+        self.check_winner()     
+        self.bot_plays()
+
+    def new_game(self):
+        """Create a new game: initialize variables and draw a fresh board"""
+        # self.init_board()
+        # self.draw_board()
+        game = Game()
+
+    def reset(self):
+        """Reset the game. Used for instance with backspace"""
+        self.new_game()
+        
+    def bot_plays(self):
+        """The bot will play if there is a possible move"""
+        if (self.has_possible_moves()) :
+            # bot can play
+            # take a random move among all possible moves
+            index = randint(0, len(self.possible_moves)-1)
+            cell = self.possible_moves[index]
+            # save the move the bot is playinf, in order to display it
+            self.last_move = cell
+            coords = self.grid.get_cell_coords(cell[0], cell[1])
+            if (self.put_new_piece_on_board(coords[0], coords[1], self.currentPlayer)):
+                print("Bot played: {0}".format(self.get_cell_name(cell[0], cell[1])))
+                self.try_count = 0                
+                self.toggle_player()
+                self.set_possible_moves(self.get_possible_moves(self.currentPlayer))
+                self.check_winner()
+        else:            
+            # bot cannot play
+            self.increment_try_count()
+            self.toggle_player()                         
+            self.set_possible_moves(self.get_possible_moves(self.currentPlayer))
+            self.check_winner()           
 
     def put_new_piece_on_board(self, x, y, color: PieceColor):
         """Record a new piece on the board"""
@@ -333,45 +388,113 @@ class Game:
             value = self.get_cell_value(cell[0], cell[1])
             if value == PieceColor.EMPTY:
                 print('Putting {0} piece on cell {1}'.format(color, cell))
-                self.set_cell_value(
-                    cell[0], cell[1], color or self.currentPlayer)
+                row = cell[0]
+                col = cell[1]
+                self.set_cell_value(row, col, color or self.currentPlayer)
+                self.eat_pieces(row, col, color)
+                self.calculate_score()
                 return True
             else:
                 return False
 
-    def draw_possible_moves(self):
-        # display possible moves
+    def calculate_score(self):
+        self.score_black = 0
+        self.score_white = 0
         for i in range(8):
             for j in range(8):
-                if ([i+1, j+1] in self.possible_moves):
-                    coords = self.grid.get_cell_coords(i + 1, j + 1)
-                    offset = self.grid.d // 2
-                    Rectangle((coords[0] - offset, coords[1]-offset), (self.grid.d - 2,
-                                                                       self.grid.d - 2), color="lightgreen")
+                value = self.get_cell_value(i+1, j+1)
+                if (value == PieceColor.BLACK):
+                    self.score_black += 1
+                elif (value == PieceColor.WHITE):
+                    self.score_white += 1
+        self.draw_score()
+
+    def get_pieces_in_line(self, row, col, row_inc, col_inc, opposing_color):
+        r = row+row_inc
+        c = col+col_inc
+        line_candidates = []
+        while r <= 8 and r >= 1 and c <= 8 and c >= 1:
+            value = self.get_cell_value(r, c)
+            # as long as we have opposing colors, they are candidates
+            if value == opposing_color:
+                line_candidates.append([r, c])
+            # an empty cell means that we cannot eat any piece
+            elif value == PieceColor.EMPTY:
+                line_candidates = []
+                break
+            # we have reached a piece of the same color
+            else:
+                break
+            r += row_inc
+            c += col_inc
+        # we are out of the grid ==> they are not candidates anymore
+        if (r < 1 or r > 8 or c < 1 or c > 8):
+            line_candidates = []
+        return line_candidates
+
+    def eat_pieces(self, row, col, color):
+        """"We have put a piece on cell [row, col]. Eat pieces"""
+        opposing_color = self.get_opposing_color(color)
+        candidates = []
+        candidates.extend(self.get_pieces_in_line(
+            row, col, -1, 0, opposing_color))
+        candidates.extend(self.get_pieces_in_line(
+            row, col, 1, 0, opposing_color))
+        candidates.extend(self.get_pieces_in_line(
+            row, col, 0, -1, opposing_color))
+        candidates.extend(self.get_pieces_in_line(
+            row, col, 0, 1, opposing_color))
+        candidates.extend(self.get_pieces_in_line(
+            row, col, 1, 1, opposing_color))
+        candidates.extend(self.get_pieces_in_line(
+            row, col, -1, -1, opposing_color))
+        candidates.extend(self.get_pieces_in_line(
+            row, col, -1, 1, opposing_color))
+        candidates.extend(self.get_pieces_in_line(
+            row, col, 1, -1, opposing_color))
+        for candidate in candidates:
+            self.set_cell_value(candidate[0], candidate[1], color)
+        # horizontally
+        # in diag
 
     def draw_board(self):
-        """Draw board (i.e. representation of the current state)"""
-        self.draw_possible_moves()
+        """Draw board (i.e. representation of the current state)"""        
+        self.grid.draw()        
         for i in range(8):
             for j in range(8):
                 value = self.get_cell_value(i + 1, j + 1)
-                coords = self.grid.get_cell_coords(i + 1, j + 1)
+                coords = self.grid.get_cell_coords(i + 1, j + 1)    
+                if ([i+1, j+1] in self.possible_moves):
+                    # draw possible moves (green background)
+                    offset = self.grid.d // 2
+                    Rectangle((coords[0] - offset, coords[1]-offset), (self.grid.d,
+                                                                       self.grid.d), color="lightgreen")                
                 if (value != PieceColor.EMPTY):
-                    print("Cell {0}, Coords {1}, Value {2}". format(
-                        [i, j], coords, value.value))
                     goto(coords[0], coords[1])
-                    dot(self.grid.d, self.get_color(value))
+                    cell = [i+1, j+1]
+                    piece_color = self.get_color(value, cell)
+                    dot(self.grid.d, piece_color) 
+                    if (cell == self.last_move):
+                        dot(self.grid.d-3, self.get_color(value))
 
     def draw(self):
         """Draws all the game objects."""
-        self.grid.draw()
         self.title.draw()
         self.status.draw()
         self.headers.draw()
-        self.bt_clear.draw()
         self.bt_new.draw()
         self.draw_board()
+        self.draw_score()
+        self.draw_current_player()        
+
         # down()
+
+    def draw_current_player(self):
+        self.set_status("Current player: {0}".format(self.currentPlayer.name))
+
+    def draw_score(self):
+        self.score.text = f"W: {self.score_white} B: {self.score_black}"        
+        self.score.draw()
 
     def get_cell_value(self, row, col):
         """Get value stored in cell. Row and Col between 1 and 8"""
@@ -391,19 +514,14 @@ class Game:
         # determine the direction where we try to find a pawn of the same color
         row_inc = piece_to_kill[0]-cell_candidate[0]
         col_inc = piece_to_kill[1]-cell_candidate[1]
-        # my color
-        # self.get_opposing_color(piece_to_kill)
         target_color = self.currentPlayer
-
-        # print("has_opposing_pawn for cell candidate {0}".format(
-        #     cell_candidate))
         row = piece_to_kill[0] + row_inc
         col = piece_to_kill[1] + col_inc
         while row <= 8 and row >= 1 and col <= 8 and col >= 1:
             value = self.get_cell_value(row, col)
             if value == target_color:
-                print("For player {0}, cell {1} is a valid move because it has an opposing cell {2} to win {3}".format(
-                    target_color, self.get_cell_name(cell_candidate[0], cell_candidate[1]), self.get_cell_name(row, col), self.get_cell_name(piece_to_kill[0], piece_to_kill[1])))
+                # print("For player {0}, cell {1} is a valid move because it has an opposing cell {2} to win {3}".format(
+                #     target_color, self.get_cell_name(cell_candidate[0], cell_candidate[1]), self.get_cell_name(row, col), self.get_cell_name(piece_to_kill[0], piece_to_kill[1])))
                 return True
             elif value == PieceColor.EMPTY:
                 return False
@@ -439,23 +557,26 @@ class Game:
         else:
             return PieceColor.BLACK
 
-    def calculate_possible_moves(self):
-        # Must be empty and adjacent to an opposing pawn and must frame opposing pawns with one pawn of its own color
+    def get_possible_moves(self, player):
+        # A possible move is a cell that
+        # 1. must be empty 
+        # 2. must be adjacent to an opposing pawn (i.e. black if current player is white)
+        # 3. must have a pawn of the same color as the current player after the opposing pawns on the same line
         # iterate over all empty cells that are close to an opposing pawn
         possible_moves = []
+        opposing_color = self.get_opposing_color(player)
         for i in range(8):
             for j in range(8):
                 value = self.get_cell_value(i + 1, j + 1)
-                # consider only opposing pawns
-                if not value == self.get_opposing_color(self.currentPlayer):
+                # consider only opposing pawns (we will only consider pieces of the oppsoing color)
+                if value != opposing_color:
                     continue
                 # find opposing pawns neighbours that are empty
                 moves = self.get_empty_neighbours(i + 1, j + 1)
 
                 for move in moves:
                     possible_moves.append(move)
-        self.possible_moves = possible_moves
-        self.draw()
+        return possible_moves
         # find all empty cells that have at least one opposing color among the 8 neighbouring cells
         # amongs those cells, find cells that frame opposing pawns
 
@@ -466,19 +587,43 @@ class Game:
 
     def toggle_player(self):
         self.currentPlayer = PieceColor.BLACK if self.currentPlayer == PieceColor.WHITE else PieceColor.WHITE
-        self.set_status("{0} playing".format(self.currentPlayer))
+        self.draw_current_player()
 
     def get_current_color(self):
         return "black" if self.currentPlayer == PieceColor.BLACK else "lightgrey"
 
-    def get_color(self, piece_color: PieceColor):
-
+    def get_color(self, piece_color: PieceColor, cell = [0, 0]):
+        if cell == self.last_move:
+            return "red"
         if piece_color == PieceColor.BLACK:
             return "black"
         elif piece_color == piece_color.WHITE:
             return "lightgrey"
         else:
+            # empty
             return "#FF000000"
+
+    def check_winner(self):
+        moves1 = self.get_possible_moves(PieceColor.BLACK)
+        moves2 = self.get_possible_moves(PieceColor.WHITE)
+        if len(moves1) != 0 and len(moves2) != 0:
+            print("We can still play, guy...")
+            return
+        
+        if self.try_count < 2:
+            # we can still do sth
+            print("Try count: {0}".format(self.try_count))
+            return
+
+        if self.score_white > self.score_black :
+            #write('white win',20)
+            self.announce_end_of_game("WHITE WON !!")
+            
+        elif self.score_white < self.score_black :
+            #write('white win',20)
+            self.announce_end_of_game("BLACK WON !!")
+    
+
 
 
 game = Game()
