@@ -271,9 +271,8 @@ class World:
         
 class Score:
     """Show the score."""
-    def __init__(self, game):
+    def __init__(self):
         self.value = 0
-        self.game = game
         self.writer = Turtle(visible=False)
         self.writer.goto(160, 160)
         self.writer.color('white')
@@ -303,7 +302,7 @@ class Game:
             Ghost(self, vector(100, 160), vector(0, -5)),
             Ghost(self, vector(100, -160), vector(-5, 0)),
         ]
-        self.score = Score(self)
+        self.score = Score()
         self.world = World(self)
         
         listen()
