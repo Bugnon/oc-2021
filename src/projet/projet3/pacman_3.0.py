@@ -300,7 +300,6 @@ class Game:
     """Define the game class."""
     
     def __init__(self):
-        
         up()
         setup(600, 400)
         hideturtle()
@@ -337,7 +336,7 @@ class Game:
         if self.bt_quit.inside((x, y)):
             quit()
         
-        if self.bt_retry.inside((x, y)):
+        if self.bt_retry.inside((x, y)) and self.pacman.isdead == True:
             self.restart()
     
     def move(self):
