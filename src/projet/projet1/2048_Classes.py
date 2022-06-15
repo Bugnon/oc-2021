@@ -161,20 +161,21 @@ class Button:
 class Text:
     """Draw a text at a given position."""
     
-    def __init__(self, pos, text, size, align, color='black'):
+    def __init__(self, pos, text, size, align, color='black', typeface='Arial'):
         """Initilizes the text"""
         self.pos = pos
         self.text = text
         self.size = size
         self.align = align
         self.color = color
+        self.typeface = typeface
         self.draw()
         
     def draw(self):
         """Draw the text."""
         goto(self.pos)
         color(self.color)
-        write(self.text, font=('Arial', self.size), align=self.align)
+        write(self.text, font=(self.typeface, self.size), align=self.align)
 
 
 # ------------  pas Classes  -------------
@@ -592,11 +593,12 @@ class Game:
         self.endjeu = 1
         self.not_op = 0
 #         self.
-#         self.button_hist = Button((210, -135), 'hist')
+        self.button_hist = Button((210, -135), 'hist')
         self.button_end = Button((210, 125), 'Rage')
         self.button_new = Button((210, -5), 'New')
         self.button_back = Button((210, 60), 'Back')
         self.button_quit = Button((210, -70), 'Quit')
+        self.title()
         
         self.resultat()
         self.new(1)
@@ -609,6 +611,14 @@ class Game:
         s.onkey(lambda:self.retour(),'BackSpace')
         s.onclick(self.click)
         s.listen()
+        
+    def title(self):
+        x, y = -240, 80
+        mot = ('2', '0', '4', '8')
+        for l in mot:
+            Text((x, y), l, 45, 'center', 'white')
+            y -= 60
+
 
     def reboutons(self, rage, hist = 1, back = 0):
         goto(0, 0)
@@ -645,11 +655,11 @@ class Game:
         goto(0, 180)
         color('white')
         write('historique:', font=('Arial', 12), align='center')
-        if len(hist) != 0:
+        if len(self.hist) != 0:
             partie = []
             writehist = []
-            for i in range(len(hist)):
-                partie.append(hist[i])
+            for i in range(len(self.hist)):
+                partie.append(self.hist[i])
                 if i != 0:
                     if i % 20 == 0:
                         writehist.append(partie)
@@ -700,16 +710,16 @@ class Game:
 
 
     # cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
-    def historique(self, direction):
-        global hist
+    def historiquef(self, direction):
+#         global hist
         if direction == 'h':
-            hist.append('↑')
+            self.hist.append('↑')
         elif direction == 'b':
-            hist.append('↓')
+            self.hist.append('↓')
         elif direction == 'd':
-            hist.append('→')
+            self.hist.append('→')
         elif direction == 'g':
-            hist.append('←')
+            self.hist.append('←')
          
 
     #  cette fonction permet de créer une nouvelle case après un coup
@@ -827,7 +837,7 @@ class Game:
     # Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer 
     def mouvement(self, direction):
 #         global endjeu
-        if self.endjeu:
+        if self.endjeu == 1:
             self.modifi = 0
 #             global state
 #             global correspondance_inverse
@@ -842,7 +852,7 @@ class Game:
             else:
 #                 global pause
                 self.pause = 1
-            self.historique(direction)
+            self.historiquef(direction)
             self.retour_hist.append(self.state)
 
 
@@ -882,13 +892,13 @@ class Game:
         
 
     # cette fonction rement des variables comment ils étaient au début
-    def rezero(self):
-        global pause
-        global modifi
-        global nbr
-        global score
-        global endjeu
-        pause, modifi , nbr, score, endjeu = 0, 0, 0, 0, 1
+    def rezero(self):  # supprimer car que à 1 endroit? (newgame())
+#         global pause
+#         global modifi
+#         global nbr
+#         global score
+#         global endjeu
+        self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
 
 
     def click(self, x, y):
@@ -905,11 +915,12 @@ class Game:
 
         if self.button_back.inside(p):
 #              global hist
-             if len(self.hist) != 0:
+            if len(self.hist) != 0:
                 self.retour()
                 
-#         if self.button_hist.inside(p):
-#             ...
+        if self.button_hist.inside(p):
+            self.end_hist()
+            
 
 #     def reboutons():
 
@@ -942,12 +953,13 @@ class Game:
         stamp()
         
         self.text = text
-        global endjeu
+        citation = '''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement'''
+#         global endjeu
         endjeu = 1
         self.reboutons(0)
         Text((0, 0), self.text, 40, 'center', 'white')
         if not win: 
-            Text((0, -110), 'text', 10, 'center')
+            Text((0, -110), citation, 12, 'center', 'white', 'Didot')
         else:
             goto(0, -100)
             write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
@@ -967,14 +979,14 @@ class Game:
         self.draw()
 #         global hist
 #         global state
-        state = [
+        self.state = [
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         ]
-#         rezero()
-#         hist = []
+        self.rezero()  #supp rezero() car utilisé qu'ici? 
+        self.hist = []
 #         reboutons(1, 1, 1)
 # #         Case.cases()
         self.new(1)
@@ -990,6 +1002,7 @@ class Game:
 #         self.title.draw()
 #         self.status.draw()
 #         self.button_hist.draw()
+        self.title()
         self.resultat()
         self.button_end.draw()
         self.button_new.draw()
