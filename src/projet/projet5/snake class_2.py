@@ -13,6 +13,7 @@ class Snake:
         self.parts = []
         self.call()
         self.head = self.parts[0]
+        fragement = []
         
     def call(self):
         for x in POSITIONS:
