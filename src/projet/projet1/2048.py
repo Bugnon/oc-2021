@@ -221,9 +221,7 @@ def coord_to_res(xcoord, ycoord):
 def retour():
     global retour_hist
     global state
-    print(retour_hist)
     retour_hist.pop(-1)
-    print(retour_hist)
     state = retour_hist[-1]
     global correspondance_inverse
     for c in correspondance_inverse:
@@ -394,6 +392,8 @@ def mouvement(direction):
             pause = 1
         historique(direction)
         retour_calcul()
+        global retour_hist
+        print(retour_hist)
 
 
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée   

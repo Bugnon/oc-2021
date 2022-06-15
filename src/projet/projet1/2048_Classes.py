@@ -213,9 +213,8 @@ class Game:
         self.title()
         self.son_fond()
         
-        self.resultat()
         self.new(1)
-#         self.son_fond()
+        self.resultat()
         
         s = getscreen()
         s.onkey(lambda:self.haut(), 'Up')
@@ -301,22 +300,16 @@ class Game:
 
     # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
     def retour(self):
-#         global retour_hist
-#         global state
         print(self.retour_hist)
         self.retour_hist.pop(-1)
         print(self.retour_hist)
         self.state = self.retour_hist[-1]
-#         global correspondance_inverse
         for c in self.correspondance_inverse:
             y, x = self.correspondance_inverse[c]
             text = self.state[y][x]
             case_back = Case(c, text)
-#         global hist
         self.hist.pop()
-#         global score
         self.score -= 2
-#         global nbr
         self.nbr -= 1
         self.resultat()
             
@@ -420,15 +413,10 @@ class Game:
 
     # cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
     def notsame(self, xpos, ypos, xsuiv, ysuiv, direction):
-        a = 5
         while True:
             if self.coord_to_res(xsuiv, ysuiv) == 0:
                 xsuiv, ysuiv = self.operation((xsuiv, ysuiv), direction)
-                a -= 1
-                if a == 0:
-                    break
                 if self.not_op:
-                    print('notop')
                     self.not_op = 0
                     self.changement(xpos, ypos, xsuiv, ysuiv)
                     break
@@ -535,7 +523,6 @@ class Game:
             self.newgame()
 
         if self.button_back.inside(p):
-#              global hist
             if len(self.hist) != 0:
                 self.retour()
                 
@@ -547,8 +534,6 @@ class Game:
 
     # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
     def resultat(self):
-#         global score
-#         global state
         goto(-170, -175)
         width(20)
         down()
@@ -586,7 +571,7 @@ class Game:
             write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
         color('black')
         self.song(win)
-        
+
 
     def newgame(self):
         # cette fonction remet les variables comment elles étaient au début et redessine le jeu   
@@ -594,7 +579,7 @@ class Game:
         
         goto(0,0)
         stamp()
-        
+
         self.draw()
 #         global hist
 #         global state
@@ -609,6 +594,7 @@ class Game:
 #         reboutons(1, 1, 1)
 # #         Case.cases()
         self.new(1)
+        self.resultat()
 #         self.resultat()
 #     #     son_fond()
 
