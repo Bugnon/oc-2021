@@ -177,6 +177,17 @@ class Text:
         color(self.color)
         write(self.text, font=(self.typeface, self.size), align=self.align)
 
+# class Score:  #remplace resultat() et self.score
+#     
+#     def __init__(self, pos, color='white',)
+#                 x, y = pos
+#                 
+#     def 
+#     
+#     
+#     def draw(self):
+#         ...
+
 
 # ------------  pas Classes  -------------
 
@@ -558,9 +569,10 @@ class Game:
         hideturtle()
         tracer(0)
         up()
-        
-        addshape('bois.gif')
-        shape('bois.gif')
+        self.button_hist = Button((210, -135), 'hist')
+        goto(0, 0)
+        addshape("src/projet/projet1/bois.gif")
+        shape("src/projet/projet1/bois.gif")
         stamp()
         
         self.state = [
@@ -580,8 +592,6 @@ class Game:
         self.correspondance_inverse = {value: key for key, value in self.correspondance.items()}
         self.hist = []
         self.retour_hist = []
-#         pause, modifi , nbr, score, endjeu, not_op = 0, 0, 0, 0, 1, 0
-
 
         self.score = 0
         self.historique = []
@@ -592,16 +602,17 @@ class Game:
         self.score = 0
         self.endjeu = 1
         self.not_op = 0
-#         self.
-        self.button_hist = Button((210, -135), 'hist')
+
         self.button_end = Button((210, 125), 'Rage')
         self.button_new = Button((210, -5), 'New')
         self.button_back = Button((210, 60), 'Back')
         self.button_quit = Button((210, -70), 'Quit')
         self.title()
+        self.son_fond()
         
         self.resultat()
         self.new(1)
+#         self.son_fond()
         
         s = getscreen()
         s.onkey(lambda:self.haut(), 'Up')
@@ -639,14 +650,14 @@ class Game:
     def song(self, win):
         mixer.music.stop()
         if win:
-            mixer.music.load('win.mp3')
+            mixer.music.load("src/projet/projet1/win.mp3")
             mixer.music.play()
             sleep(6)
         else:
-            mixer.music.load('cri.wav')
+            mixer.music.load("src/projet/projet1/cri.wav")
             mixer.music.play()
             sleep(1)
-        mixer.music.load('Sojiada-Lanmou.mp3')
+        mixer.music.load("src/projet/projet1/Sojiada-Lanmou.mp3")
         mixer.music.play(-1)
 
     # cette fonction sert à écrire l'historique sous formes de flèches
@@ -887,24 +898,24 @@ class Game:
     # cette fonction lance le son de fond
     def son_fond(self):
         mixer.init()
-        mixer.music.load('Meydn-SynthwaveVibe.mp3')
+        mixer.music.load("src/projet/projet1/Meydn-SynthwaveVibe.mp3")
         mixer.music.play(-1)
         
 
     # cette fonction rement des variables comment ils étaient au début
-    def rezero(self):  # supprimer car que à 1 endroit? (newgame())
+#     def rezero(self):  # supprimer car que à 1 endroit? (newgame())
 #         global pause
 #         global modifi
 #         global nbr
 #         global score
 #         global endjeu
-        self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
+#         self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
 
 
     def click(self, x, y):
         p = x, y
         if self.button_quit.inside(p):
-#             mixer.quit()
+            mixer.quit()
             bye()
 
         if self.button_end.inside(p):
@@ -926,8 +937,8 @@ class Game:
 
     # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
     def resultat(self):
-        global score
-        global state
+#         global score
+#         global state
         goto(-170, -175)
         width(20)
         down()
@@ -972,8 +983,6 @@ class Game:
         clear()
         
         goto(0,0)
-        addshape('bois.gif')
-        shape('bois.gif')
         stamp()
         
         self.draw()
@@ -985,7 +994,7 @@ class Game:
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         ]
-        self.rezero()  #supp rezero() car utilisé qu'ici? 
+        self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
         self.hist = []
 #         reboutons(1, 1, 1)
 # #         Case.cases()
