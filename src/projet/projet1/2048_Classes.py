@@ -598,6 +598,7 @@ class Game:
         self.button_back = Button((210, 60), 'Back')
         self.button_quit = Button((210, -70), 'Quit')
         self.title()
+        self.son_fond()
         
         self.resultat()
         self.new(1)
@@ -887,7 +888,7 @@ class Game:
     # cette fonction lance le son de fond
     def son_fond(self):
         mixer.init()
-        mixer.music.load("src/projet/projet1/'Meydn-SynthwaveVibe.mp3")
+        mixer.music.load("src/projet/projet1/Meydn-SynthwaveVibe.mp3")
         mixer.music.play(-1)
         
 
@@ -972,8 +973,6 @@ class Game:
         clear()
         
         goto(0,0)
-        addshape('bois.gif')
-        shape('bois.gif')
         stamp()
         
         self.draw()
