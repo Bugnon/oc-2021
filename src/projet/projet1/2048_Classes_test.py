@@ -570,14 +570,14 @@ class Calculs:
     def song(self, win):
         mixer.music.stop()
         if win:
-            mixer.music.load('win.mp3')
+            mixer.music.load("src/projet/projet1/win.mp3")
             mixer.music.play()
             sleep(6)
         else:
-            mixer.music.load('cri.wav')
+            mixer.music.load("src/projet/projet1/cri.wav")
             mixer.music.play()
             sleep(1)
-        mixer.music.load('Sojiada-Lanmou.mp3')
+        mixer.music.load("src/projet/projet1/Sojiada-Lanmou.mp3")
         mixer.music.play(-1)
 
     # cette fonction sert à écrire l'historique sous formes de flèches
@@ -663,7 +663,7 @@ class Calculs:
             self.new()
 
 
-    # cette fonction fait le changement de case     
+    # cette fonction fait le changement de case
     def changement(self, xpos, ypos, xsuiv, ysuiv):
         if (xpos, ypos) != (xsuiv, ysuiv):
             if self.coord_to_res(xsuiv, ysuiv) == 0:
@@ -776,8 +776,8 @@ class Game:
         tracer(0)
         up()
         
-        addshape('bois.gif')
-        shape('bois.gif')
+        addshape("src/projet/projet1/bois.gif")
+        shape("src/projet/projet1/bois.gif")
         stamp()
         
         self.state = [
@@ -815,10 +815,10 @@ class Game:
         son_fond()
         
         s = getscreen()
-        s.onkey(lambda:self.haut(), 'Up')
-        s.onkey(lambda:self.bas(), 'Down')
-        s.onkey(lambda:self.gauche(), 'Left')
-        s.onkey(lambda:self.droite(), 'Right')
+        s.onkey(lambda:haut(), 'Up')
+        s.onkey(lambda:bas(), 'Down')
+        s.onkey(lambda:gauche(), 'Left')
+        s.onkey(lambda:droite(), 'Right')
         s.onkey(lambda:Calculs.retour(),'BackSpace')
         s.onclick(self.click)
         s.listen()
@@ -853,15 +853,10 @@ class Game:
                 
 
         # cette fonction lance le son de fond
-        def son_fond(self):
+        def son_fond():
             mixer.init()
-            mixer.music.load('Meydn-SynthwaveVibe.mp3')
+            mixer.music.load("src/projet/projet1/'Meydn-SynthwaveVibe.mp3")
             mixer.music.play(-1)
-        
-
-        # cette fonction rement des variables comment ils étaient au début
-        def rezero(self):
-            self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
 
     
     def click(self, x, y):
@@ -944,6 +939,8 @@ class Game:
         [0, 0, 0, 0],
         ]
 #         rezero()
+        self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
+
 #         hist = []
 #         reboutons(1, 1, 1)
 # #         Case.cases()

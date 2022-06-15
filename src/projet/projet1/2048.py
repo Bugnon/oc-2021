@@ -30,8 +30,8 @@ color_num = {-1 : 'grey', 0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 
              64 : 'magenta3', 128 : 'DeepPink', 256 : 'MediumVioletRed', 512 : 'VioletRed1', 1024 : 'LightSeaGreen',
              2048 : 'turquoise1'}
 
-addshape('bois.gif')
-shape('bois.gif')
+addshape("src/projet/projet1/bois.gif")
+shape("src/projet/projet1/bois.gif")
 
 
 # Ce modèle sert à créer les cases qui se calqueront sur les cases, de la fonction cases(), avec leur chiffre et couleur
@@ -133,14 +133,14 @@ def reboutons(rage, hist = 1, back = 0):
 def song(win):
     mixer.music.stop()
     if win:
-        mixer.music.load('win.mp3')
+        mixer.music.load("src/projet/projet1/win.mp3")
         mixer.music.play()
         sleep(6)
     else:
-        mixer.music.load('cri.wav')
+        mixer.music.load("src/projet/projet1/cri.wav")
         mixer.music.play()
         sleep(1)
-    mixer.music.load('Sojiada-Lanmou.mp3')
+    mixer.music.load("src/projet/projet1/Sojiada-Lanmou.mp3")
     mixer.music.play(-1)
 
 
@@ -431,7 +431,7 @@ def droite():
 # cette fonction lance le son de fond
 def son_fond():
     mixer.init()
-    mixer.music.load('Meydn-SynthwaveVibe.mp3')
+    mixer.music.load("src/projet/projet1/Meydn-SynthwaveVibe.mp3")
     mixer.music.play(-1)
 
 
