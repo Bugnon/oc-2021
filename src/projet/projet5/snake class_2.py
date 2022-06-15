@@ -15,6 +15,7 @@ class Snake:
         self.head = self.parts[0]
         fragement = []
         
+        
     def call(self):
         for x in POSITIONS:
             self.create_snake(x)
