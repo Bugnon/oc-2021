@@ -580,7 +580,6 @@ class Game:
         self.correspondance_inverse = {value: key for key, value in self.correspondance.items()}
         self.hist = []
         self.retour_hist = []
-#         pause, modifi , nbr, score, endjeu, not_op = 0, 0, 0, 0, 1, 0
 
 
         self.score = 0
@@ -602,6 +601,7 @@ class Game:
         
         self.resultat()
         self.new(1)
+#         self.son_fond()
         
         s = getscreen()
         s.onkey(lambda:self.haut(), 'Up')
@@ -892,19 +892,19 @@ class Game:
         
 
     # cette fonction rement des variables comment ils étaient au début
-    def rezero(self):  # supprimer car que à 1 endroit? (newgame())
+#     def rezero(self):  # supprimer car que à 1 endroit? (newgame())
 #         global pause
 #         global modifi
 #         global nbr
 #         global score
 #         global endjeu
-        self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
+#         self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
 
 
     def click(self, x, y):
         p = x, y
         if self.button_quit.inside(p):
-#             mixer.quit()
+            mixer.quit()
             bye()
 
         if self.button_end.inside(p):
@@ -926,8 +926,8 @@ class Game:
 
     # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
     def resultat(self):
-        global score
-        global state
+#         global score
+#         global state
         goto(-170, -175)
         width(20)
         down()
@@ -985,7 +985,7 @@ class Game:
         [0, 0, 0, 0],
         [0, 0, 0, 0],
         ]
-        self.rezero()  #supp rezero() car utilisé qu'ici? 
+        self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
         self.hist = []
 #         reboutons(1, 1, 1)
 # #         Case.cases()
