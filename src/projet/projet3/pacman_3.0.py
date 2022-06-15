@@ -128,7 +128,7 @@ class Pacman:
                 self.game.world.path.goto(self.pos + vector(10, 10))
                 self.game.world.path.dot(20)
                 if self.game.score.value == 160:
-                    self.game.world.load(tiles2)
+                    self.game.world.load(self.game.world.tiles2)
 
     def change(self, x, y):
         """Change pacman aim if valid."""
