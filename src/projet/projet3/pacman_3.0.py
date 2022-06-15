@@ -126,15 +126,11 @@ class Pacman:
             if abs(vector(-200 + j * 20 , 180 - i * 20) - self.pos) <= 5 :
                 self.game.world.tiles[i][j] = 2
                 self.game.score.value += 1
-                self.remove_point()
+                path.up()
+                path.goto(self.pos + vector(10, 10))
+                path.dot(20)
                 if self.game.score.value == 160:
                     self.game.world.load(tiles2)
-
-    def remove_point(self):
-        """remove the drawing of the point"""
-        path.up()
-        path.goto(self.pos + vector(10, 10))
-        path.dot(20)
 
     def change(self, x, y):
         """Change pacman aim if valid."""
