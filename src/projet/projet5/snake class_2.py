@@ -1,25 +1,27 @@
 # importer des modules requis pour la création du jeu 
 
 from turtle import Turtle, Screen
+import turtle 
 import time
 import random 
 
 POSITIONS = [(0, 0)]
 
 
-
+# la classe Snake 
 class Snake:
     def __init__ (self):
         self.parts = []
         self.call()
         self.head = self.parts[0]
         fragement = []
-        
-        
+
+    # appeler le snake et le créer    
     def call(self):
         for x in POSITIONS:
             self.create_snake(x)
     
+    # création du snake avec couleur, forme, position)
     def create_snake(self, position):
         snake = Turtle()
         snake.color('green')
@@ -27,27 +29,32 @@ class Snake:
         snake.penup()
         snake.goto(position)
         self.parts.append(snake)
-        
+
+    # attribution de mouvement (en bas, en haut, à droite et à gauche)   
     def move(self):
         for y in range(len(self.parts) -1, 0, -1):
             new_x = self.parts[x-1].xcor()
             new_y = self.parts[x-1].ycor()
             self.parts[x].goto(new_x, new_y)
         self.head.forward(20)
-        
+
+    # en haut     
     def up(self):
         self.head.setheading(90)
-        
+
+    # en bas     
     def down(self):
         self.head.setheading(270)
-        
+
+    # à gauche    
     def left(self):
         self.head.setheading(180)
-        
+
+    # à droite    
     def right(self):
         self.head.setheading(0)
             
-
+# la classe Food 
 class Food(Turtle):
     def __init__(self):
         super(). __init__()
