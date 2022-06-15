@@ -569,7 +569,8 @@ class Game:
         hideturtle()
         tracer(0)
         up()
-        
+        self.button_hist = Button((210, -135), 'hist')
+        goto(0, 0)
         addshape("src/projet/projet1/bois.gif")
         shape("src/projet/projet1/bois.gif")
         stamp()
@@ -592,7 +593,6 @@ class Game:
         self.hist = []
         self.retour_hist = []
 
-
         self.score = 0
         self.historique = []
         self.cases = Case.cases()
@@ -602,8 +602,7 @@ class Game:
         self.score = 0
         self.endjeu = 1
         self.not_op = 0
-#         self.
-        self.button_hist = Button((210, -135), 'hist')
+
         self.button_end = Button((210, 125), 'Rage')
         self.button_new = Button((210, -5), 'New')
         self.button_back = Button((210, 60), 'Back')
