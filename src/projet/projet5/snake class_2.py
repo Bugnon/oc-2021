@@ -1,10 +1,10 @@
 # importer des modules requis pour la création du jeu 
-
 from turtle import Turtle, Screen
 import turtle 
 import time
 import random 
 
+# définir une position initiale 
 POSITIONS = [(0, 0)]
 
 
