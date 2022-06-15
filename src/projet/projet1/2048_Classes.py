@@ -559,8 +559,8 @@ class Game:
         tracer(0)
         up()
         
-        addshape('bois.gif')
-        shape('bois.gif')
+        addshape("src/projet/projet1/bois.gif")
+        shape("src/projet/projet1/bois.gif")
         stamp()
         
         self.state = [
@@ -639,14 +639,14 @@ class Game:
     def song(self, win):
         mixer.music.stop()
         if win:
-            mixer.music.load('win.mp3')
+            mixer.music.load("src/projet/projet1/win.mp3")
             mixer.music.play()
             sleep(6)
         else:
-            mixer.music.load('cri.wav')
+            mixer.music.load("src/projet/projet1/cri.wav")
             mixer.music.play()
             sleep(1)
-        mixer.music.load('Sojiada-Lanmou.mp3')
+        mixer.music.load("src/projet/projet1/Sojiada-Lanmou.mp3")
         mixer.music.play(-1)
 
     # cette fonction sert à écrire l'historique sous formes de flèches
@@ -887,7 +887,7 @@ class Game:
     # cette fonction lance le son de fond
     def son_fond(self):
         mixer.init()
-        mixer.music.load('Meydn-SynthwaveVibe.mp3')
+        mixer.music.load("src/projet/projet1/'Meydn-SynthwaveVibe.mp3")
         mixer.music.play(-1)
         
 
