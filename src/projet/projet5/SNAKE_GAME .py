@@ -8,6 +8,15 @@ from turtle import *
 # une position initial (snake)
 POSITIONS = [(0, 0)]
 
+# une grille de 29 x 29 
+state = []
+
+for i in range(29):
+    state.append([0] *29)
+    
+for line in state:
+    print(line)
+     
 # la classe Segment qui hérite de Turtle 
 class Segment(Turtle):
     def __init__(self):
