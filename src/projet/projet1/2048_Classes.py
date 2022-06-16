@@ -1,20 +1,21 @@
-# 2048
+""" 2048 """
 from turtle import *
 from random import choice
 from time import sleep
 from pygame import mixer
 
 
-# Ce modèle sert à créer les cases qui se calqueront sur les cases, de la fonction cases(), avec leur chiffre et couleur
 class Case:
+    """Ce modèle sert à créer les cases qui se calqueront sur les cases, de la fonction cases(), avec leur chiffre et couleur"""
+    
     def __init__(self, pos, text, size=77.5):
         self.pos = pos
         self.size = size
         self.text = text
         self.draw()
 
-    # cette fonction permet de déssiner la case avec sa couleur et son chiffre
     def draw(self):
+        """Cette méthode permet de dessiner la case avec son chiffre et sa couleur associée"""
         up()
         x, y = self.pos
         goto(x, y)
@@ -30,14 +31,12 @@ class Case:
         end_fill()
         if self.text != 0 and self.text != -1:
             Text((x + self.size / 2, y - self.size / 2 - 10), self.text, 20, 'center')
-            #goto(x + self.size / 2, y - self.size / 2 - 10)
-            #color('black')
-            #write(self.text, font=('Arial', 20), align='center')
 
     def __str__(self):
         return f'Case({self.pos}, {self.text})'
 
     def cases():
+        """Création du plateau (tour et cases)"""
         tour = Case((-180, 200), -1, 360)
         for y in 190, 102.5, 15, -72.5:
             for x in -170, -82.5, 5, 92.5:
@@ -45,17 +44,17 @@ class Case:
 
 
 class Rectangle:
-    """Draw a filled rectangle."""
+    """Crée une forme rectangle"""
 
     def __init__(self, pos, size, color='Lightgrey'):
-        """Initialize the rectangle and draw it."""
+        """Initialise le rectangle et le dessine."""
         self.pos = pos
         self.size = size
         self.color = color
         self.draw()
 
     def outline(self):
-        """Draw just the outline of the rectangle."""
+        """Dessine le contour du rectangle"""
         goto(self.pos)
         down()
         for x in self.size * 2:
@@ -64,7 +63,7 @@ class Rectangle:
         up()
 
     def draw(self):
-        """Draw the outline of the rectangle and fill it a color is defined."""
+        """Dessine le contour du rectangle et le remplit d'une couleur"""
         if self.color:
             fillcolor(self.color)
             begin_fill()
@@ -74,39 +73,38 @@ class Rectangle:
             self.outline()
 
     def inside(self, p):
-        """Check if the point p is inside the rectangle."""
+        """Vérifie si le point p est dans le rectangle."""
         x, y = self.pos
         w, h = self.size
 
         return 0 < p[0]-x < w and 0 < p[1]-y < h
 
 
-# Ce modèle crée des boutons
 class Button:
+    """Crée un bouton à l'aide des classes Rectangle et Text"""
     def __init__(self, pos, text, size=(60, 30), color='Lightgrey'):
-        # hello
         self.rect = Rectangle(pos, size, color)
         x, y = pos
         w, h = size
         self.color = color
         self.label = Text((x+w/2, y+h/4 - 1), text, h//2, 'center')
-#         self.draw()
+        self.draw()
 
-#     # cette fonction permet de dessiner le bouton
     def draw(self):
+        """Dessine le bouton"""
         self.rect.draw()
         self.label.draw()
 
-    # cette fonction permet de calculer si la position donnée est à l'intérieur du bouton
     def inside(self, p):
+        """Vérifie si la position donnée est à l'intérieur du bouton"""
         return self.rect.inside(p)
 
 
 class Text:
-    """Draw a text at a given position."""
+    """Ecrit un texte à une position donnée"""
 
     def __init__(self, pos, text, size, align, color='black', typeface='Arial'):
-        """Initilizes the text"""
+        """Initialise le texte"""
         self.pos = pos
         self.text = text
         self.size = size
@@ -116,15 +114,22 @@ class Text:
         self.draw()
 
     def draw(self):
-        """Draw the text."""
+        """Dessine le texte"""
         goto(self.pos)
         color(self.color)
         write(self.text, font=(self.typeface, self.size), align=self.align)
 
 
 class Game:
+    """Cette classe permet de faire tous les calculs relatifs au jeu
+    Elle contient toutes les variables du jeu et les attributs
+    """
+
 
     def __init__(self):
+        """Définit la taille de la fenêtre
+        Initialise les attributs
+        """
         setup(600, 400)
         hideturtle()
         tracer(0)
@@ -180,6 +185,7 @@ class Game:
         s.listen()
 
     def title(self):
+        """Définit le titre à l'aide de la classe texte"""
         x, y = -240, 80
         mot = ('2', '0', '4', '8')
         for l in mot:
@@ -187,6 +193,7 @@ class Game:
             y -= 60
 
     def reboutons(self, rage, hist=1):
+        """Sert à redessiner les boutons"""
         goto(0, 0)
         stamp()
         if rage:
@@ -197,8 +204,8 @@ class Game:
         button_new = Button((210, -5), 'New', (60, 30))
         button_quit = Button((210, -70), 'Quit', (60, 30))
 
-    # cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
     def song(self, win):
+        """Cette méthode permet de lancer le son de fin. "win.wav" si c'est une victoire, sinon "cri.wav"""""
         mixer.music.stop()
         if win:
             mixer.music.load("src/projet/projet1/win.mp3")
@@ -211,8 +218,8 @@ class Game:
         mixer.music.load("src/projet/projet1/Sojiada-Lanmou.mp3")
         mixer.music.play(-1)
 
-    # cette fonction sert à écrire l'historique sous formes de flèches
     def end_hist(self):
+        """Cette méthode sert à écrire l'historique sous formes de flèches"""
         clear()
         goto(0, 0)
         addshape("src/projet/projet1/bois.gif")
@@ -220,9 +227,6 @@ class Game:
         stamp()
         self.reboutons(0, 0)
         Text((0, 180), 'historique:', 12, 'center', 'white')
-        #goto(0, 180)
-        #color('white')
-        #write('historique:', font=('Arial', 12), align='center')
         if len(self.hist) != 0:
             partie = []
             writehist = []
@@ -237,19 +241,14 @@ class Game:
             for part in writehist:
                 part_str = ' | '.join(part)
                 Text((0, ycor() - 25), part_str, 12, 'center', 'white')
-                #goto(0, ycor() - 25)
-                #write(part_str, font=('Arial', 12), align='center')
-        #color('black')
 
-    # cette fonction prend les coordonnées de la case et retourn la valeur de celle-ci
     def coord_to_res(self, xcoord, ycoord):
-#         global correspondance_inverse
+        """Cette méthode prend les coordonnées de la case et retourne la valeur de celle-ci"""
         yres, xres = self.correspondance_inverse[(xcoord, ycoord)]
-#         global state
         return self.state[yres][xres]
 
-    # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
     def retour(self):
+        """Cette méthode remet le jeu comme il était au tour d'avant et supprime la sauvegarde du dernier coup"""
         self.retour_hist.pop(-1)
         self.state = self.retour_hist[-1]
         for c in self.correspondance_inverse:
@@ -261,9 +260,8 @@ class Game:
         self.nbr -= 1
         self.resultat()
 
-    # cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
     def historiquef(self, direction):
-#         global hist
+        """Cette méthode permet de mémoriser les coups en ajoutant une flèche à l'historique"""
         if direction == 'h':
             self.hist.append('↑')
         elif direction == 'b':
@@ -273,14 +271,11 @@ class Game:
         elif direction == 'g':
             self.hist.append('←')
 
-    #  cette fonction permet de créer une nouvelle case après un coup
     def new(self, newretour=0):
-#         global nbr
+        """Cette méthode permet de créer une nouvelle case 2, placée aléatoirement, après un coup"""
         listexy = (0, 1, 2, 3)
         xres = choice(listexy)
         yres = choice(listexy)
-#         global state
-#         global correspondance
         if self.nbr == 16:
             self.end('Game Over', 0)
         elif self.state[yres][xres] == 0:
@@ -294,29 +289,24 @@ class Game:
         else:
             self.new()
 
-    # cette fonction fait le changement de case
     def changement(self, xpos, ypos, xsuiv, ysuiv):
+        """Cette méthode fait le changement de case"""
         if (xpos, ypos) != (xsuiv, ysuiv):
             if self.coord_to_res(xsuiv, ysuiv) == 0:
                 nbrsuiv = self.coord_to_res(xpos, ypos)
             else:
                 nbrsuiv = self.coord_to_res(xpos, ypos) * 2
-#             global correspondance_inverse
-#             global state
             casei = Case((xsuiv, ysuiv), nbrsuiv)
             ysuivres, xsuivres = self.correspondance_inverse[(xsuiv, ysuiv)]
             self.state[ysuivres][xsuivres] = nbrsuiv
             case0 = Case((xpos, ypos), 0)
             yposres, xposres = self.correspondance_inverse[(xpos, ypos)]
             self.state[yposres][xposres] = 0
-#             global nbr
             self.nbr -= 1
-#             global modifi
             self.modifi = 1
 
-    # cette fonction calcule les coordonnées de la case suivante en fonction de la direction
     def operation(self, coord, direction):
-#         global correspondance_inverse
+        """Cette méthode calcule les coordonnées de la case suivante en fonction de la direction"""
         xcoord, ycoord = coord
         coord_memoire = coord
         if direction == 'h':
@@ -332,9 +322,9 @@ class Game:
             xcoord, ycoord = coord_memoire
         return xcoord, ycoord
 
-    # cette fonction permet de calculer les coordonnées de la case présedente
-    # elle est utilisé si la case suivante est une bordure ou une case d'un autre chiffre
     def operation_inverse(self, coord, direction):
+        """Cette méthode permet de calculer les coordonnées de la case précédente
+            elle est utilisée si la case suivante est une bordure ou une case d'un autre chiffre"""
         self.correspondance_inverse
         xcoord, ycoord = coord
         if direction == 'h':
@@ -487,9 +477,6 @@ class Game:
             Text((0, -110), citation, 10, 'center', 'white', 'Didot')
         else:
             Text((0, -100), '👍     ╰*°▽°*╯     👍', 30, 'center', 'white')
-            #goto(0, -100)
-            #write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
-        #color('black')
         self.song(win)
 
     def newgame(self):
