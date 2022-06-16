@@ -121,9 +121,6 @@ class Ghost:
         goto(self.pos.x + 10, self.pos.y + 10)
         dot(20, 'red')
 
-   
-
-
 class Pacman:
     """Define a pacman.
     With the argument game, Pacman can access its game environment."""
@@ -162,7 +159,7 @@ class Pacman:
 
 
     def change(self, x, y):
-        """Change pacman aim if valid."""
+        """Change pacman direction"""
         self.direction = vector(x, y)
 
     def draw(self):
