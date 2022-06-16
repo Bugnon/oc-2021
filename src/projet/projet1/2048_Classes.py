@@ -29,9 +29,10 @@ class Case:
             right(90)
         end_fill()
         if self.text != 0 and self.text != -1:
-            goto(x + self.size / 2, y - self.size / 2 - 10)
-            color('black')
-            write(self.text, font=('Arial', 20), align='center')
+            Text((x + self.size / 2, y - self.size / 2 - 10), self.text, 20, 'center')
+            #goto(x + self.size / 2, y - self.size / 2 - 10)
+            #color('black')
+            #write(self.text, font=('Arial', 20), align='center')
 
     def __str__(self):
         return f'Case({self.pos}, {self.text})'
@@ -95,21 +96,6 @@ class Button:
     def draw(self):
         self.rect.draw()
         self.label.draw()
-#         goto(self.pos)
-# #         fillcolor(self.color)
-# #         begin_fill()
-# #         for x in self.size * 2:
-# #             forward(x)
-# #             left(90)
-# #         end_fill()
-# #         x, y = self.pos
-# #         w, h = self.size
-#         goto(x+w/2, y+h/4 - 1)
-#         color('black')
-#         write(self.text, font=('Arial', h//2), align='center')
-#
-#     def __str__(self):
-#         return f'Button({self.pos}, {self.text})'
 
     # cette fonction permet de calculer si la position donnée est à l'intérieur du bouton
     def inside(self, p):
@@ -233,9 +219,10 @@ class Game:
         shape("src/projet/projet1/bois.gif")
         stamp()
         self.reboutons(0, 0)
-        goto(0, 180)
-        color('white')
-        write('historique:', font=('Arial', 12), align='center')
+        Text((0, 180), 'historique:', 12, 'center', 'white')
+        #goto(0, 180)
+        #color('white')
+        #write('historique:', font=('Arial', 12), align='center')
         if len(self.hist) != 0:
             partie = []
             writehist = []
@@ -249,9 +236,10 @@ class Game:
                 writehist.append(partie)
             for part in writehist:
                 part_str = ' | '.join(part)
-                goto(0, ycor() - 25)
-                write(part_str, font=('Arial', 12), align='center')
-        color('black')
+                Text((0, ycor() - 25), part_str, 12, 'center', 'white')
+                #goto(0, ycor() - 25)
+                #write(part_str, font=('Arial', 12), align='center')
+        #color('black')
 
     # cette fonction prend les coordonnées de la case et retourn la valeur de celle-ci
     def coord_to_res(self, xcoord, ycoord):
@@ -498,9 +486,10 @@ class Game:
         if not win:
             Text((0, -110), citation, 12, 'center', 'white', 'Didot')
         else:
-            goto(0, -100)
-            write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
-        color('black')
+            Text((0, -100), '👍     ╰*°▽°*╯     👍', 30, 'center', 'white')
+            #goto(0, -100)
+            #write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
+        #color('black')
         self.song(win)
 
     def newgame(self):
