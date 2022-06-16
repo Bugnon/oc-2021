@@ -222,8 +222,6 @@ class Game:
         """Cette méthode sert à écrire l'historique sous formes de flèches"""
         clear()
         goto(0, 0)
-        addshape("src/projet/projet1/bois.gif")
-        shape("src/projet/projet1/bois.gif")
         stamp()
         self.reboutons(0, 0)
         Text((0, 180), 'historique:', 12, 'center', 'white')
@@ -337,8 +335,8 @@ class Game:
             xcoord += 87.5
         return xcoord, ycoord
 
-    # cette fonction calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même
     def notsame(self, xpos, ypos, xsuiv, ysuiv, direction):
+        """Cette méthode calcule si un changement peut être effectué même si le chiffre de la case suivante n'est pas le même"""
         while True:
             if self.coord_to_res(xsuiv, ysuiv) == 0:
                 xsuiv, ysuiv = self.operation((xsuiv, ysuiv), direction)
@@ -354,8 +352,8 @@ class Game:
                 self.changement(xpos, ypos, xsuiv, ysuiv)
                 break
 
-    # cette fonction calcule si le chiffre dans la case est le même que le suivant
     def calcul(self, pos, direction):
+        """Cette méthode calcule si le chiffre dans la case est le même que le suivant"""
         xsuiv, ysuiv = self.operation(pos, direction)
         if not self.not_op:
             xpos, ypos = pos
@@ -366,14 +364,12 @@ class Game:
         else:
             self.not_op = 0
 
-    # cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
-    # Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer
     def mouvement(self, direction):
+        """Cette méthode, si le jeu n'est pas fini, lance les calculs des changements possible  entre les cases
+        Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer"""
         self.retour_hist.append(self.state)
         if self.endjeu == 1:
             self.modifi = 0
-#             global state
-#             global correspondance_inverse
             for i in range(4):
                 for coord in self.correspondance_inverse:
                     xcoord, ycoord = coord
@@ -386,46 +382,38 @@ class Game:
                 self.pause = 1
             self.historiquef(direction)
 
-    # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
     def haut(self):
+        """Cette méthode, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée"""
         if self.pause:
             self.pause = 0
             self.mouvement('h')
 
-    # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
     def bas(self):
+        """Cette méthode, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée"""
         if self.pause:
             self.pause = 0
             self.mouvement('b')
 
-    # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
     def gauche(self):
+        """Cette méthode, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée"""
         if self.pause:
             self.pause = 0
             self.mouvement('g')
 
-    # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
     def droite(self):
+        """Cette méthode, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée"""
         if self.pause:
             self.pause = 0
             self.mouvement('d')
 
-    # cette fonction lance le son de fond
     def son_fond(self):
+        """Cette méthode lance le son de fond"""
         mixer.init()
         mixer.music.load("src/projet/projet1/Meydn-SynthwaveVibe.mp3")
         mixer.music.play(-1)
 
-    # cette fonction rement des variables comment ils étaient au début
-#     def rezero(self):  # supprimer car que à 1 endroit? (newgame())
-#         global pause
-#         global modifi
-#         global nbr
-#         global score
-#         global endjeu
-#         self.pause, self.modifi , self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
-
     def click(self, x, y):
+        """Cette méthode associe les boutons à leur action"""
         p = x, y
         if self.button_quit.inside(p):
             mixer.quit()
@@ -440,9 +428,8 @@ class Game:
         if self.button_hist.inside(p):
             self.end_hist()
 
-
-    # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
     def resultat(self):
+        """Cette méthode calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau"""
         goto(-170, -175)
         width(20)
         down()
@@ -461,15 +448,12 @@ class Game:
             self.end('2048 c\'est la win!', 1)
 
     def end(self, text, win):
+        """Cette méthode régit la deuxième phase du jeu. En effet, elle affiche si le joueur a gagné ou perdu"""
         clear()
         goto(0, 0)
-        addshape("src/projet/projet1/bois.gif")
-        shape("src/projet/projet1/bois.gif")
         stamp()
-
         self.text = text
         citation = '''“L'échec fait partie intégrante de notre réussite. L'échec, c'est l'envers de la réussite."\nJean-Pierre Chevènement'''
-#         global endjeu
         self.endjeu = 1
         self.reboutons(0)
         Text((0, 0), self.text, 40, 'center', 'white')
@@ -480,12 +464,10 @@ class Game:
         self.song(win)
 
     def newgame(self):
-        # cette fonction remet les variables comment elles étaient au début et redessine le jeu
+        """cette méthode réinitialise les variables et redéssine le plateau du jeu"""
         clear()
-
         goto(0, 0)
         stamp()
-
         self.draw()
 #         global hist
 #         global state
@@ -504,7 +486,7 @@ class Game:
         self.son_fond()
 
     def draw(self):
-        """Draws all the game objects."""
+        """Déssine tous les objets de Game"""
 #         self.cases.draw()
         Case.cases()
 #         self.title.draw()
