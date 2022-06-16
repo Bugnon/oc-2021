@@ -3,7 +3,7 @@
 Louna et Garance
 
 Notre projet se portera sur le jeu très connu: Snake.  
-Voici une image pour un aperçu: 
+Voici une image pour un aperçu (image tirée d'internet): 
  
 ![](snake.png)
 
