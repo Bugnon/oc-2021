@@ -160,7 +160,7 @@ class Pacman:
                     if self.game.level % 2 == 0:
                         self.game.world.load(self.game.world.tiles2)
                     else:
-                        self.game.world.load(self.game.world.tiles)
+                        self.game.world.load(self.game.world.tiles1)
 
 
     def change(self, x, y):
@@ -185,7 +185,7 @@ class World:
         self.path = Turtle(visible=False)
         self.path.color('blue')
         self.game = game
-        self.tiles = [
+        self.tiles1 = [
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
                 [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
@@ -229,6 +229,7 @@ class World:
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             ]
+        self.tiles = self.tiles1
 
     def draw(self):
         """Draw the path."""
@@ -247,8 +248,12 @@ class World:
 
     def load(self, tiles):
         """load a level"""
-        print(tiles)
         self.tiles = tiles
+        for i in range(20):
+            for j in range(20):
+                tile = tiles[i][j]
+                if tile == 2:
+                    tiles[i][j] = 1
         self.path.clear()
         self.draw()
         self.game.pacman = Pacman(self.game, vector(-40, -80), vector(5, 0), vector(5, 0), False)
@@ -349,7 +354,7 @@ class Game:
         onkey(lambda: self.pacman.change(0, 5), 'Up')
         onkey(lambda: self.pacman.change(0, -5), 'Down')
         onkey(lambda: self.world.load(self.world.tiles2), '2')
-        onkey(lambda: self.world.load(self.world.tiles), '1')
+        onkey(lambda: self.world.load(self.world.tiles1), '1')
         onscreenclick(self.click)
         self.world.draw()
         self.move()
