@@ -25,6 +25,14 @@ global highscore
 highscore = []
 
 
+def ligne(p, q):
+    goto(p)
+    down()
+    goto(q)
+    up()
+
+
+
 class Rectangle:
     """This class draws a filled rectangle defined by
     position, size and color.
@@ -100,14 +108,6 @@ class Button:
     def inside(self, p):
         return self.rect.inside(p)
 
-
-def ligne(p, q):
-    goto(p)
-    down()
-    goto(q)
-    up()
-
-
 class Grid:
     def __init__(self, n=8, m=8, d=40, ongrid=True):
         """Create a new Grid instance"""
@@ -158,7 +158,6 @@ class Grid:
 class Highscores:
     def __init__(self):
 
-        global high
 
         high = {0: ' Pas encore de temps', 1: ' Pas encore de temps', 2: ' Pas encore de temps', 3: ' Pas encore de temps', 4: ' Pas encore de temps',
               5: ' Pas encore de temps', 6: ' Pas encore de temps', 7: ' Pas encore de temps', 8: ' Pas encore de temps', 9: ' Pas encore de temps'}
@@ -172,7 +171,7 @@ class Highscores:
         self.txt_highscores = Text((0,165),'Highscores',20,'center')
         self.bt_new = Button((200, 50), 'New')
 
-        self.show_hghscs()
+        self.show_hghscs(high)
 
         s.onclick(self.click2)
         listen()
@@ -185,7 +184,7 @@ class Highscores:
             clear()
             game = Game()
 
-    def show_hghscs(self):
+    def show_hghscs(self,high):
         one = Text((-250,100), '1: ' + str(high[0]), '24')
         two = Text((-250,75), '2: ' + str(high[1]) , '23')
         three = Text((-250, 50), '3: ' + str(high[2]), '22')
@@ -196,6 +195,11 @@ class Highscores:
         eight = Text((-250,-75),'8' + str(high[7]),'17')
         nine = Text((-250,-100),'9' + str(high[8]),'16')
         ten = Text((-250,-125),'10' + str(high[9]),'15')
+
+
+class Difficulty:
+    def __init__(self):
+        ...
 
 
 class Game:
@@ -247,7 +251,7 @@ class Game:
         s = getscreen()
         s.bgcolor('lightblue')
         s.onclick(self.click)
-        s.onkey(self.print_state, ' ')   # for debugging only
+        s.onkey(self.print_state, ' ')
         s.listen()
         done()
 
@@ -257,7 +261,6 @@ class Game:
             b = randint(0, 7)
             state[f][b] = 6
             self.winlt.append(([f],[b]))
-            print(self.winlt)
         self.check()
 
     def check(self):
@@ -341,7 +344,7 @@ class Game:
         
         if self.bt_difficulty.inside(p):
             clear()
-            self.difficulty = Difficulty()
+            difficulty = Difficulty()
 
     def bomb_position(self, ligne, colonne):
         x = -180 + ((colonne + 1) * 40)
@@ -349,8 +352,6 @@ class Game:
         Text((x, y), '⚛︎', 20)  # bombe
 
     def onlyshow(self, x, y):
-        global i
-        global j
         j = int((x + 160) // 40)
         i = int((159 - y) // 40)
         if 0 <= i <= 7 and 0 <= j <= 7:
@@ -365,8 +366,6 @@ class Game:
                 self.load(i, j)
 
     def onlyflags(self, x, y):
-        global i
-        global j
         j = int((x + 160) // 40)
         i = int((159 - y) // 40)
         if 0 <= i <= 7 and 0 <= j <= 7:
@@ -424,7 +423,8 @@ class Game:
             """ montrer le chiffre """
             self.num = Text((x, y), state[ligne][colonne])
             if state[ligne][colonne] == 0:
-                self.holes(ligne, colonne)
+                #self.holes(ligne, colonne)
+                pass
 
     def draw_cell_text(self, ligne, colonne):
         x = -180 + ((colonne + 2) * 40)

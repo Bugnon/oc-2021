@@ -29,9 +29,10 @@ class Case:
             right(90)
         end_fill()
         if self.text != 0 and self.text != -1:
-            goto(x + self.size / 2, y - self.size / 2 - 10)
-            color('black')
-            write(self.text, font=('Arial', 20), align='center')
+            Text((x + self.size / 2, y - self.size / 2 - 10), self.text, 20, 'center')
+            #goto(x + self.size / 2, y - self.size / 2 - 10)
+            #color('black')
+            #write(self.text, font=('Arial', 20), align='center')
 
     def __str__(self):
         return f'Case({self.pos}, {self.text})'
@@ -95,21 +96,6 @@ class Button:
     def draw(self):
         self.rect.draw()
         self.label.draw()
-#         goto(self.pos)
-# #         fillcolor(self.color)
-# #         begin_fill()
-# #         for x in self.size * 2:
-# #             forward(x)
-# #             left(90)
-# #         end_fill()
-# #         x, y = self.pos
-# #         w, h = self.size
-#         goto(x+w/2, y+h/4 - 1)
-#         color('black')
-#         write(self.text, font=('Arial', h//2), align='center')
-#
-#     def __str__(self):
-#         return f'Button({self.pos}, {self.text})'
 
     # cette fonction permet de calculer si la position donnée est à l'intérieur du bouton
     def inside(self, p):
@@ -176,9 +162,8 @@ class Game:
         self.endjeu = 1
         self.not_op = 0
 
-        self.button_end = Button((210, 125), 'Rage')
+        self.button_end = Button((210, 60), 'Rage')
         self.button_new = Button((210, -5), 'New')
-        self.button_back = Button((210, 60), 'Back')
         self.button_quit = Button((210, -70), 'Quit')
         self.title()
         self.son_fond()
@@ -191,7 +176,6 @@ class Game:
         s.onkey(lambda: self.bas(), 'Down')
         s.onkey(lambda: self.gauche(), 'Left')
         s.onkey(lambda: self.droite(), 'Right')
-        s.onkey(lambda: self.retour(), 'BackSpace')
         s.onclick(self.click)
         s.listen()
 
@@ -202,17 +186,15 @@ class Game:
             Text((x, y), l, 45, 'center', 'white')
             y -= 60
 
-    def reboutons(self, rage, hist=1, back=0):
+    def reboutons(self, rage, hist=1):
         goto(0, 0)
         stamp()
         if rage:
-            button_end = Button((210, 125), 'Rage', (60, 30))
+            button_end = Button((210, 60), 'Rage', (60, 30))
         else:
             if hist:
                 button_hist = Button((210, -135), 'hist', (60, 30))
         button_new = Button((210, -5), 'New', (60, 30))
-        if back:
-            button_back = Button((210, 60), 'Back', (60, 30))
         button_quit = Button((210, -70), 'Quit', (60, 30))
 
     # cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
@@ -236,10 +218,11 @@ class Game:
         addshape("src/projet/projet1/bois.gif")
         shape("src/projet/projet1/bois.gif")
         stamp()
-        self.reboutons(0, 0, 0)
-        goto(0, 180)
-        color('white')
-        write('historique:', font=('Arial', 12), align='center')
+        self.reboutons(0, 0)
+        Text((0, 180), 'historique:', 12, 'center', 'white')
+        #goto(0, 180)
+        #color('white')
+        #write('historique:', font=('Arial', 12), align='center')
         if len(self.hist) != 0:
             partie = []
             writehist = []
@@ -253,9 +236,10 @@ class Game:
                 writehist.append(partie)
             for part in writehist:
                 part_str = ' | '.join(part)
-                goto(0, ycor() - 25)
-                write(part_str, font=('Arial', 12), align='center')
-        color('black')
+                Text((0, ycor() - 25), part_str, 12, 'center', 'white')
+                #goto(0, ycor() - 25)
+                #write(part_str, font=('Arial', 12), align='center')
+        #color('black')
 
     # cette fonction prend les coordonnées de la case et retourn la valeur de celle-ci
     def coord_to_res(self, xcoord, ycoord):
@@ -386,7 +370,7 @@ class Game:
         if not self.not_op:
             xpos, ypos = pos
             if self.coord_to_res(xpos, ypos) == self.coord_to_res(xsuiv, ysuiv):
-                self.changement(xpos, ypos, xsuiv, ysuiv)
+                self.changement(xpos, ypos, xsuiv, ysuiv)                                                                                                           
             else:
                 self.notsame(xpos, ypos, xsuiv, ysuiv, direction)
         else:
@@ -463,15 +447,9 @@ class Game:
         if self.button_new.inside(p):
             self.newgame()
 
-        if self.button_back.inside(p):
-            if len(self.hist) != 0:
-                self.retour()
-
         if self.button_hist.inside(p):
             self.end_hist()
 
-
-#     def reboutons():
 
     # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
     def resultat(self):
@@ -506,11 +484,12 @@ class Game:
         self.reboutons(0)
         Text((0, 0), self.text, 40, 'center', 'white')
         if not win:
-            Text((0, -110), citation, 12, 'center', 'white', 'Didot')
+            Text((0, -110), citation, 10, 'center', 'white', 'Didot')
         else:
-            goto(0, -100)
-            write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
-        color('black')
+            Text((0, -100), '👍     ╰*°▽°*╯     👍', 30, 'center', 'white')
+            #goto(0, -100)
+            #write('👍     ╰*°▽°*╯     👍', font=('Arial', 30), align='center')
+        #color('black')
         self.song(win)
 
     def newgame(self):
@@ -531,12 +510,11 @@ class Game:
         ]
         self.pause, self.modifi, self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
         self.hist = []
-#         reboutons(1, 1, 1)
 # #         Case.cases()
         self.new(1)
         self.resultat()
 #         self.resultat()
-#     #     son_fond()
+        self.son_fond()
 
     def draw(self):
         """Draws all the game objects."""
@@ -549,7 +527,6 @@ class Game:
         self.resultat()
         self.button_end.draw()
         self.button_new.draw()
-        self.button_back.draw()
         self.button_quit.draw()
 
 

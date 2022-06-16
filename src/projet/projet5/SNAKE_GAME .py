@@ -18,6 +18,7 @@ class Segment(Turtle):
 
 # la classe Snake avec ses principales méthodes 
 class Snake:
+    # définir init de la class Snake 
     def __init__ (self):
         self.parts = []
         self.call()
@@ -136,7 +137,8 @@ class Chrono(Turtle):
     def isFinished(self):
         return self.value < 0
 
-# affichage du jeu (taille et la couleur de l'écran)               
+# affichage du jeu  
+# création de l'objet screen pour afficher un écran             
 screen = Screen()
 screen.setup(height = 600, width = 600)
 screen.bgcolor('white')
