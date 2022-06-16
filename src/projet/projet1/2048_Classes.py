@@ -469,8 +469,7 @@ class Game:
         goto(0, 0)
         stamp()
         self.draw()
-#         global hist
-#         global state
+
         self.state = [
         [0, 0, 0, 0],
         [0, 0, 0, 0],
@@ -479,19 +478,14 @@ class Game:
         ]
         self.pause, self.modifi, self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
         self.hist = []
-# #         Case.cases()
         self.new(1)
         self.resultat()
-#         self.resultat()
         self.son_fond()
 
     def draw(self):
-        """Déssine tous les objets de Game"""
-#         self.cases.draw()
+        """Dessine tous les objets de Game"""
         Case.cases()
-#         self.title.draw()
-#         self.status.draw()
-#         self.button_hist.draw()
+
         self.title()
         self.resultat()
         self.button_end.draw()
