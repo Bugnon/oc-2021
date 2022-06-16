@@ -158,7 +158,6 @@ class Grid:
 class Highscores:
     def __init__(self):
 
-        global high
 
         high = {0: ' Pas encore de temps', 1: ' Pas encore de temps', 2: ' Pas encore de temps', 3: ' Pas encore de temps', 4: ' Pas encore de temps',
               5: ' Pas encore de temps', 6: ' Pas encore de temps', 7: ' Pas encore de temps', 8: ' Pas encore de temps', 9: ' Pas encore de temps'}
@@ -172,7 +171,7 @@ class Highscores:
         self.txt_highscores = Text((0,165),'Highscores',20,'center')
         self.bt_new = Button((200, 50), 'New')
 
-        self.show_hghscs()
+        self.show_hghscs(high)
 
         s.onclick(self.click2)
         listen()
@@ -185,7 +184,7 @@ class Highscores:
             clear()
             game = Game()
 
-    def show_hghscs(self):
+    def show_hghscs(self,high):
         one = Text((-250,100), '1: ' + str(high[0]), '24')
         two = Text((-250,75), '2: ' + str(high[1]) , '23')
         three = Text((-250, 50), '3: ' + str(high[2]), '22')
@@ -196,6 +195,10 @@ class Highscores:
         eight = Text((-250,-75),'8' + str(high[7]),'17')
         nine = Text((-250,-100),'9' + str(high[8]),'16')
         ten = Text((-250,-125),'10' + str(high[9]),'15')
+
+class Difficulty:
+    def __init__(self):
+        ...
 
 
 class Game:
@@ -218,7 +221,6 @@ class Game:
                  [0, 0, 0, 0, 0, 0, 0, 0]]
 
         self.begin = []
-        self.score = False
         self.title = Text(
             (0, 165), 'Welcome to the best game ever: The Demineur', 20, 'center')
         self.bt_flag = Button((200, -50), 'Flag')
@@ -231,16 +233,12 @@ class Game:
 
         self.win = False
 
-        self.bouttons = True
-
         self.bt_highscore = Button((200, 100), 'Highscores')
         self.bt_new = Button((200, 50), 'New')
         self.bt_difficulty = Button((200, 0), 'Difficulty')
 
         # self.timer = Text((-200,50), 'ELapsed time: ' + blablabla)
 
-        self.title = Text(
-            (0, 650), 'Welcome to the best game ever: The Demineur', 20, align='center')
         self.grid = Grid()
         self.generate()
         global s
@@ -424,7 +422,8 @@ class Game:
             """ montrer le chiffre """
             self.num = Text((x, y), state[ligne][colonne])
             if state[ligne][colonne] == 0:
-                self.holes(ligne, colonne)
+                #self.holes(ligne, colonne)
+                pass
 
     def draw_cell_text(self, ligne, colonne):
         x = -180 + ((colonne + 2) * 40)
