@@ -8,7 +8,7 @@ Voici une image pour un aperçu:
 ![](snake.png)
 
 ## La mise en forme du jeu: 
-Le fond est assez clair, avec un quadrillage de 2 couleurs.  
+Le fond est blanc. Le serpent(snake) est de couleur verte et la pomme (food) est de couleur rouge 
 Le serpent (Snake) sera de forme assez simple et une couleurs vive pour faire ressortir du fond. A chaque "point" marqué ou mangé sera affiché dans une barre en haut. 
 Plusieurs niveaux avec des vitesses différentes pour augmenter la difficulté du jeu. 
 
@@ -17,10 +17,9 @@ Plusieurs niveaux avec des vitesses différentes pour augmenter la difficulté d
 
 
 ## But du jeu : 
-Manger les points pour que le serpent grandisse et ne pas toucher 
+Manger les pommes (food) pour que le serpent (snake) grandisse et ne pas toucher. Il y a également un minuteur de 60 secondes.  
 
 
-## Le son 
 
 
 
