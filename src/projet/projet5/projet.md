@@ -8,7 +8,7 @@ Voici une image pour un aperçu:
 ![](snake.png)
 
 ## Description du jeu 
-Le fond est blanc. Le serpent(snake) est de couleur verte et la pomme (food) est de couleur rouge.  
+Notre jeu possède un fond blanc. Le serpent(snake) est de couleur verte et la pomme (food) est de couleur rouge.  
 A chaque "point" marqué ou mangé, le score est affiché en haut. 
 
 
