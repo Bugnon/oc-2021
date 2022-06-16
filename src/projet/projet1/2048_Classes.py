@@ -484,7 +484,7 @@ class Game:
         self.reboutons(0)
         Text((0, 0), self.text, 40, 'center', 'white')
         if not win:
-            Text((0, -110), citation, 12, 'center', 'white', 'Didot')
+            Text((0, -110), citation, 10, 'center', 'white', 'Didot')
         else:
             Text((0, -100), '👍     ╰*°▽°*╯     👍', 30, 'center', 'white')
             #goto(0, -100)
