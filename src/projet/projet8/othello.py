@@ -115,6 +115,7 @@ class Button:
         w, h = size
         self.label = Text((x + w//2, y + h//4), text, h//2, align)
 
+
     def draw(self):
         self.rect.draw()
         self.label.draw()
@@ -311,9 +312,9 @@ class Game:
         self.headers = CellHeaders()
         self.bt_new = Button((200, 50), 'New')
         self.currentPlayer = PieceColor.BLACK
-        self.state = []
         self.last_move = []
         self.possible_moves = []
+        self.state = []
         for i in range(8):
             self.state.append([PieceColor.EMPTY] * 8)
         # start pieces
@@ -427,23 +428,23 @@ class Game:
 
     def put_new_piece_on_board(self, x, y, color: PieceColor):
         """Record a new piece on the board"""
-        value = -1
         if self.grid.inside(x, y):
             # cell : [1-8, 1-8]
             cell = self.grid.get_cell(x, y)
             if not cell in self.possible_moves:
                 return False
-            value = self.get_cell_value(cell[0], cell[1])
+            row = cell[0]
+            col = cell[1]
+            value = self.get_cell_value(row, col)
             if value == PieceColor.EMPTY:
                 print('Putting {0} piece on cell {1}'.format(color, cell))
-                row = cell[0]
-                col = cell[1]
-                self.set_cell_value(row, col, color or self.currentPlayer)
+                self.set_cell_value(row, col, color)
                 self.eat_pieces(row, col, color)
                 self.calculate_score()
                 return True
             else:
                 return False
+        return False
 
     def calculate_score(self):
         """Calculate the current score for white and black and display it"""
