@@ -5,7 +5,6 @@ from time import sleep
 from pygame import mixer
 
 
-
 # Ce modèle sert à créer les cases qui se calqueront sur les cases, de la fonction cases(), avec leur chiffre et couleur
 class Case:
     def __init__(self, pos, text, size=77.5):
@@ -265,7 +264,6 @@ class Game:
 #         global state
         return self.state[yres][xres]
 
-
     # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
     def retour(self):
         print(self.retour_hist)
@@ -391,7 +389,6 @@ class Game:
                 self.changement(xpos, ypos, xsuiv, ysuiv)
                 break
 
-
     # cette fonction calcule si le chiffre dans la case est le même que le suivant
     def calcul(self, pos, direction):
         xsuiv, ysuiv = self.operation(pos, direction)
@@ -403,7 +400,6 @@ class Game:
                 self.notsame(xpos, ypos, xsuiv, ysuiv, direction)
         else:
             self.not_op = 0
-
 
     # cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
     # Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer
@@ -551,7 +547,6 @@ class Game:
 #         self.resultat()
 #     #     son_fond()
 
-
     def draw(self):
         """Draws all the game objects."""
 #         self.cases.draw()
@@ -569,12 +564,3 @@ class Game:
 
 game = Game()
 done()
-
-# (perdre)
-# (new 1x sur 2 un 4)
-# (show nbrmax)
-# (sup nbr avec retour_hist)
-# back
-# 2 + 2 + 4 = 4 + 4
-# score
-
