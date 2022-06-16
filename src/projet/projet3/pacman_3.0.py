@@ -45,7 +45,6 @@ class Rectangle:
 
 class Text:
     """Draw a text at a given position."""
-
     def __init__(self, pos, text, size=16, align='left'):
         """Initilizes the text"""
         self.pos = pos
@@ -130,8 +129,7 @@ class Ghost:
 
 class Pacman:
     """Define a pacman.
-    With the argument game, Pacman can access its game environment.
-    """
+    With the argument game, Pacman can access its game environment."""
     def __init__(self, game, pos, aim, direction, isdead):
         """aim is where he's going, direction is where he wants to go"""
         self.game = game
@@ -177,7 +175,6 @@ class Pacman:
 
 class World:
     """Define the world"""
-
     def __init__(self, game):
         """Draw world using path."""
         bgcolor('black')
@@ -321,7 +318,6 @@ class Score:
 
 class Game:
     """Define the game class."""
-
     def __init__(self):
         up()
         setup(600, 400)
