@@ -61,12 +61,12 @@ class Snake:
     def right(self):
         self.head.setheading(0)
 
- # fonction qui permet de rajouter un segment à chaque fois qu'il mange        
+    # fonction qui permet de rajouter un segment à chaque fois qu'il mange        
     def grow(self):
         s = Segment()
         self.parts.append(s)
 
-#         
+    # vérifier si la tête du serpent entre en collisiona avec le reste de son corps        
     def check_collision(self):
         if len(self.parts) < 3 :
             return False
@@ -131,7 +131,7 @@ class Chrono(Turtle):
         if self.value >= 0: 
             #exécuter la fonction tic après 1 sec 
             ontimer(self.tick, 1000)
-            
+
     # définir si la valeur est négative ou pas, si oui elle finit d'appeler la fonction tic , ce qui donne game over 
     def isFinished(self):
         return self.value < 0
@@ -172,8 +172,10 @@ while game_is_on:
         snake.grow()
             
     snake.move()
-                
+
+    # condition pour que le game break             
     if counter.isFinished() or snake.check_collision() or snake.head.xcor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() > 280 or snake.head.ycor() < -280 :
         break
+# affichage du game over 
 score.game_over()
 screen.exitonclick() 
