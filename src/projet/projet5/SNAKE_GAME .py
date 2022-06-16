@@ -15,8 +15,8 @@ class Segment(Turtle):
         self.shape('square')
         self.color('green')
         self.penup()
-        
-# la classe Snake 
+
+# la classe Snake avec ses principales méthodes 
 class Snake:
     def __init__ (self):
         self.parts = []
@@ -61,12 +61,12 @@ class Snake:
     def right(self):
         self.head.setheading(0)
 
- # fonction qui permet de rajouter un segment à chaque fois qu'il mange        
+    # fonction qui permet de rajouter un segment à chaque fois qu'il mange        
     def grow(self):
         s = Segment()
         self.parts.append(s)
 
-#         
+    # vérifier si la tête du serpent entre en collisiona avec le reste de son corps        
     def check_collision(self):
         if len(self.parts) < 3 :
             return False
@@ -122,16 +122,17 @@ class Chrono(Turtle):
         # faire marcher la fonction tick toute de suite dans le jeu 
         ontimer(self.tick)
 
-    # réécire la valuer actuelle (max value qui diminue 1 par 1)     
+    # réécire la valeur actuelle (max value qui diminue 1 par 1)     
     def tick(self):
         self.clear()
         self.write(self.value, align='center', font = ('arial', 28, 'normal'))
         self.value -= 1
-        #tant que la valeur est supérieur à 0, tick est toujours actif 
+        #tant que la valeur est supérieur à 0, la fonction tick est toujours actif 
         if self.value >= 0: 
             #exécuter la fonction tic après 1 sec 
             ontimer(self.tick, 1000)
 
+    # définir si la valeur est négative ou pas, si oui elle finit d'appeler la fonction tic , ce qui donne game over 
     def isFinished(self):
         return self.value < 0
 
@@ -171,8 +172,10 @@ while game_is_on:
         snake.grow()
             
     snake.move()
-                
+
+    # condition pour que le game break             
     if counter.isFinished() or snake.check_collision() or snake.head.xcor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() > 280 or snake.head.ycor() < -280 :
         break
+# affichage du game over 
 score.game_over()
 screen.exitonclick() 
