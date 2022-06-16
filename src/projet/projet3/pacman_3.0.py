@@ -121,9 +121,7 @@ class Ghost:
         goto(self.pos.x + 10, self.pos.y + 10)
         dot(20, 'red')
 
-    def __str__(self):
-        """Represent a ghost with a string."""
-        return f'Ghost({self.pos})'
+   
 
 
 class Pacman:
@@ -318,12 +316,12 @@ class Score:
         self.writer = Turtle(visible=False)
         self.writer.goto(160, 160)
         self.writer.color('white')
-        self.writer.write(self.value, font=(None, 24))
+        self.writer.write(("Score: " + str(self.value)), font=(None, 24))
 
     def draw(self):
         """Display the score."""
         self.writer.undo()
-        self.writer.write(self.value, font=(None, 24))
+        self.writer.write(("Score: " + str(self.value)), font=(None, 24))
 
 
 class Game:
@@ -353,8 +351,6 @@ class Game:
         onkey(lambda: self.pacman.change(-5, 0), 'Left')
         onkey(lambda: self.pacman.change(0, 5), 'Up')
         onkey(lambda: self.pacman.change(0, -5), 'Down')
-        onkey(lambda: self.world.load(self.world.tiles2), '2')
-        onkey(lambda: self.world.load(self.world.tiles1), '1')
         onscreenclick(self.click)
         self.world.draw()
         self.move()
