@@ -1,10 +1,3 @@
-""""TRON
-
-Deux motos génèrent des traces derrière eux, et qui ne peut pas être franchi 
-
-La trace est représenter
-
-"""
 from dis import dis
 import os
 import pygame
@@ -282,6 +275,7 @@ class moto(pygame.sprite.Sprite):
     
     def apply_collision(self):
         global points
+        global screen
         collision_size = 0.4
         hit_list = []
         for i in range(0,int(len(collisions)),4):
@@ -292,6 +286,14 @@ class moto(pygame.sprite.Sprite):
                 collision = pygame.Rect(self.rect.x,self.rect.y + abs(min(0,self.dir[1])) * self.image.get_height() * (1 - collision_size),self.image.get_width(),self.image.get_height() * collision_size)
             if(collision.colliderect(rect)):
                 hit_list.append(rect)
+            
+            #COLLISIONS MUR
+            collisions_points = [self.rect.topleft,self.rect.topright,self.rect.center,self.rect.bottomleft,self.rect.bottomright]
+            mur_rect = pygame.Rect(0,0,screen.get_width(),screen.get_height())
+            
+            for i in range(len(collisions_points)):
+                if mur_rect.collidepoint(collisions_points[i]) == False:
+                    hit_list.append(self.rect)
         if len(hit_list) != 0:
             pos = pygame.Rect.clip(self.rect,hit_list[0])
             pos.x += pos.width / 2

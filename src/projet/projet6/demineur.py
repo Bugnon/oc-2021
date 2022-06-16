@@ -198,13 +198,6 @@ class Highscores:
         ten = Text((-250,-125),'10' + str(high[9]),'15')
 
 
-
-
-class Difficulty:
-    def __init__(self):
-        ...
-
-
 class Game:
     def __init__(self):
 
@@ -234,6 +227,7 @@ class Game:
         # list to save the flags
         self.flags = []  
         self.winlt = []
+        self.notflags = []
 
         self.win = False
 
@@ -251,6 +245,7 @@ class Game:
         self.generate()
         global s
         s = getscreen()
+        s.bgcolor('lightblue')
         s.onclick(self.click)
         s.onkey(self.print_state, ' ')   # for debugging only
         s.listen()
@@ -331,10 +326,6 @@ class Game:
             self.bt_flag.draw()
 
         if self.grid.inside(x, y) and self.win == False:
-            if len(self.begin) == 0:
-                begin = time()
-                print(begin)
-                self.begin.append(begin)
             if self.bt_flag.state:
                 self.onlyflags(x, y)
             else:
@@ -362,10 +353,16 @@ class Game:
         global j
         j = int((x + 160) // 40)
         i = int((159 - y) // 40)
-        if (i,j) in self.flags:
-            ...
-        if (i,j) not in self.flags:
-            self.load(i, j)
+        if 0 <= i <= 7 and 0 <= j <= 7:
+            if ([i],[j]) in self.flags:
+                pass
+            else:
+                if len(self.begin) == 0:
+                    begin = time()
+                    print(begin)
+                    self.begin.append(begin)
+                self.notflags.append(([i],[j]))
+                self.load(i, j)
 
     def onlyflags(self, x, y):
         global i
@@ -375,26 +372,29 @@ class Game:
         if 0 <= i <= 7 and 0 <= j <= 7:
             x = -180 + ((j + 1) * 40)
             y = (130 - (i * 20) * 2)
-            if (([i],[j])) in self.flags:
-                self.flags.remove(([i],[j]))
-                color('white')
-                Text((x, y), '⚑')
-                color('black')
-                Rectangle((-270,100), (90,20),'white')
-                Text((-270,100), 'Mines left: ' + str(8 - len(self.flags)))
+            if ([i],[j]) in self.notflags:
+                pass
             else:
-                self.flags.append(([i],[j]))
-                color('black')
-                Text((x, y), '⚑')
-                Rectangle((-270,100), (90,20),'white')
-                Text((-270,100), 'Mines left: ' + str(8 - len(self.flags)))
-                if 8 - len(self.flags) == 0:
-                    for i in range(8):
-                        if self.winlt[i] in self.flags:
-                            n = i
-                            if n == 7:
-                                self.win = True
-                                self.winnow()
+                if (([i],[j])) in self.flags:
+                    self.flags.remove(([i],[j]))
+                    color('white')
+                    Text((x, y), '⚑')
+                    color('black')
+                    Rectangle((-270,100), (90,20),'white')
+                    Text((-270,100), 'Mines left: ' + str(8 - len(self.flags)))
+                else:
+                    self.flags.append(([i],[j]))
+                    color('black')
+                    Text((x, y), '⚑')
+                    Rectangle((-270,100), (90,20),'white')
+                    Text((-270,100), 'Mines left: ' + str(8 - len(self.flags)))
+                    if 8 - len(self.flags) == 0:
+                        for i in range(8):
+                            if self.winlt[i] in self.flags:
+                                n = i
+                                if n == 7:
+                                    self.win = True
+                                    self.winnow()
 
     def winnow(self):
         if self.win == True:
@@ -414,7 +414,7 @@ class Game:
         if state[ligne][colonne] >= 6:
             for i in range(7):
                 for n in range(7):
-                    if state[i][n] > 5:
+                    if state[i][n] >= 6:
                         self.bomb_position(i, n)
             self.win = True
             Rectangle((-270,0), (80,20),'white')
@@ -426,7 +426,7 @@ class Game:
             if state[ligne][colonne] == 0:
                 self.holes(ligne, colonne)
 
-    def draw_cell_text(self, ligne, colonne, texte):
+    def draw_cell_text(self, ligne, colonne):
         x = -180 + ((colonne + 2) * 40)
         y = (130 - (ligne * 20) * 2)
         Text((x, y), '0')
@@ -444,10 +444,7 @@ class Game:
                 colonne = c + i
                 if colonne != 7:
                     if state[ligne][colonne + 1] == 0:
-                        # x = -180 + ((colonne + 2) * 40)
-                        # y = (130 - (ligne * 20) * 2)
-                        # self.num = Text((x,y),'0')
-                        self.draw_cell_text(ligne, colonne, '0')
+                        self.draw_cell_text(ligne, (colonne + 1))
 
                 if colonne != 0:
                     if state[ligne][colonne - 1] == 0:
