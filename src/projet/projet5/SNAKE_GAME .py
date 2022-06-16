@@ -16,7 +16,7 @@ class Segment(Turtle):
         self.color('green')
         self.penup()
 
-# la classe Snake 
+# la classe Snake avec ses principales méthodes 
 class Snake:
     def __init__ (self):
         self.parts = []
