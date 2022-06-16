@@ -87,41 +87,33 @@ class Ghost:
         if self.game.pacman.pos[1] == self.pos[1]:
             if self.game.world.valid(self.pos + vector(5, 0)) and self.game.pacman.pos[0] > self.pos[0]:
                 self.aim = vector(5, 0)
-                print("1, 0")
                 self.pos.move(self.aim)
             elif self.game.world.valid(self.pos + vector(-5, 0)) and self.game.pacman.pos[0] < self.pos[0]:
                 self.aim = vector(-5, 0)
-                print("-1, 0")
                 self.pos.move(self.aim)
             elif self.game.world.valid(self.pos + self.aim):
-                print("continue")
+
                 self.pos.move(self.aim)
             else:
                 self.aim = choice([vector(0, 5), vector(0, -5)])
                 if self.game.world.valid(self.pos + self.aim):
                     self.pos.move(self.aim)
-                    print("random")
         elif self.game.pacman.pos[0] == self.pos[0]:
                 if self.game.world.valid(self.pos + vector(0, 5)) and self.game.pacman.pos[1] > self.pos[1]:
                     self.aim = vector(0, 5)
-                    print("0, 1")
                     self.pos.move(self.aim)
                 elif self.game.world.valid(self.pos + vector(0, -5)) and self.game.pacman.pos[1] < self.pos[1]:
                     self.aim = vector(0, -5)
-                    print("0, -1")
                     self.pos.move(self.aim)
                 else:
                     self.aim = choice([vector(5, 0), vector(-5, 0)])
                     if self.game.world.valid(self.pos + self.aim):
                         self.pos.move(self.aim)
-                        print("random")
         else: 
             if self.game.world.valid(self.pos + self.aim):
-                print("continueB")
                 self.pos.move(self.aim)
             else:
                 self.aim = choice([vector(5, 0), vector(-5, 0), vector(0, 5), vector(0, -5)])
-                print("random")
         
     def draw(self):
         """Draw a ghost."""
