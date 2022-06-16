@@ -325,14 +325,14 @@ class Game:
 
 
         # load the music
-        init()
-        fileDir = os.path.dirname(os.path.realpath('__file__'))
+        # init()
+        # fileDir = os.path.dirname(os.path.realpath('__file__'))
         # print(fileDir)
-        filename = os.path.join(fileDir, 'src/projet/projet7/connect_4_audio.mp3')       
-        music.load(filename)
+        # filename = os.path.join(fileDir, 'src/projet/projet7/connect_4_audio.mp3')       
+        # music.load(filename)
 
         # play the music (-1 <=> infinite loop)
-        music.play(-1)
+        # music.play(-1)
         
 
         # initialization of the attributes : creation of objects
@@ -812,26 +812,26 @@ class Game:
                         # victory music
 
                         # fast fadeout of the current game's music
-                        music.fadeout(100)
+                        # music.fadeout(100)
 
                         # loading of the victory music
-                        fileDir = os.path.dirname(os.path.realpath('__file__'))
+                        # fileDir = os.path.dirname(os.path.realpath('__file__'))
                         # print(fileDir)
-                        filename = os.path.join(fileDir, 'src/projet/projet7/win.wav')       
-                        music.load(filename)
+                        # filename = os.path.join(fileDir, 'src/projet/projet7/win.wav')       
+                        # music.load(filename)
                         
                         # start the victory music
-                        music.play()
-                        sleep(3)
+                        # music.play()
+                        # sleep(3)
 
                         # loading of the game's music
-                        fileDir = os.path.dirname(os.path.realpath('__file__'))
+                        # fileDir = os.path.dirname(os.path.realpath('__file__'))
                         # print(fileDir)
-                        filename = os.path.join(fileDir, 'src/projet/projet7/connect_4_audio.mp3')       
-                        music.load(filename)
+                        # filename = os.path.join(fileDir, 'src/projet/projet7/connect_4_audio.mp3')       
+                        # music.load(filename)
                         
                         # start the game's music (-1 <=> infinite loop)
-                        music.play(-1)
+                        # music.play(-1)
 
 
                     # if the players are playing

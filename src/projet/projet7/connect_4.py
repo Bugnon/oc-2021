@@ -838,7 +838,7 @@ class Game:
 
             # the player clicks on the grid
             if self.grid.inside(x, y) and self.playing:
-                i = self.grid.get_column(x, y)
+                i = self.grid.get_column(x)
                 self.play(i)
             
             # buttons
