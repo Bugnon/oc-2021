@@ -13,7 +13,7 @@ A chaque "point" marqué ou mangé, le score est affiché en haut.
 
 
 ## But du jeu : 
-Manger les pommes (food) pour que le serpent (snake) grandisse et ne pas toucher. Il y a également un minuteur de 60 secondes. Si le serpent entre en collision avec les bords ou avec lui-même ou alors le temps est finie, le jeu est terminé.  
+Manger les pommes (food) pour que le serpent (snake) grandisse. Il y a également un minuteur de 60 secondes. Si le serpent entre en collision avec les bords ou avec lui-même ou alors le temps est finie, le jeu est terminé.  
 
 
 
