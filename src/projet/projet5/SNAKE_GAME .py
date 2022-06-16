@@ -8,7 +8,7 @@ from turtle import *
 # une position initial (snake)
 POSITIONS = [(0, 0)]
 
-# la classe Segment 
+# la classe Segment qui hérite de Turtle 
 class Segment(Turtle):
     def __init__(self):
         super(). __init__()
@@ -73,20 +73,22 @@ class Snake:
             if self.head.distance(self.parts[i]) < 20:
                 return True
         return False 
-                              
+
+ # la classe Food qui hérite de Turtle                              
 class Food(Turtle):
     def __init__(self):
         super(). __init__()
         self.shape('circle')
         self.color('red')
         self.penup()
-    
+
+ # fonction qui permet de refaire un nouveau food (avoir un nouveau x et un nouveau y)   
     def refresh(self):
         new_x = random.randint(-280, 280)
         new_y = random.randint(-280, 280)
         self.goto(new_x, new_y)
         
-        
+ # la classe Score qui hérite de Turtle        
 class Score(Turtle):
     def __init__(self):
         super().__init__()        
@@ -96,16 +98,19 @@ class Score(Turtle):
         self.score = 0
         self.goto(-60, 270)
         self.update()
-            
+
+ # mettre à jour le score            
     def update(self):
         self.clear()
         self.write(f"Score:{self.score}", font = ('Arial', 28, 'bold'))
-        
+
+ # game over        
     def game_over(self):
         self.clear()
         self.write(f"Game Over", font = ('Arial', 28, 'bold'))
 
-class Chrono(Turtle): #hérite de turtle 
+# la classe Chrono qui hérite de Turtle 
+class Chrono(Turtle): 
     def __init__(self, max_value): # 2 variables 
         super().__init__()   
         self.value = max_value
