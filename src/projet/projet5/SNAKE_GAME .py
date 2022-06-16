@@ -15,7 +15,7 @@ class Segment(Turtle):
         self.shape('square')
         self.color('green')
         self.penup()
-        
+
 # la classe Snake 
 class Snake:
     def __init__ (self):
@@ -131,7 +131,7 @@ class Chrono(Turtle):
         if self.value >= 0: 
             #exécuter la fonction tic après 1 sec 
             ontimer(self.tick, 1000)
-
+    # définir si la valeur est négative ou pas, si oui elle finit d'appeler la fonction tic , ce qui donne game over 
     def isFinished(self):
         return self.value < 0
 
