@@ -2,18 +2,30 @@ from dis import dis
 import os
 import pygame
 from datetime import datetime
+
 pygame.init()
 os.chdir('assets')
+
 moto1image = pygame.image.load('Player1.png')
 moto2image = pygame.image.load('Player2.png')
+
 clock = pygame.time.Clock()
+
 screen_size = 800
 base_screen_size = screen_size
 target_size = screen_size
 screen = pygame.display.set_mode((screen_size, screen_size))
+
 police = pygame.font.Font("dogica.ttf",int(screen.get_width() / 15))
+
 pygame.display.set_caption("TRON","Player1.png")
+
 points = [0,0]
+son = pygame.mixer.Sound('music/music_TRON.wav')
+son.set_volume(0.1)
+son.play(loops=-1, maxtime=0, fade_ms=0)
+
+bg = pygame.image.load('bg.png')
 
 nom1 = "Rouge"
 nom2 = "Bleu"
@@ -21,7 +33,7 @@ nom2 = "Bleu"
 def load_animation(image,scalex,scaley):
     img = []
     for i in range(int(image.get_width() / image.get_height())):
-        rect = pygame.Rect(i * image.get_height(),0,image.get_height(),image.get_height())
+        rect = pygame.Rect(i * image.get_height(),0,image.get_height(),image.get_height())       #load animation
         i = pygame.transform.scale(image.subsurface(rect),(scalex,scaley))
         img.append(i)
     return img
@@ -30,28 +42,25 @@ class transition:
     def __init__(self):
         super().__init__()
         self.anim_in = load_animation(pygame.image.load("transition_in.png"),screen.get_width(),screen.get_height())
-        self.anim_out = load_animation(pygame.image.load("transition_out.png"),screen.get_width(),screen.get_height())
+        self.anim_out = load_animation(pygame.image.load("transition_out.png"),screen.get_width(),screen.get_height())        #transition entre les différents menus
         self.anim_speed = 0.2
         self.current_sprite = 0
 
     def animation_in(self):
         global screen
         self.current_sprite += self.anim_speed
-        if int(self.current_sprite) >= len(self.anim_in):
+        if int(self.current_sprite) >= len(self.anim_in):                                                                     #transition d'entrée
             return True
         screen.blit(self.anim_in[int(self.current_sprite)],pygame.Rect(0,0,screen.get_width(),screen.get_height()))
         return False
     def animation_out(self):
         global screen
         self.current_sprite += self.anim_speed
-        if int(self.current_sprite) >= len(self.anim_out):
+        if int(self.current_sprite) >= len(self.anim_out):                                                                     #transition de sortie
             return True
         screen.blit(self.anim_out[int(self.current_sprite)],pygame.Rect(0,0,screen.get_width(),screen.get_height()))
         return False
-class game:
-    def setup(self):
-        self.moto1 = moto(moto1image,50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_d,pygame.K_a,pygame.K_s,pygame.K_w],(255,0,0),180,nom1)
-        self.moto2 = moto(moto2image,screen.get_width() - 50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_RIGHT,pygame.K_LEFT,pygame.K_DOWN,pygame.K_UP],(0,0,255),0,nom2)
+
 class menu_image(pygame.sprite.Sprite):
     global screen
     def __init__(self):
@@ -84,6 +93,7 @@ class menu_image(pygame.sprite.Sprite):
             screen.blit(self.image,self.menu_rect)
             pygame.display.update()
             clock.tick(60)
+            
 def reset_game(gagnant,pos):
     global screen
     global police
@@ -156,13 +166,18 @@ def reset_game(gagnant,pos):
             screen = pygame.display.set_mode((screen_size, screen_size))
             police = pygame.font.Font("dogica.ttf",int(screen.get_width() / 15))
             break
+
         screen = pygame.display.set_mode((screen_size, screen_size))
         fond(bg)
         pygame.display.update()
         clock.tick(60)
-    game.moto1 = moto(moto1image,50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_d,pygame.K_a,pygame.K_s,pygame.K_w],(255,0,0),180,nom1)
-    game.moto2 = moto(moto2image,screen.get_width() - 50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_RIGHT,pygame.K_LEFT,pygame.K_DOWN,pygame.K_UP],(0,0,255),0,nom2)
+        game.setup()
     main_game()
+
+class game:
+    def setup(self):
+        self.moto1 = moto(moto1image,50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_d,pygame.K_a,pygame.K_s,pygame.K_w],(255,0,0),180,nom1)
+        self.moto2 = moto(moto2image,screen.get_width() - 50 - moto1image.get_width() / 2,screen.get_height() / 2 - moto1image.get_height() / 2,[pygame.K_RIGHT,pygame.K_LEFT,pygame.K_DOWN,pygame.K_UP],(0,0,255),0,nom2)
 
 class moto(pygame.sprite.Sprite):
     def __init__(self,img,posx,posy,touches,couleur,rotation,name):
@@ -191,6 +206,7 @@ class moto(pygame.sprite.Sprite):
         self.d_entre_pts = 1
         self.points_distance = 1
         self.point_connecte = []
+    
     def left(self):
         if self.dir == (-1,0):
             return
@@ -257,19 +273,22 @@ class moto(pygame.sprite.Sprite):
             elif event.key == self.touches[2]:
                 self.down()
             elif event.key == self.touches[3]:
-                self.up()        
+                self.up()   
+
     def move(self):
         self.rect.x += self.dir[0] * self.velocity
         self.rect.y -= self.dir[1] * self.velocity
 
     def blit(self):
         screen.blit(self.image, self.rect)
+
     def draw_trail(self):
         self.line_rect.clear()
         if len(self.line_points) > 2:
             for i in range(0,int(len(self.line_points) - 2),2):
                 self.line_rect += pygame.draw.line(screen,self.color,(self.line_points[i],self.line_points[i+1]),(self.line_points[i+2],self.line_points[i+3]),5)
         self.line_rect += pygame.draw.line(screen,self.color,(self.line_points[-2],self.line_points[-1]),(self.rect.x + self.image.get_width() / 2, self.rect.y + self.image.get_height() / 2),5)
+    
     def get_collision(self):
         collisions.extend(self.line_rect)
     
@@ -334,12 +353,6 @@ def window_size(current_size,target_size):
             size = -speed
     return size
 
-son = pygame.mixer.Sound('music/music_TRON.wav')
-son.set_volume(0.1)
-son.play(loops=-1, maxtime=0, fade_ms=0)
-
-bg = pygame.image.load('bg.png')
-
 class Button():
     def __init__(self,x,y,image,w,h):
         self.image = image
@@ -375,9 +388,16 @@ def start_main_game():
 
 def check_win():
     global points
+    global base_screen_size
+    global target_size
+    global screen_size
     if points[0] == 2:
+        target_size = base_screen_size
+        screen_size = base_screen_size
         return "ROUGE"
     elif points[1] == 2:
+        target_size = base_screen_size
+        screen_size = base_screen_size
         return "BLEU"
     return ""
 def main_game():
@@ -386,6 +406,7 @@ def main_game():
     global screen
     time_before_start = 3
     current_time = datetime.now()
+    
     while True:
         pygame.display.set_caption("TRON","Player1.png")
         if (datetime.now() - current_time).seconds > time_before_start - 1:
@@ -405,8 +426,6 @@ def main_game():
 
         game.moto1.blit()
         game.moto2.blit()
-
-        
 
         pygame.display.update()
         clock.tick(60)
@@ -490,6 +509,7 @@ def main_menu():
     regles_texte = pygame.transform.scale(regles_texte,(regles_texte.get_width() * 3,regles_texte.get_height() * 3))
     regles_texte_rect = pygame.Rect(screen.get_width() / 2 - regles_texte.get_width() / 2,screen.get_width() / 2,regles_texte.get_width(),regles_texte.get_height())
     touches_rect = pygame.Rect(screen.get_width() / 2 - touches.get_width() / 2,screen.get_width() / 4,touches.get_width(),touches.get_height())
+    
     while True:
         pygame.display.set_caption("TRON","Player1.png")
         for event in pygame.event.get():

@@ -24,12 +24,12 @@ My code :
 
 Information about the code :
     classes : 6
-    lines : 912
+    lines : 909
 
 
 Note: if there are any problems when downloading the audios,
+      the lines of code concerned are 282-284, 771-773, 781-183.
       it should be a problem of the path to find the right audio.
-      the lines of code concerned are 289-291, 778-780 and 788-190.
 
 
 Emilien Barde
@@ -188,7 +188,7 @@ class Grid:
         return -x0 < x < x0 - self.d // 2 and -y0 < y < y0 - self.d // 2
     
 
-    def get_column(self, x):
+    def get_column(self, x, y, pixels=False):
         """Returns the coordinates (between 0 and 6)
         of the column in which the player has played.
         """
@@ -208,10 +208,8 @@ class Grid:
         
         # we go through the columns
         for x in range(self.m):
-
             # we go through the lines
             for y in range(self.n):
-
                 goto(-self.x0 + x * self.d + self.d // 2, self.y0 - y * self.d - self.d // 2)
                 col = colors[self.state[y][x]]
 
@@ -268,14 +266,13 @@ class Game:
         how_to_play = 'How to play ?\n\n\t'
         using_the_mouse = '- By using the mouse : click on the column you want to play in.\n\t'
         using_the_keyboard = '- By using the keyboard : use the keys 1 to 7 to play in the respective column.\n\n\n'
-        dont_play_fast = '!!! WARNING !!! : don\'t play too fast, or lightning will fall on you\n\n\n'
         buttons_definition = 'Buttons (and keyboard shortcuts) :\n\n\t  Name\t\tAction\t\t\t\t\t\tKeyboard shortcut\n\n\t'
         button_undo_new = '- Undo\t\t-> cancel the last move\t\t\t\tDelete\n\t- New\t\t-> create a new game by clearing the board\tTabulation\n\t'
         button_reset = '- Reset all\t-> reset the scores, clear the board,\t\tR\n\t\t\t   only the names are preserved\n\t'
         button_quit_close = '- QUIT\t\t-> quit the game\t\t\t\tQ\n\t- CLOSE\t\t-> close the window\t\t\t\tX\n\n\n\n'
         before_starting = 'Before starting, please enter the names of the players :\n'
-        print(title + rules + how_to_play + using_the_mouse + using_the_keyboard + dont_play_fast +
-            buttons_definition + button_undo_new + button_reset + button_quit_close + before_starting)
+        print(title + rules + how_to_play + using_the_mouse + using_the_keyboard + buttons_definition + 
+            button_undo_new + button_reset + button_quit_close + before_starting)
 
         # input for the names of the players
         input_player1 = input('\tName of the first player : ')
@@ -316,11 +313,11 @@ class Game:
         
         # erasables text (rectangles are used to erase old text)
         self.scores = Text((-280, 50), f'Scores :\n\n{self.player1.name} : {self.player1.score}\n\n{self.player2.name} : {self.player2.score}', align='left')
-        self.scores_eraser = Rectangle((self.scores.pos[0] - 5, self.scores.pos[1] - 10), (100, 100), color='deepskyblue', outline=False)
+        self.scores_eraser = Rectangle(self.scores.pos, (80, 110), color='deepskyblue', outline=False)
         self.win_message = Text((-285, -80), 'Nobody win !!!', size=18, align='left')
         self.win_message_eraser = Rectangle(self.win_message.pos, (100, 100), color='deepskyblue', outline=False)
         self.status = Text((-285, -190), f'{self.player1.name} ({self.player1.col}) to move', align='left')
-        self.status_eraser = Rectangle((self.status.pos[0] - 5, self.status.pos[1]), (450, 20), color='deepskyblue', outline=False)
+        self.status_eraser = Rectangle(self.status.pos, (300, 20), color='deepskyblue', outline=False)
         
 
         # initialization of the attributes : other types of variables
@@ -338,6 +335,7 @@ class Game:
 
 
         # call back functions
+
         s = getscreen()
 
         # when the player uses the mouse
@@ -345,7 +343,6 @@ class Game:
 
         # when the player uses the keyboard
         if self.run:
-
             # test the keys from 1 to 7
             for num in range(1, 8):
                 s.onkey(lambda column=num : self.play(column - 1), num)
@@ -355,7 +352,6 @@ class Game:
             s.onkey(lambda:self.reset(), 'Tab')
             s.onkey(lambda:self.reset_scores(), 'r')
             s.onkey(lambda:self.quit(), 'q')
-        
         s.onkey(lambda:quit(), 'x')
 
 
@@ -540,6 +536,7 @@ class Game:
         for diagonal in range(12):
             col_num = max(0, 5 - diagonal)
             line_num = min(12 - diagonal, 6)
+            # print(f'diagonal : {diagonal} - col_num : {col_num} - line_num : {line_num}')
             
             for i in range(col_num, line_num):
                 # print(i, i + diagonal - 5)
@@ -739,7 +736,7 @@ class Game:
                     
                     # we change the cell's value (depending of the current player)
                     self.grid.state[j][column] = self.current_player
-
+                    
                     self.moves += 1
                     self.save()
                     self.check_win()
@@ -838,7 +835,7 @@ class Game:
 
             # the player clicks on the grid
             if self.grid.inside(x, y) and self.playing:
-                i = self.grid.get_column(x)
+                i = self.grid.get_column(x, y)
                 self.play(i)
             
             # buttons
