@@ -1,11 +1,12 @@
+# importer des modules requis pour la création du jeu 
 from turtle import Turtle, Screen
 import turtle
 import time
 import random
 from turtle import *
 
+# position initiale (x, y)
 POSITIONS = [(0, 0)]
-
 
 # une grille de 29 x 29 
 state = []
@@ -24,16 +25,20 @@ class Segment(Turtle):
         self.color('green')
         self.penup()
 
+# la classe Snake 
 class Snake:
+    # définir init de la classe Snake 
     def __init__ (self):
         self.parts = []
         self.call()
         self.head = self.parts[0]
-                
+
+    # fonction call pour appeler à créer un snake            
     def call(self):
         for x in POSITIONS:
             self.create_snake(x)
     
+    # fonction pour la création du snake 
     def create_snake(self, position):
         snake = Turtle()
         snake.color('green')
