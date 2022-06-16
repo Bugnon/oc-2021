@@ -266,9 +266,7 @@ class Game:
 
     # cette fonction remet le jeu comme c'était le tour d'avant et supprime la sauvegarde du dernier coup
     def retour(self):
-        print(self.retour_hist)
         self.retour_hist.pop(-1)
-        print(self.retour_hist)
         self.state = self.retour_hist[-1]
         for c in self.correspondance_inverse:
             y, x = self.correspondance_inverse[c]
@@ -278,13 +276,6 @@ class Game:
         self.score -= 2
         self.nbr -= 1
         self.resultat()
-
-
-#     # cette fonction permet de mémoriser la position de chaque case
-#     def retour_calcul(self):
-# #         global retour_hist
-# #         global state
-#         self.retour_hist.append(self.state)
 
     # cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
     def historiquef(self, direction):
@@ -404,6 +395,7 @@ class Game:
     # cette fonction, si le jeu n'est pas fini, lance les calculs des changements possible de cases
     # Si, après les calculs, il n'y a eu aucune modification dans le jeu, le coup est considéré comme sans intéret et le joueur peut rejouer
     def mouvement(self, direction):
+        self.retour_hist.append(self.state)
         if self.endjeu == 1:
             self.modifi = 0
 #             global state
@@ -419,7 +411,6 @@ class Game:
             else:
                 self.pause = 1
             self.historiquef(direction)
-            self.retour_hist.append(self.state)
 
     # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée
     def haut(self):
