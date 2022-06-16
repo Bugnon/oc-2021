@@ -21,10 +21,11 @@ correspondance = {
 (2, 0): (-170.0, 15.0), (2, 1): (-82.5, 15.0), (2, 2): (5.0, 15.0), (2, 3): (92.5, 15.0),
 (3, 0): (-170.0, -72.5), (3, 1): (-82.5, -72.5), (3, 2): (5.0, -72.5), (3, 3): (92.5, -72.5)
 }
-
+back_back = []
 correspondance_inverse = {value: key for key, value in correspondance.items()}
 hist = []
 retour_hist = []
+print(1, retour_hist)
 pause, modifi , nbr, score, endjeu, not_op = 0, 0, 0, 0, 1, 0
 color_num = {-1 : 'grey', 0 : 'darkgrey', 2 : 'whitesmoke', 4 : 'MistyRose' , 8 : 'plum1', 16 : 'orchid2', 32 : 'magenta',
              64 : 'magenta3', 128 : 'DeepPink', 256 : 'MediumVioletRed', 512 : 'VioletRed1', 1024 : 'LightSeaGreen',
@@ -222,6 +223,7 @@ def retour():
     global retour_hist
     global state
     retour_hist.pop(-1)
+    print(2, retour_hist)
     state = retour_hist[-1]
     global correspondance_inverse
     for c in correspondance_inverse:
@@ -242,7 +244,16 @@ def retour_calcul():
     global retour_hist
     global state
     retour_hist.append(state)
-
+    print(3, retour_hist)
+    global back_back
+    print('state', state)
+    print('back1', back_back)
+    l = []
+    for x in state:
+        l.append(x)
+        print('l', l)
+    back_back.append(l)
+    print('back2', back_back)
 
 # cette fonction permet de mémoriser les coups à l'aide d'une flèche ajoutée à l'historique
 def historique(direction):
@@ -392,8 +403,6 @@ def mouvement(direction):
             pause = 1
         historique(direction)
         retour_calcul()
-        global retour_hist
-        print(retour_hist)
 
 
 # cette fonction, si l'ordinateur n'est pas encore en calcul dù au dernier coup, lance la fonction mouvement() avec comme variable la direction donnée   
