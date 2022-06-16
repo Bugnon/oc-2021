@@ -15,6 +15,7 @@ class Segment(Turtle):
         self.shape('square')
         self.color('green')
         self.penup()
+        
 # la classe Snake 
 class Snake:
     def __init__ (self):
