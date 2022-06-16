@@ -1,28 +1,33 @@
+# importer des modules requis pour la création du jeu 
 from turtle import Turtle, Screen
 import turtle
 import time
 import random
 from turtle import *
 
+# une position initial (snake)
 POSITIONS = [(0, 0)]
 
+# la classe Segment 
 class Segment(Turtle):
     def __init__(self):
         super(). __init__()
         self.shape('square')
         self.color('green')
         self.penup()
-
+# la classe Snake 
 class Snake:
     def __init__ (self):
         self.parts = []
         self.call()
         self.head = self.parts[0]
-                
+
+# appeler pour la création du snake                 
     def call(self):
         for x in POSITIONS:
             self.create_snake(x)
-    
+
+ # création du snake    
     def create_snake(self, position):
         snake = Turtle()
         snake.color('green')
@@ -30,30 +35,37 @@ class Snake:
         snake.penup()
         snake.goto(position)
         self.parts.append(snake)
-        
+
+ # définir ses mouvement: en bas, en haut, à droite et à gauche        
     def move(self):
         for i in range(len(self.parts) -1, 0, -1):
             new_x = self.parts[i-1].xcor()
             new_y = self.parts[i-1].ycor()
             self.parts[i].goto(new_x, new_y)
         self.head.forward(20)
-        
+
+ # en haut        
     def up(self):
         self.head.setheading(90)
-        
+
+ # en bas        
     def down(self):
         self.head.setheading(270)
-        
+
+ # à gauche        
     def left(self):
         self.head.setheading(180)
-        
+
+# à droite         
     def right(self):
         self.head.setheading(0)
-        
+
+ # fonction qui permet de rajouter un segment à chaque fois qu'il mange        
     def grow(self):
         s = Segment()
         self.parts.append(s)
-        
+
+#         
     def check_collision(self):
         if len(self.parts) < 3 :
             return False
