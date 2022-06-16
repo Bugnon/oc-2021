@@ -196,6 +196,10 @@ class Highscores:
         nine = Text((-250,-100),'9' + str(high[8]),'16')
         ten = Text((-250,-125),'10' + str(high[9]),'15')
 
+class Difficulty:
+    def __init__(self):
+        ...
+
 
 class Game:
     def __init__(self):
@@ -229,16 +233,12 @@ class Game:
 
         self.win = False
 
-        self.bouttons = True
-
         self.bt_highscore = Button((200, 100), 'Highscores')
         self.bt_new = Button((200, 50), 'New')
         self.bt_difficulty = Button((200, 0), 'Difficulty')
 
         # self.timer = Text((-200,50), 'ELapsed time: ' + blablabla)
 
-        self.title = Text(
-            (0, 650), 'Welcome to the best game ever: The Demineur', 20, align='center')
         self.grid = Grid()
         self.generate()
         global s
@@ -422,7 +422,8 @@ class Game:
             """ montrer le chiffre """
             self.num = Text((x, y), state[ligne][colonne])
             if state[ligne][colonne] == 0:
-                self.holes(ligne, colonne)
+                #self.holes(ligne, colonne)
+                pass
 
     def draw_cell_text(self, ligne, colonne):
         x = -180 + ((colonne + 2) * 40)
