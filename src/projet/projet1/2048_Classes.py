@@ -176,9 +176,8 @@ class Game:
         self.endjeu = 1
         self.not_op = 0
 
-        self.button_end = Button((210, 125), 'Rage')
+        self.button_end = Button((210, 60), 'Rage')
         self.button_new = Button((210, -5), 'New')
-        self.button_back = Button((210, 60), 'Back')
         self.button_quit = Button((210, -70), 'Quit')
         self.title()
         self.son_fond()
@@ -191,7 +190,6 @@ class Game:
         s.onkey(lambda: self.bas(), 'Down')
         s.onkey(lambda: self.gauche(), 'Left')
         s.onkey(lambda: self.droite(), 'Right')
-        s.onkey(lambda: self.retour(), 'BackSpace')
         s.onclick(self.click)
         s.listen()
 
@@ -202,17 +200,15 @@ class Game:
             Text((x, y), l, 45, 'center', 'white')
             y -= 60
 
-    def reboutons(self, rage, hist=1, back=0):
+    def reboutons(self, rage, hist=1):
         goto(0, 0)
         stamp()
         if rage:
-            button_end = Button((210, 125), 'Rage', (60, 30))
+            button_end = Button((210, 60), 'Rage', (60, 30))
         else:
             if hist:
                 button_hist = Button((210, -135), 'hist', (60, 30))
         button_new = Button((210, -5), 'New', (60, 30))
-        if back:
-            button_back = Button((210, 60), 'Back', (60, 30))
         button_quit = Button((210, -70), 'Quit', (60, 30))
 
     # cette fonction permet de lancer le son de fin. "win.wav" si c'est une réussite sinon "cri.wav"
@@ -236,7 +232,7 @@ class Game:
         addshape("src/projet/projet1/bois.gif")
         shape("src/projet/projet1/bois.gif")
         stamp()
-        self.reboutons(0, 0, 0)
+        self.reboutons(0, 0)
         goto(0, 180)
         color('white')
         write('historique:', font=('Arial', 12), align='center')
@@ -386,7 +382,7 @@ class Game:
         if not self.not_op:
             xpos, ypos = pos
             if self.coord_to_res(xpos, ypos) == self.coord_to_res(xsuiv, ysuiv):
-                self.changement(xpos, ypos, xsuiv, ysuiv)
+                self.changement(xpos, ypos, xsuiv, ysuiv)                                                                                                           
             else:
                 self.notsame(xpos, ypos, xsuiv, ysuiv, direction)
         else:
@@ -463,15 +459,9 @@ class Game:
         if self.button_new.inside(p):
             self.newgame()
 
-        if self.button_back.inside(p):
-            if len(self.hist) != 0:
-                self.retour()
-
         if self.button_hist.inside(p):
             self.end_hist()
 
-
-#     def reboutons():
 
     # cette fonction calcul le nombre maximum sur le plateau et le score. Il les écrit au bas du plateau
     def resultat(self):
@@ -531,7 +521,6 @@ class Game:
         ]
         self.pause, self.modifi, self.nbr, self.score, self.endjeu = 0, 0, 0, 0, 1
         self.hist = []
-#         reboutons(1, 1, 1)
 # #         Case.cases()
         self.new(1)
         self.resultat()
@@ -549,7 +538,6 @@ class Game:
         self.resultat()
         self.button_end.draw()
         self.button_new.draw()
-        self.button_back.draw()
         self.button_quit.draw()
 
 
