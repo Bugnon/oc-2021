@@ -94,6 +94,7 @@ class Ghost:
                 self.aim = vector(-5, 0)
                 self.pos.move(self.aim)
             elif self.game.world.valid(self.pos + self.aim):
+
                 self.pos.move(self.aim)
             else:
                 self.aim = choice([vector(0, 5), vector(0, -5)])
@@ -120,6 +121,10 @@ class Ghost:
         """Draw a ghost."""
         goto(self.pos.x + 10, self.pos.y + 10)
         dot(20, 'red')
+
+    def __str__(self):
+        """Represent a ghost with a string."""
+        return f'Ghost({self.pos})'
 
 
 class Pacman:
@@ -151,15 +156,11 @@ class Pacman:
                 self.game.world.path.up()
                 self.game.world.path.goto(self.pos + vector(10, 10))
                 self.game.world.path.dot(20)
-                if self.game.score.value == 160 * self.game.level:
-                    self.game.level += 1
-                    if self.game.level % 2 == 0:
-                        self.game.world.load(self.game.world.tiles2)
-                    else:
-                        self.game.world.load(self.game.world.tiles1)
+                if self.game.score.value == 160:
+                    self.game.world.load(self.game.world.tiles2)
 
     def change(self, x, y):
-        """Change pacman direction"""
+        """Change pacman aim if valid."""
         self.direction = vector(x, y)
 
     def draw(self):
@@ -180,7 +181,7 @@ class World:
         self.path = Turtle(visible=False)
         self.path.color('blue')
         self.game = game
-        self.tiles1 = [
+        self.tiles = [
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
                 [0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
@@ -206,25 +207,24 @@ class World:
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
                 [0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
-                [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
-                [0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+                [0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
                 [0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0],
                 [0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],
-                [0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0],
-                [0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0],
+                [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+                [0, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0],
                 [0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0],
-                [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
                 [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
                 [0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
                 [0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
                 [0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-                [0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
-                [0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0],
+                [0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
+                [0, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0],
                 [0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             ]
-        self.tiles = self.tiles1
 
     def draw(self):
         """Draw the path."""
@@ -244,11 +244,6 @@ class World:
     def load(self, tiles):
         """load a level"""
         self.tiles = tiles
-        for i in range(20):
-            for j in range(20):
-                tile = tiles[i][j]
-                if tile == 2:
-                    tiles[i][j] = 1
         self.path.clear()
         self.draw()
         self.game.pacman = Pacman(self.game, vector(-40, -80), vector(5, 0), vector(5, 0), False)
@@ -313,12 +308,12 @@ class Score:
         self.writer = Turtle(visible=False)
         self.writer.goto(160, 160)
         self.writer.color('white')
-        self.writer.write(("Score: " + str(self.value)), font=(None, 24))
+        self.writer.write(self.value, font=(None, 24))
 
     def draw(self):
         """Display the score."""
         self.writer.undo()
-        self.writer.write(("Score: " + str(self.value)), font=(None, 24))
+        self.writer.write(self.value, font=(None, 24))
 
 
 class Game:
@@ -341,13 +336,14 @@ class Game:
         ]
         self.score = Score()
         self.world = World(self)
-        self.level = 1
 
         listen()
         onkey(lambda: self.pacman.change(5, 0), 'Right')
         onkey(lambda: self.pacman.change(-5, 0), 'Left')
         onkey(lambda: self.pacman.change(0, 5), 'Up')
         onkey(lambda: self.pacman.change(0, -5), 'Down')
+        onkey(lambda: self.world.load(self.world.tiles2), '2')
+        onkey(lambda: self.world.load(self.world.tiles), '1')
         onscreenclick(self.click)
         self.world.draw()
         self.move()
@@ -372,6 +368,7 @@ class Game:
                     self.pacman.isdead = True
             if self.pacman.isdead:
                 self.bt_retry.draw()
+
             else:
                 self.draw()
                 ontimer(self.move, 100)
