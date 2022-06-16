@@ -514,7 +514,7 @@ class Game:
         self.new(1)
         self.resultat()
 #         self.resultat()
-#     #     son_fond()
+        self.son_fond()
 
     def draw(self):
         """Draws all the game objects."""
