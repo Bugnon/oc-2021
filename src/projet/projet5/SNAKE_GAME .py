@@ -122,15 +122,16 @@ class Chrono(Turtle):
         # faire marcher la fonction tick toute de suite dans le jeu 
         ontimer(self.tick)
 
-    # réécire la valuer actuelle (max value qui diminue 1 par 1)     
+    # réécire la valeur actuelle (max value qui diminue 1 par 1)     
     def tick(self):
         self.clear()
         self.write(self.value, align='center', font = ('arial', 28, 'normal'))
         self.value -= 1
-        #tant que la valeur est supérieur à 0, tick est toujours actif 
+        #tant que la valeur est supérieur à 0, la fonction tick est toujours actif 
         if self.value >= 0: 
             #exécuter la fonction tic après 1 sec 
             ontimer(self.tick, 1000)
+            
     # définir si la valeur est négative ou pas, si oui elle finit d'appeler la fonction tic , ce qui donne game over 
     def isFinished(self):
         return self.value < 0
