@@ -256,24 +256,32 @@
 <h1><span class="section-number">6. </span>Démineur<a class="headerlink" href="#demineur" title="Lien permanent vers ce titre">¶</a></h1>
 <p>Malik et Enrico</p>
 <section id="motivation">
-<h2>Motivation.<a class="headerlink" href="#motivation" title="Lien permanent vers ce titre">¶</a></h2>
+<h2>Motivation<a class="headerlink" href="#motivation" title="Lien permanent vers ce titre">¶</a></h2>
 <p>Notre motivation pour le démineur est que c’est un jeu simple, facile à comprendre et assez plaisant à jouer.</p>
 </section>
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Lien permanent vers ce titre">¶</a></h2>
-<p>Le démineur est un jeu 2D se jouant sur une grille, le but du jeu étant de découvrir chaque case sans faire exploser les mines.</p>
+<p>Le jeu Démineur, crée dans les années 60-70, se joue sur une grille, dans laquelle sont disposées au hasard des mines. Celles-ci sont cachées derrières différentes cases de la grille.</p>
 </section>
-<section id="sources-aide-inspirations">
-<h2>Sources, aide, inspirations<a class="headerlink" href="#sources-aide-inspirations" title="Lien permanent vers ce titre">¶</a></h2>
-<p>Vidéos sur internet.
-Tutoriels sur internet : - https://www.w3schools.com/python/​</p>
-<ul class="simple">
-<li><p>Https://docs.python.org/3/library/turtle.html</p></li>
-</ul>
+<section id="but-du-jeu">
+<h2>But du jeu<a class="headerlink" href="#but-du-jeu" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le but du jeu consiste donc à découvrir l’entièreté des cases ne contenant pas de mines. Pour ce faire, chacune de ces cases contient un chiffre indiquant la quantité de bombes qui se trouvent dans les carrés environnants. On peut donc ainsi placer des drapeaux sur les endroits où on suppose que des mines s’y trouvent.</p>
+</section>
+<section id="differentes-fins-possibles">
+<h2>Différentes fins possibles<a class="headerlink" href="#differentes-fins-possibles" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le jeu se termine soit par une défaite lorsqu’on clique sur une des cases contenant une mine, soit par une victoire lorsque toutes les cases ne contenant pas de mines ont été dévoilées. Le score se calcule grâce au temps passé à dévoiler l’entièreté des cases.</p>
 </section>
 <section id="exemple-dune-cellule-codeplay">
 <h2>Exemple d’une cellule Codeplay<a class="headerlink" href="#exemple-dune-cellule-codeplay" title="Lien permanent vers ce titre">¶</a></h2>
 <div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="ZnJvbSB0dXJ0bGUgaW1wb3J0ICoKCmRlZiBnZW5lcmF0ZShzZWxmKToKICAgICAgICBmb3IgaSBpbiByYW5nZSg5KToKICAgICAgICAgICAgZiA9IHJhbmRpbnQoMCwgNykKICAgICAgICAgICAgYiA9IHJhbmRpbnQoMCwgNykKICAgICAgICAgICAgc3RhdGVbZl1bYl0gPSA2CiAgICAgICAgICAgIHNlbGYud2lubHQuYXBwZW5kKChbZl0sW2JdKSkKICAgICAgICAgICAgcHJpbnQoc2VsZi53aW5sdCkKICAgICAgICBzZWxmLmNoZWNrKCkK" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div><p>Ceci est la génération des bombes. Elle place aléatoirement grâce à randint 8 bombes (d’où le in range(9)).</p>
+</section>
+<section id="sources-aide-inspirations">
+<h2>Sources, aide, inspirations<a class="headerlink" href="#sources-aide-inspirations" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Vidéos sur internet. Tutoriels sur internet :</p>
+<ul class="simple">
+<li><p>https://www.w3schools.com/python/​</p></li>
+<li><p>Https://docs.python.org/3/library/turtle.html</p></li>
+</ul>
 </section>
 </section>
 
@@ -331,10 +339,12 @@ Tutoriels sur internet : - https://www.w3schools.com/python/​</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">6. Démineur</a><ul>
-<li><a class="reference internal" href="#motivation">Motivation.</a></li>
+<li><a class="reference internal" href="#motivation">Motivation</a></li>
 <li><a class="reference internal" href="#introduction">Introduction</a></li>
-<li><a class="reference internal" href="#sources-aide-inspirations">Sources, aide, inspirations</a></li>
+<li><a class="reference internal" href="#but-du-jeu">But du jeu</a></li>
+<li><a class="reference internal" href="#differentes-fins-possibles">Différentes fins possibles</a></li>
 <li><a class="reference internal" href="#exemple-dune-cellule-codeplay">Exemple d’une cellule Codeplay</a></li>
+<li><a class="reference internal" href="#sources-aide-inspirations">Sources, aide, inspirations</a></li>
 </ul>
 </li>
 </ul>

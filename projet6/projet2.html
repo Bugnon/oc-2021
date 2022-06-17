@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" /><link rel="next" title="8. Othello" href="../projet8/projet.html" /><link rel="prev" title="6. Démineur" href="../projet6/projet.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Recherche" href="../search.html" />
 
     <link rel="shortcut icon" href="../_static/modulo-icon.ico"/><meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
-        <title>7. Puissance 4 - projet final</title>
+        <title>Dungeon Rush - projet final</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../_static/codeplay.css" />
@@ -216,14 +216,14 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
+  <ul>
 <li class="toctree-l1"><a class="reference internal" href="../projet1/projet.html">1. Jeu 2048</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet2/projet.html">2. Survie</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet3/projet.html">3. Pacman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet4/projet.html">4. TRON</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet5/projet.html">5. Projet - Snake</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../projet6/projet.html">6. Démineur</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">7. Puissance 4</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projet.html">6. Démineur</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projet7/projet.html">7. Puissance 4</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projet8/projet.html">8. Othello</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../annex.html">9. Annexe</a></li>
 </ul>
@@ -252,36 +252,30 @@
           </label>
         </div>
         <article role="main">
-          <section class="tex2jax_ignore mathjax_ignore" id="puissance-4">
-<h1><span class="section-number">7. </span>Puissance 4<a class="headerlink" href="#puissance-4" title="Lien permanent vers ce titre">¶</a></h1>
-<p>Emilien</p>
+          <section class="tex2jax_ignore mathjax_ignore" id="dungeon-rush">
+<h1>Dungeon Rush<a class="headerlink" href="#dungeon-rush" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Florent et Samuel</p>
 <section id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Lien permanent vers ce titre">¶</a></h2>
-<p>J’ai choisi de coder un puissance 4 car il y a la possibilité d’ajouter plein de fonctions : on peut jouer contre un joueur ou contre l’ordinateur, on peut ajouter un timer pour les joueurs, on peut créer un bouton “undo“, on peut compter le nombre de parties gagnées par joueur, etc…</p>
-<p>Un autre aspect intéressant du puissance 4 est qu’il faut vérifier si un des joueurs a gagné, et donc vérifier (en plus des lignes et des colonnes) les diagonales. Pour l’instant cela reste un défi pour moi et j’ai hâte de me pencher sur ce problème.</p>
-<p>De plus j’ai quelques idées, par exemple permettre au(x) joueur(s) d’entrer leur nom au début du jeu, puis ce nom changera de couleur si c’est à lui de jouer ou non, ou alors (lorsqu’un joueur a gagné) de changer l’aspect des pions gagnants (donc le programme doit connaitre les coordonnées des pions gagnants), ou encore de permettre au joueur de sélectionner dans un premier temps la colonne dans laquelle il veut jouer, puis dans un second temps de confirmer si il souhaite jouer dans cette colonne.</p>
+<p>Nous voulions faire un jeu de toute pièce y compris l’idée principale facile à comprendre et assez plaisant à jouer.</p>
 </section>
-<section id="description-du-jeu">
-<h2>Description du jeu<a class="headerlink" href="#description-du-jeu" title="Lien permanent vers ce titre">¶</a></h2>
-<p>blabla</p>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Dungeon Rush est un jeu dans lequel le joueur se retrouve dans une salle de dongeon assailler par des missiles à la recherche d’un trésor.</p>
 </section>
-<section id="representation-de-letat">
-<h2>Réprésentation de l’état<a class="headerlink" href="#representation-de-letat" title="Lien permanent vers ce titre">¶</a></h2>
-<p>L’état du jeu est représenté avec un tableau 2D appelé <code class="docutils literal notranslate"><span class="pre">state</span></code></p>
-<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoNik6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo3KQoKZm9yIGxpbmUgaW4gc3RhdGU6CiAgICBwcmludChsaW5lKQ==" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div><p>Après deux tours, l’état pourrait se présenter ainsi:</p>
-<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoNik6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo3KQoKc3RhdGVbNV1bMV0gPSAxCnN0YXRlWzVdWzJdID0gMgogICAgCmZvciBsaW5lIGluIHN0YXRlOgogICAgcHJpbnQobGluZSk=" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div><p>## Les variables</p>
-<p>Formules mathématiques en LaTeX</p>
-<div class="math-wrapper"><div class="math notranslate nohighlight">
-\[ a^2 = x_2 \]</div></div>
+<section id="but-du-jeu">
+<h2>But du jeu<a class="headerlink" href="#but-du-jeu" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le but du jeu est donc de ramasser un nombre défini de pièces tout en évitant les missiles. Les difficultés vont du niveau 1 à 3</p>
 </section>
-<section id="comment-jouer">
-<h2>Comment jouer<a class="headerlink" href="#comment-jouer" title="Lien permanent vers ce titre">¶</a></h2>
-<p>votre interface</p>
-<p><img alt="description" src="projet7/image.png"/></p>
+<section id="differentes-fins-possibles">
+<h2>Différentes fins possibles<a class="headerlink" href="#differentes-fins-possibles" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Le jeu se termine soit quand le joueur est toucher par un missile ou alors quand toute les pièces ont été ramssées.</p>
 </section>
-<section id="codeplay">
-<h2>Codeplay<a class="headerlink" href="#codeplay" title="Lien permanent vers ce titre">¶</a></h2>
-<div class="interactive_code"><iframe border="0" cellspacing="0" class="codeframe" data-code="c3RhdGUgPSBbXQoKZm9yIGkgaW4gcmFuZ2UoNik6CiAgICBzdGF0ZS5hcHBlbmQoWzBdICo3KQoKZm9yIGxpbmUgaW4gc3RhdGU6CiAgICBwcmludChsaW5lKQ==" data-file="Y29kZS5weQ==" frameborder="0" scrolling="no" src="../codeplay/frame.html"></iframe></div></section>
+<section id="sources-aide-inspirations">
+<h2>Sources, aide, inspirations<a class="headerlink" href="#sources-aide-inspirations" title="Lien permanent vers ce titre">¶</a></h2>
+<p>-diverses forum en lien avec des personnes à la recherche de solutions à leurs problèmes de programmation.
+-www.pygame.org/wiki</p>
+</section>
 </section>
 
         </article>
@@ -289,26 +283,8 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../projet8/projet.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title"><span class="section-number">8. </span>Othello</div>
-              </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="../projet6/projet.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title"><span class="section-number">6. </span>Démineur</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
 
         <div class="related-information">
@@ -317,7 +293,7 @@
               and
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
-            <a class="muted-link" href="../_sources/projet7/projet.md.txt"
+            <a class="muted-link" href="../_sources/projet6/projet2.md.txt"
                rel="nofollow">
               Montrer le code source
             </a>
@@ -337,12 +313,12 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">7. Puissance 4</a><ul>
+<li><a class="reference internal" href="#">Dungeon Rush</a><ul>
 <li><a class="reference internal" href="#motivation">Motivation</a></li>
-<li><a class="reference internal" href="#description-du-jeu">Description du jeu</a></li>
-<li><a class="reference internal" href="#representation-de-letat">Réprésentation de l’état</a></li>
-<li><a class="reference internal" href="#comment-jouer">Comment jouer</a></li>
-<li><a class="reference internal" href="#codeplay">Codeplay</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#but-du-jeu">But du jeu</a></li>
+<li><a class="reference internal" href="#differentes-fins-possibles">Différentes fins possibles</a></li>
+<li><a class="reference internal" href="#sources-aide-inspirations">Sources, aide, inspirations</a></li>
 </ul>
 </li>
 </ul>
@@ -363,8 +339,6 @@
     <script src="../_static/blanks.js"></script>
     <script src="../_static/timeline.js"></script>
     <script src="../_static/translations.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="../_static/scripts/reactions.js"></script>
     <script src="../_static/scripts/progress.js"></script>
